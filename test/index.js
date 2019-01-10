@@ -428,11 +428,11 @@ describe('Library (index.js)', function(){
 		it("#should add formatter called 'myFormatter'", function(){
 			Loggerize.addFormatter({
 				"name": "myFormatter",
-				"format": "%{datetime} %{level} '%{message}'"
+				"format": "%{timestamp} %{level} '%{message}'"
 			});
 			
 			actual = subject.formatters["myFormatter"];
-			expected = { format: "%{datetime} %{level} '%{message}'" }
+			expected = { format: "%{timestamp} %{level} '%{message}'" }
 			assert.deepEqual(actual, expected);
 		});
 		
@@ -442,7 +442,7 @@ describe('Library (index.js)', function(){
 			
 			Loggerize.addFormatter({
 				"name": "myFormatter",
-				"format": "%{datetime} %{level} '%{message}'"
+				"format": "%{timestamp} %{level} '%{message}'"
 			});
 			
 			Loggerize.removeFormatter("myFormatter");

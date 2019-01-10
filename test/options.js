@@ -207,7 +207,7 @@ describe("Set Formatter Options", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"format": "%{datetime} %{level} %{message}",
+			"format": "%{timestamp} %{level} %{message}",
 		});
 		
 		let origFormatters = JSON.parse(JSON.stringify(subject.formatters));
@@ -218,21 +218,21 @@ describe("Set Formatter Options", function() {
 		assert.deepEqual(actual, expected)
 	});
 	
-	it("#setFormatterOpts - should add a datetime token mutator to the named formatter when named passed as 2nd argument", function() {
+	it("#setFormatterOpts - should add a timestamp token mutator to the named formatter when named passed as 2nd argument", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"format": "%{datetime} %{level} %{message}",
+			"format": "%{timestamp} %{level} %{message}",
 		});
 		
 		subject.setFormatterOpts({
-			"datetime": {"pattern": "%Y-%b"}
+			"timestamp": {"pattern": "%Y-%b"}
 		}, "myFormatter");
 		
 		actual = subject.formatters["myFormatter"];
 		expected = { 
-			"format": '%{datetime} %{level} %{message}',
-			"datetime": { pattern: '%Y-%b' } 
+			"format": '%{timestamp} %{level} %{message}',
+			"timestamp": { pattern: '%Y-%b' } 
 		};
 		assert.deepEqual(actual, expected)
 	});
@@ -241,18 +241,18 @@ describe("Set Formatter Options", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"format": "%{datetime} %{level} %{message}",
+			"format": "%{timestamp} %{level} %{message}",
 		});
 		
 		subject.setFormatterOpts({
 			"name": "myFormatter", 
-			"datetime": {"pattern": "%Y-%b"}
+			"timestamp": {"pattern": "%Y-%b"}
 		});
 		
 		actual = subject.formatters["myFormatter"];
 		expected = { 
-			"format": '%{datetime} %{level} %{message}',
-			"datetime": { pattern: '%Y-%b' } 
+			"format": '%{timestamp} %{level} %{message}',
+			"timestamp": { pattern: '%Y-%b' } 
 		};
 		assert.deepEqual(actual, expected)
 	});
@@ -266,11 +266,11 @@ describe("Set Formatter Options", function() {
 		]);
 		
 		subject.setFormatterOpts({
-			"format": "%{datetime} %{level} %{message}",
+			"format": "%{timestamp} %{level} %{message}",
 		}, ["myFormatter1", "myFormatter2"]);
 		
-		assert.deepEqual(subject.formatters["myFormatter1"], { format: '%{datetime} %{level} %{message}' });
-		assert.deepEqual(subject.formatters["myFormatter2"], { format: '%{datetime} %{level} %{message}' });
+		assert.deepEqual(subject.formatters["myFormatter1"], { format: '%{timestamp} %{level} %{message}' });
+		assert.deepEqual(subject.formatters["myFormatter2"], { format: '%{timestamp} %{level} %{message}' });
 	});
 	
 	it("#setFormatterOpts - Throw Error if formatter's name is undefined", function() {
@@ -624,7 +624,7 @@ describe("Validate Formatter Options", function() {
 		actual = subject.validateFormatterOpts.bind(subject, opts);
 		expected = new TypeError(
 			"When using JSON format, a list of desired fields must be stated in the formatter's fields property. " +
-			"\nE.g. {name: formatterName, 'json': true, fields: [datetime, level, message]"
+			"\nE.g. {name: formatterName, 'json': true, fields: [timestamp, level, message]"
 		);
 		assert.throws(actual, expected);
 	});

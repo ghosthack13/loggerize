@@ -7,12 +7,12 @@ describe("Token/Placeholder Parser", function(){
 	it("replace token in form %{<token>}", function(){
 		
 		let d = new Date();
-		let patternStr = "%%{level} %{datetime} %{level} '%{message}'";
+		let patternStr = "%%{level} %{timestamp} %{level} '%{message}'";
 		let logRecord = { 
 			"level": 'debug',
 			"message": 'placeholder replacement test',
 			"DateObj": d,
-			"datetime": d.toGMTString()
+			"timestamp": d.toGMTString()
 		}
 		
 		let actual = parsers.parsePlaceholders(patternStr, logRecord);

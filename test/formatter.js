@@ -24,20 +24,20 @@ describe("Manage Formatters", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"format": "%{datetime} %{level} '%{message}'"
+			"format": "%{timestamp} %{level} '%{message}'"
 		});
 		
 		actual = subject.formatters["myFormatter"];
-		expected = { format: "%{datetime} %{level} '%{message}'" };
+		expected = { format: "%{timestamp} %{level} '%{message}'" };
 		assert.deepEqual(actual, expected);
 	});
 	
 	it("#addFormatter - Add formatters via array", function() {
 		
 		subject.addFormatter([
-			{"name": "myFormatter1", "format": "%{datetime} %{level} '%{message}'"},
-			{"name": "myFormatter2", "format": "%{datetime} %{level} '%{message}'"},
-			{"name": "myFormatter3", "format": "%{datetime} %{level} '%{message}'"}
+			{"name": "myFormatter1", "format": "%{timestamp} %{level} '%{message}'"},
+			{"name": "myFormatter2", "format": "%{timestamp} %{level} '%{message}'"},
+			{"name": "myFormatter3", "format": "%{timestamp} %{level} '%{message}'"}
 		]);
 		
 		actual = Object.keys(subject.formatters);
@@ -60,20 +60,20 @@ describe("Manage Formatters", function() {
 		let parentName = "FormatterToInherit";
 		subject.addFormatter({
 			"name": parentName,
-			"datetime": {"pattern": "%Y-%m"},
-			"format": "%{datetime} %{level} %{uuid} '%{message}'"
+			"timestamp": {"pattern": "%Y-%m"},
+			"format": "%{timestamp} %{level} %{uuid} '%{message}'"
 		});
 		
 		let opts = {
 			"name": "myFormatter",
-			"format": "%{datetime} '%{message}'"
+			"format": "%{timestamp} '%{message}'"
 		};
 		
 		subject.addFormatter(opts, parentName);
 		actual = subject.formatters["myFormatter"];
 		expected = {
-			"datetime": {"pattern": "%Y-%m"},		//child inherits parent datetime specification since it didn't have one previously
-			"format": "%{datetime} '%{message}'"	//child overwrites parent format because it has one defined of its own
+			"timestamp": {"pattern": "%Y-%m"},		//child inherits parent timestamp specification since it didn't have one previously
+			"format": "%{timestamp} '%{message}'"	//child overwrites parent format because it has one defined of its own
 		};
 		
 		assert.deepEqual(actual, expected);
@@ -101,12 +101,12 @@ describe("Manage Formatters", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"format": "%{datetime} %{level} '%{message}'"
+			"format": "%{timestamp} %{level} '%{message}'"
 		});
 		
 		subject.removeFormatter();
 		actual = subject.formatters["myFormatter"];		
-		expected = { format: "%{datetime} %{level} '%{message}'" };
+		expected = { format: "%{timestamp} %{level} '%{message}'" };
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -115,7 +115,7 @@ describe("Manage Formatters", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"format": "%{datetime} %{level} '%{message}'"
+			"format": "%{timestamp} %{level} '%{message}'"
 		});
 		
 		subject.removeFormatter("myFormatter");
@@ -128,10 +128,10 @@ describe("Manage Formatters", function() {
 	it("#removeFormatter - array of strings as params. remove myFormatter1, myFormatter3", function(){		
 		
 		subject.addFormatter([
-			{"name": "myFormatter1", "format": "%{datetime} %{level} '%{message}'"},
-			{"name": "myFormatter2", "format": "%{datetime} %{level} '%{message}'"},
-			{"name": "myFormatter3", "format": "%{datetime} %{level} '%{message}'"},
-			{"name": "myFormatter4", "format": "%{datetime} %{level} '%{message}'"},
+			{"name": "myFormatter1", "format": "%{timestamp} %{level} '%{message}'"},
+			{"name": "myFormatter2", "format": "%{timestamp} %{level} '%{message}'"},
+			{"name": "myFormatter3", "format": "%{timestamp} %{level} '%{message}'"},
+			{"name": "myFormatter4", "format": "%{timestamp} %{level} '%{message}'"},
 		]);
 		
 		let origFormatterList = Object.keys(subject.formatters);		
@@ -146,14 +146,14 @@ describe("Manage Formatters", function() {
 	it("#addTokens - Add custom tokens to be replaced via formatter substitution", function() {
 		
 		subject.addTokens({
-			"tag": "%{datetime}_myCustomToken",
+			"tag": "%{timestamp}_myCustomToken",
 			"label": "MyLabel: "
 		});
 		
 		subject.clearFormatters();
 		actual = subject.customTokens;
 		expected = {
-			"tag": "%{datetime}_myCustomToken",
+			"tag": "%{timestamp}_myCustomToken",
 			"label": "MyLabel: "
 		}
 		assert.deepEqual(actual, expected);
@@ -168,7 +168,7 @@ describe("Manage Formatters", function() {
 		};
 		
 		subject.addTokens({
-			"tag": "%{datetime}_myCustomToken",
+			"tag": "%{timestamp}_myCustomToken",
 			"label": "MyLabel:"
 		});
 		
@@ -178,11 +178,11 @@ describe("Manage Formatters", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"datetime": {
+			"timestamp": {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"format": "%%{level} %{datetime} %{level} %{label} '%{message}' %{tag}"
+			"format": "%%{level} %{timestamp} %{level} %{label} '%{message}' %{tag}"
 		});
 		
 		subject.setHandleOpts({"formatter": "myFormatter"}, "myHandle");
@@ -204,11 +204,11 @@ describe("Manage Formatters", function() {
 		subject.addFormatter({
 			"name": "myFormatter",
 			"fields": ["message"],
-			"datetime": {
+			"timestamp": {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"format": "%%{level} %{datetime} %{level} '%{message}'"
+			"format": "%%{level} %{timestamp} %{level} '%{message}'"
 		});
 		
 		subject.addHandle({
@@ -234,11 +234,11 @@ describe("Manage Formatters", function() {
 			"defaultSubstitution": "--",
 			"name": "myFormatter",
 			"fields": ["message"],
-			"datetime": {
+			"timestamp": {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"format": "%%{level} %{datetime} %{level} '%{message}'"
+			"format": "%%{level} %{timestamp} %{level} '%{message}'"
 		});
 		
 		subject.addHandle({
@@ -265,11 +265,11 @@ describe("Manage Formatters", function() {
 			"name": "myFormatter",
 			"json": true,
 			"fields": ["level", "message"],
-			"datetime": {
+			"timestamp": {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"format": "%%{level} %{datetime} %{level} '%{message}'"
+			"format": "%%{level} %{timestamp} %{level} '%{message}'"
 		});
 		
 		subject.addHandle({
@@ -293,14 +293,14 @@ describe("Manage Formatters", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"datetime": {
+			"timestamp": {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
 			"level": {
 				"transformer": function(level){ return level.toUpperCase(); }
 			},
-			"format": "%%{level} %{datetime} %{level} '%{message}'"
+			"format": "%%{level} %{timestamp} %{level} '%{message}'"
 		});
 		
 		subject.addHandle({
@@ -324,12 +324,12 @@ describe("Manage Formatters", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"datetime": {
+			"timestamp": {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
 			"transformer": function(mockLogRecord){ return mockLogRecord["output"].toUpperCase(); },
-			"format": "%%{level} %{datetime} %{level} '%{message}'"
+			"format": "%%{level} %{timestamp} %{level} '%{message}'"
 		});
 		
 		subject.addHandle({
@@ -348,7 +348,7 @@ describe("Manage Formatters", function() {
 		
 		subject.addFormatter({
 			"name": "myFormatter",
-			"format": '%{datetime} %{level} %{message}'
+			"format": '%{timestamp} %{level} %{message}'
 		});
 		subject.clearFormatters();
 		

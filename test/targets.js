@@ -190,7 +190,7 @@ describe("Targets (Intergation Test)", function(){
 			"directory": logDir,
 			"interval": "second",
 			"fileNamePattern": "%{fileName}-%Y-%b.log",
-			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{datetime}"}
+			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{timestamp}"}
 		});
 		
 		//Construct target path
@@ -252,7 +252,7 @@ describe("Targets (Intergation Test)", function(){
 			"directory": logDir,
 			"maxSize": "1mb",
 			// "fileNamePattern": "%{fileName}_%{logNum}_.log",
-			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{datetime}"}
+			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{timestamp}"}
 		});
 		
 		//Construct target path
@@ -314,7 +314,7 @@ describe("Targets (Intergation Test)", function(){
 			"directory": logDir,
 			"maxSize": "1mb",
 			"fileNamePattern": "%{fileName}_%{logNum}_.log",
-			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{datetime}"}
+			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{timestamp}"}
 		});
 		
 		//Construct target path
@@ -379,14 +379,14 @@ describe("Targets (Intergation Test)", function(){
 			"url": "http://192.168.154.130/",
 			"formatter": {
 				"name": "myFormatter", 
-				"format": "%{level} %{message} %{datetime}"
+				"format": "%{level} %{message} %{timestamp}"
 			}
 		});
 		
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = "Received GET Request with query: level=info&message=REST Target Test!&datetime=2/28/2020, 10:00:00 AM&output=info REST Target Test! 2/28/2020, 10:00:00 AM";
+			let expected = "Received GET Request with query: level=info&message=REST Target Test!&timestamp=2/28/2020, 10:00:00 AM&output=info REST Target Test! 2/28/2020, 10:00:00 AM";
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
@@ -415,14 +415,14 @@ describe("Targets (Intergation Test)", function(){
 			"url": "http://192.168.154.130/",
 			"formatter": {
 				"name": "myFormatter", 
-				"format": "%{level} %{message} %{datetime}"
+				"format": "%{level} %{message} %{timestamp}"
 			}
 		});
 		
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = 'Received POST Request with payload: {"level":"info","message":"REST Target Test!","datetime":"2/28/2020, 10:00:00 AM","output":"info REST Target Test! 2/28/2020, 10:00:00 AM"}';
+			let expected = 'Received POST Request with payload: {"level":"info","message":"REST Target Test!","timestamp":"2/28/2020, 10:00:00 AM","output":"info REST Target Test! 2/28/2020, 10:00:00 AM"}';
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
