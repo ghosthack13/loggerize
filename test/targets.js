@@ -96,7 +96,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "File Target Test Line 1"
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 			//Read file contents to assert it was written successfully
 			fs.readFile(targetPath, {"encoding": "utf8"}, function (err, data){
@@ -174,7 +174,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
@@ -235,7 +235,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
@@ -297,7 +297,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 		
@@ -359,7 +359,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 		
@@ -398,7 +398,7 @@ describe("Targets (Intergation Test)", function(){
 			"level": "info", 
 			"message": "REST Target Test!",
 		};
-		subject.log(mockLogRecord, subject.handles["myHandle"]);
+		subject.render(mockLogRecord, subject.handles["myHandle"]);
 		
 	});
 	
@@ -434,7 +434,7 @@ describe("Targets (Intergation Test)", function(){
 			"level": "info", 
 			"message": "REST Target Test!",
 		};
-		subject.log(mockLogRecord, subject.handles["myHandle"]);
+		subject.render(mockLogRecord, subject.handles["myHandle"]);
 		
 	});
 	
@@ -504,7 +504,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Custom Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
@@ -576,7 +576,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Custom Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
