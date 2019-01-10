@@ -373,7 +373,7 @@ describe("Targets (Intergation Test)", function(){
 		subject.addHandle({
 			"emitEvents": true,
 			"name": "myHandle",
-			"target": "rest",
+			"target": "http",
 			"port": 3000,
 			"method": "GET",
 			"url": "http://192.168.154.130/",
@@ -386,7 +386,7 @@ describe("Targets (Intergation Test)", function(){
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = "Received GET Request with query: level=info&message=REST Target Test!&timestamp=2/28/2020, 10:00:00 AM&output=info REST Target Test! 2/28/2020, 10:00:00 AM";
+			let expected = "Received GET Request with query: level=info&message=HTTP Target Test!&timestamp=2/28/2020, 10:00:00 AM&output=info HTTP Target Test! 2/28/2020, 10:00:00 AM";
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
@@ -396,7 +396,7 @@ describe("Targets (Intergation Test)", function(){
 		let mockLogRecord = {
 			"DateObj": new Date(2020, 1, 28, 10, 0, 0),
 			"level": "info", 
-			"message": "REST Target Test!",
+			"message": "HTTP Target Test!",
 		};
 		subject.render(mockLogRecord, subject.handles["myHandle"]);
 		
@@ -409,7 +409,7 @@ describe("Targets (Intergation Test)", function(){
 		subject.addHandle({
 			"emitEvents": true,
 			"name": "myHandle",
-			"target": "rest",
+			"target": "http",
 			"port": 3000,
 			"method": "POST",
 			"url": "http://192.168.154.130/",
@@ -422,7 +422,7 @@ describe("Targets (Intergation Test)", function(){
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = 'Received POST Request with payload: {"level":"info","message":"REST Target Test!","timestamp":"2/28/2020, 10:00:00 AM","output":"info REST Target Test! 2/28/2020, 10:00:00 AM"}';
+			let expected = 'Received POST Request with payload: {"level":"info","message":"HTTP Target Test!","timestamp":"2/28/2020, 10:00:00 AM","output":"info HTTP Target Test! 2/28/2020, 10:00:00 AM"}';
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
@@ -432,7 +432,7 @@ describe("Targets (Intergation Test)", function(){
 		let mockLogRecord = {
 			"DateObj": new Date(2020, 1, 28, 10, 0, 0),
 			"level": "info", 
-			"message": "REST Target Test!",
+			"message": "HTTP Target Test!",
 		};
 		subject.render(mockLogRecord, subject.handles["myHandle"]);
 		

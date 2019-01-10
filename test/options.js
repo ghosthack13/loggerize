@@ -813,11 +813,11 @@ describe("Set Default Handle Options", function() {
 		assert.deepEqual(actual, expected)
 	});
 	
-	it("#setHandleDefaults - should default method to get and port to 80 when given a url under the rest target", function() {
+	it("#setHandleDefaults - should default method to get and port to 80 when given a url under the http target", function() {
 		
 		let opts = {
 			"name": "myHandle", 
-			"target": 'rest',
+			"target": 'http',
 			"url": "https://example.com/test?apikey=1234567890",
 		};
 		
@@ -830,7 +830,7 @@ describe("Set Default Handle Options", function() {
 			levelMapper: subject.levelMapper,
 			level: subject.level,
 			"name": "myHandle",
-			"target": 'rest',
+			"target": 'http',
 			"formatter": 'default',
 			
 			"keepAlive": true,
