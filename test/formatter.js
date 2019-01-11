@@ -9,7 +9,7 @@ var Logger = require('../lib/logger.js');
 
 describe("Manage Formatters", function() {
 	
-	var predefinedFormatters = ['simple', 'common', 'combined', '_level', 'default'];
+	
   
 	beforeEach(function() {
 		delete require.cache[require.resolve('../lib/index.js')]
@@ -34,23 +34,16 @@ describe("Manage Formatters", function() {
 	
 	it("#addFormatter - Add formatters via array", function() {
 		
+		var predefinedFormatters = Object.keys(subject.formatters).sort();
+		
 		subject.addFormatter([
 			{"name": "myFormatter1", "format": "%{timestamp} %{level} '%{message}'"},
 			{"name": "myFormatter2", "format": "%{timestamp} %{level} '%{message}'"},
 			{"name": "myFormatter3", "format": "%{timestamp} %{level} '%{message}'"}
 		]);
 		
-		actual = Object.keys(subject.formatters);
-		expected = [
-			"simple",
-			"common",
-			"combined",
-			"_level",
-			"default",
-			"myFormatter1",
-			"myFormatter2",
-			"myFormatter3",
-		];
+		actual = Object.keys(subject.formatters).sort();
+		expected = predefinedFormatters.concat(["myFormatter1", "myFormatter2", "myFormatter3"]).sort();
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -346,13 +339,16 @@ describe("Manage Formatters", function() {
 	
 	it("#clearFormatters - Formatter list should only include default formatter", function() {
 		
+		var predefinedFormatters = Object.keys(subject.formatters).sort();
+		
 		subject.addFormatter({
 			"name": "myFormatter",
 			"format": '%{timestamp} %{level} %{message}'
 		});
 		subject.clearFormatters();
 		
-		actual = Object.keys(subject.formatters);
+		actual = Object.keys(subject.formatters).sort();
+		
 		expected = predefinedFormatters;
 		assert.deepEqual(actual, expected);
 	});
