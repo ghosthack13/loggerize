@@ -318,8 +318,8 @@ describe("Manage Handles", function() {
 		subject.addHandle([{"name": "myHandle1"}, {"name": "myHandle2"}]);
 		subject.clearHandles.call(subject);
 		
-		actual = Object.keys(subject.handles);
-		expected = predefinedHandles;
+		actual = Object.keys(subject.handles).sort();
+		expected = subject.predefinedHandles.sort();
 		assert.deepEqual(actual, expected);
 		
 	});

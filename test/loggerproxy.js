@@ -114,7 +114,7 @@ describe('LoggerProxy', function() {
 	it('#detachHandles(handleName) should detach handle named in parameter', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.attachHandles(["default", "anonymous", "__exception__"]);
+		logger.attachHandles(["default", "anonymous"]);
 		logger.detachHandles("anonymous");
 		
 		let actual = logger;
@@ -122,7 +122,7 @@ describe('LoggerProxy', function() {
 			name: 'myLogger',
 			propogate: true,
 			isMuted: false,
-			handles: ["default", "__exception__"],
+			handles: ["default"],
 			hasHandles: true,
 			filters: [],
 			"levelMapper": "npm",
@@ -134,8 +134,8 @@ describe('LoggerProxy', function() {
 	it('#detachHandles(handleNames) should detach handles named in parameter', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.attachHandles(["default", "anonymous", "__exception__"]);
-		logger.detachHandles(["default", "__exception__"]);
+		logger.attachHandles(["default", "anonymous"]);
+		logger.detachHandles(["default"]);
 		
 		let actual = logger;
 		let expected = {
