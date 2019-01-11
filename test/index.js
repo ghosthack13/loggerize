@@ -411,6 +411,59 @@ describe('Library (index.js)', function(){
 	});
 	
 	
+	describe('Manage Levels: #getLevel(), #setLevel(), #setLevelMap()', function() {
+			
+		/** Because Loggerize proxies request to a singleton that maintaines state,
+			it is require to purge cache on each test to ensure settings brought forward
+			from previous test
+		*/
+		beforeEach(function() {
+			delete require.cache[require.resolve('../lib/index.js')]
+			delete require.cache[require.resolve('../lib/logger.js')]
+			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			subject = require('../lib/logger.js'); //Singleton Logger Instance
+			Loggerize = require('../lib/index.js');
+		});
+		
+		it("#should get the level as set on the master logger", function(){
+			
+			actual = subject.level;
+			expected = Loggerize.getLevel();
+			assert.strictEqual(actual, expected);
+		});
+		
+		it("#should set the level on the master logger when given a valid name of type string", function(){
+			
+			let levelName = "silly";
+			Loggerize.setLevel(levelName);
+			
+			actual = subject.level;
+			expected = levelName;
+			assert.strictEqual(actual, expected);
+		});
+		
+		it("#should set the level on the master logger when given a valid name of type number", function(){
+			
+			let levelNum = 2;
+			Loggerize.setLevel(levelNum);
+			
+			actual = subject.level;
+			expected = "info";
+			assert.strictEqual(actual, expected);
+		});
+		
+		it("#should set the levelMapper on the master logger", function(){
+			
+			let mapper = "python";
+			Loggerize.setLevelMap(mapper);
+			
+			actual = subject.levelMapper;
+			expected = mapper;
+			assert.strictEqual(actual, expected);
+		});
+		
+	});
+	
 	describe('Manage Formatters: #addFormatter(), #removeFormatter()', function() {
 			
 		/** Because Loggerize proxies request to a singleton that maintaines state,
