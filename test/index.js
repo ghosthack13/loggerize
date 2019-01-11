@@ -120,8 +120,8 @@ describe('Library (index.js)', function(){
 					filters: [],
 					levelMapper: 'npm'
 				},
-				anonymous: {
-					name: 'anonymous',
+				_anonymous: {
+					name: '_anonymous',
 					propogate: false,
 					isMuted: false,
 					handles: [ 'default' ],
@@ -145,11 +145,11 @@ describe('Library (index.js)', function(){
 		
 		it('should retrieve the already defined logger when passed name of an existing logger', function(){
 			
-			let logger = Loggerize.getLogger("anonymous");
+			let logger = Loggerize.getLogger("_anonymous");
 			
 			let actual = logger;
 			let expected = {
-				name: 'anonymous',
+				name: '_anonymous',
 				propogate: false,
 				isMuted: false,
 				handles: [ 'default' ],
@@ -694,7 +694,7 @@ describe('Library (index.js)', function(){
 		
 		it("#on() should handle emitted event when a record is logged", function(){
 			
-			logger = Loggerize.getLogger("anonymous");
+			logger = Loggerize.getLogger("_anonymous");
 			Loggerize.on("logged", function(logRecord){
 				actual = logRecord["output"];
 				expected = "info Log Message Test!";
@@ -745,8 +745,8 @@ describe('Library (index.js)', function(){
 				"target": null
 			});
 			
-			subject.loggers["anonymous"].attachHandles("myHandle");
-			subject.loggers["anonymous"].detachHandles("default");
+			subject.loggers["_anonymous"].attachHandles("myHandle");
+			subject.loggers["_anonymous"].detachHandles("default");
 			
 			Loggerize.error("Log Message Test!");
 		});
@@ -765,8 +765,8 @@ describe('Library (index.js)', function(){
 				"target": null
 			});
 			
-			subject.loggers["anonymous"].attachHandles("myHandle");
-			subject.loggers["anonymous"].detachHandles("default");
+			subject.loggers["_anonymous"].attachHandles("myHandle");
+			subject.loggers["_anonymous"].detachHandles("default");
 			
 			 Loggerize.warn("Log Message Test!");
 		});
@@ -785,8 +785,8 @@ describe('Library (index.js)', function(){
 				"target": null
 			});
 			
-			subject.loggers["anonymous"].attachHandles("myHandle");
-			subject.loggers["anonymous"].detachHandles("default");
+			subject.loggers["_anonymous"].attachHandles("myHandle");
+			subject.loggers["_anonymous"].detachHandles("default");
 			
 			Loggerize.info("Log Message Test!");
 		});
@@ -805,8 +805,8 @@ describe('Library (index.js)', function(){
 				"target": null
 			});
 			
-			subject.loggers["anonymous"].attachHandles("myHandle");
-			subject.loggers["anonymous"].detachHandles("default");
+			subject.loggers["_anonymous"].attachHandles("myHandle");
+			subject.loggers["_anonymous"].detachHandles("default");
 			
 			Loggerize.verbose("Log Message Test!");
 		});
@@ -825,8 +825,8 @@ describe('Library (index.js)', function(){
 				"target": null
 			});
 			
-			subject.loggers["anonymous"].attachHandles("myHandle");
-			subject.loggers["anonymous"].detachHandles("default");
+			subject.loggers["_anonymous"].attachHandles("myHandle");
+			subject.loggers["_anonymous"].detachHandles("default");
 			
 			Loggerize.debug("Log Message Test!");
 		});
@@ -850,7 +850,7 @@ describe('Library (index.js)', function(){
 		it("#should colorize level accoring to defaults when no parameter is passed", function(){
 			
 			Loggerize.colorizeLevels();
-			logger = Loggerize.getLogger("anonymous");			
+			logger = Loggerize.getLogger("_anonymous");			
 			
 			logger.log("error", "Color Coded Log Message");
 			logger.log("warn", 	"Color Coded Log Message");
@@ -877,7 +877,7 @@ describe('Library (index.js)', function(){
 			};
 			
 			Loggerize.colorizeLevels(colorMap);
-			logger = Loggerize.getLogger("anonymous");			
+			logger = Loggerize.getLogger("_anonymous");			
 			
 			logger.log("error", "Color Coded Log Message");
 			logger.log("warn", 	"Color Coded Log Message");
@@ -890,7 +890,7 @@ describe('Library (index.js)', function(){
 		it("#should remove level colors", function(){
 			
 			Loggerize.decolorizeLevels();
-			logger = Loggerize.getLogger("anonymous");			
+			logger = Loggerize.getLogger("_anonymous");			
 			
 			logger.log("error", "Color Coded Log Message");
 			logger.log("warn", 	"Color Coded Log Message");

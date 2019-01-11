@@ -3,13 +3,13 @@ var path = require('path');
 
 var http = require('http');
 var https = require('https');
-
+223
 var parsers = require('../lib/options.js');
 var Logger = require('../lib/logger.js');
 
 describe("Manage Handles", function() {
 	
-	var predefinedHandles = ["default", "anonymous", "__exception__"];
+	var predefinedHandles = ["default", "_anonymous", "__exception__"];
   
 	beforeEach(function(){
 		delete require.cache[require.resolve('../lib/index.js')]
@@ -216,10 +216,10 @@ describe("Manage Handles", function() {
 	});
 	*/
 	
-	it("#addHandle - throws error if a handle named 'anonymous' is added", function(){		
-		let opts = {"name": "anonymous"};
+	it("#addHandle - throws error if a handle named '_anonymous' is added", function(){		
+		let opts = {"name": "_anonymous"};
 		actual = subject.addHandle.bind(subject, opts);		
-		expected = new Error("The handle named 'anonymous' is reserved for undefined handles");
+		expected = new Error("The handle named '_anonymous' is reserved for undefined handles");
 		assert.throws(actual, expected);
 	});
 	
