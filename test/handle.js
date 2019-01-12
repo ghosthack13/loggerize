@@ -1,21 +1,15 @@
+"use strict";
+
 var assert = require('assert');
 var path = require('path');
 
-var http = require('http');
-var https = require('https');
-223
-var parsers = require('../lib/options.js');
-var Logger = require('../lib/logger.js');
-
 describe("Manage Handles", function() {
 	
-	var predefinedHandles = ["default", "_anonymous", "__exception__"];
-  
+	let subject;
 	beforeEach(function(){
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
-		Loggerize = require('../lib/index.js');
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
@@ -24,7 +18,7 @@ describe("Manage Handles", function() {
 		
 		subject.addHandle([{"name": "myHandle1"}, {"name": "myHandle2"}, {"name": "myHandle3"}]);
 		subject.deactivate(); //Deactivate all handles
-		for (handleName in subject.handles){
+		for (let handleName in subject.handles){
 			assert.strictEqual(subject.handles[handleName].active, false);
 		}
 		
@@ -35,7 +29,7 @@ describe("Manage Handles", function() {
 		subject.addHandle([{"name": "myHandle1"}, {"name": "myHandle2"}, {"name": "myHandle3"}]);
 		subject.deactivate(["myHandle2"]);
 		
-		for (handleName in subject.handles){
+		for (let handleName in subject.handles){
 			let expected = (handleName == "myHandle2") ? false : true;
 			assert.strictEqual(subject.handles[handleName].active, expected);
 		}
@@ -47,7 +41,7 @@ describe("Manage Handles", function() {
 		subject.addHandle([{"name": "myHandle1"}, {"name": "myHandle2"}, {"name": "myHandle3"}]);
 		subject.deactivate("myHandle3");
 		
-		for (handleName in subject.handles){
+		for (let handleName in subject.handles){
 			let expected = (handleName == "myHandle3") ? false : true;
 			assert.strictEqual(subject.handles[handleName].active, expected);
 		}
@@ -63,7 +57,7 @@ describe("Manage Handles", function() {
 		]);
 		
 		subject.activate();
-		for (handleName in subject.handles){
+		for (let handleName in subject.handles){
 			// let expected = (handleName == "myHandle3") ? true : false;
 			let actual = subject.handles[handleName].active;
 			let expected = true;
@@ -82,7 +76,7 @@ describe("Manage Handles", function() {
 		subject.deactivate();
 		subject.activate(["default", "myHandle2"]);		
 		
-		for (handleName in subject.handles){
+		for (let handleName in subject.handles){
 			let expected = (handleName == "default" || handleName == "myHandle2") ? true : false;
 			let actual = subject.handles[handleName].active;
 			assert.strictEqual(actual, expected);
@@ -100,7 +94,7 @@ describe("Manage Handles", function() {
 		subject.deactivate();
 		subject.activate("myHandle3");
 		
-		for (handleName in subject.handles){
+		for (let handleName in subject.handles){
 			let expected = (handleName == "myHandle3") ? true : false;
 			let actual = subject.handles[handleName].active;
 			assert.strictEqual(actual, expected);
@@ -121,21 +115,21 @@ describe("Manage Handles", function() {
 	});
 
 	it("#renameHandle - throws error when trying to rename default handle", function(){		
-		actual = subject.renameHandle.bind(subject, "default", "renamedHandle");		
-		expected = new Error("Cannot rename the 'default' handle");
+		let actual = subject.renameHandle.bind(subject, "default", "renamedHandle");		
+		let expected = new Error("Cannot rename the 'default' handle");
 		assert.throws(actual, expected);
 	});
 	
 	it("#renameHandle - throws error when handle to rename does not exists", function(){		
 		let oldName = "fsxdfasdfasdfacd";
-		actual = subject.renameHandle.bind(subject, oldName, "renamedHandle");		
-		expected = new Error("'" + oldName + " does not match any existing handles");
+		let actual = subject.renameHandle.bind(subject, oldName, "renamedHandle");		
+		let expected = new Error("'" + oldName + " does not match any existing handles");
 		assert.throws(actual, expected);
 	});
 
 	it("#renameHandle - throws error when name is not of type string", function(){		
-		actual = subject.renameHandle.bind(subject, {}, "renamedHandle");		
-		expected = new Error("Both names must be of type 'string'");
+		let actual = subject.renameHandle.bind(subject, {}, "renamedHandle");		
+		let expected = new Error("Both names must be of type 'string'");
 		assert.throws(actual, expected);
 	});
 	
@@ -164,8 +158,8 @@ describe("Manage Handles", function() {
 		}, 
 		"HandleToInherit");
 		
-		actual = subject.handles["myHandle"];
-		expected = {
+		let actual = subject.handles["myHandle"];
+		let expected = {
 			"active": true,
 			"formatter": 'default',
 			"level": subject.level,
@@ -182,44 +176,44 @@ describe("Manage Handles", function() {
 	it("#addHandle - throws error if parent handle is not defined", function(){
 		let parentName = "myHandleParent";
 		let opts = {"name": "myHandle"};
-		actual = subject.addHandle.bind(subject, opts, parentName);		
-		expected = new Error("'" + parentName + "' is not a valid handle");
+		let actual = subject.addHandle.bind(subject, opts, parentName);		
+		let expected = new Error("'" + parentName + "' is not a valid handle");
 		assert.throws(actual, expected);
 	});
 	
 	it("#addHandle - throws error if parent handle is not of type 'string'", function(){		
 		let opts = {"name": "myHandle"};
-		actual = subject.addHandle.bind(subject, opts, ["parents"]);		
-		expected = new TypeError("Parent Handle must be of type 'string'");
+		let actual = subject.addHandle.bind(subject, opts, ["parents"]);		
+		let expected = new TypeError("Parent Handle must be of type 'string'");
 		assert.throws(actual, expected);
 	});
 	
 	/* Double Check these
 	it("#addHandle - throws error when handle is not of type object", function(){		
-		actual = subject.addHandle.bind(subject, "myHandle");		
-		expected = new Error('Handle must be of type object in the form --> {name: handleName, "handleProperty1": "value1", "handleProperty2": "value2"}');
+		let actual = subject.addHandle.bind(subject, "myHandle");		
+		let expected = new Error('Handle must be of type object in the form --> {name: handleName, "handleProperty1": "value1", "handleProperty2": "value2"}');
 		assert.throws(actual, expected);
 	});
 	
 	it("#addHandle - throws error if handle doesn not have a 'name' option defined", function(){		
 		let opts = {"target": "file"};
-		actual = subject.addHandle.bind(subject, opts);		
-		expected = new Error("Handle must have a 'name' option defined");
+		let actual = subject.addHandle.bind(subject, opts);		
+		let expected = new Error("Handle must have a 'name' option defined");
 		assert.throws(actual, expected);
 	});
 	
 	it("#addHandle - throws error if a handle named 'default' is added", function(){		
 		let opts = {"name": "default"};
-		actual = subject.addHandle.bind(subject, opts);		
-		expected = new Error('The default handle is already defined and CANNOT be altered');
+		let actual = subject.addHandle.bind(subject, opts);		
+		let expected = new Error('The default handle is already defined and CANNOT be altered');
 		assert.throws(actual, expected);
 	});
 	*/
 	
 	it("#addHandle - throws error if a handle named '_anonymous' is added", function(){		
 		let opts = {"name": "_anonymous"};
-		actual = subject.addHandle.bind(subject, opts);		
-		expected = new Error("The handle named '_anonymous' is reserved for undefined handles");
+		let actual = subject.addHandle.bind(subject, opts);		
+		let expected = new Error("The handle named '_anonymous' is reserved for undefined handles");
 		assert.throws(actual, expected);
 	});
 	
@@ -235,7 +229,7 @@ describe("Manage Handles", function() {
 		
 		
 		subject.handles = {
-			 "default": {
+			"default": {
 				active: false,
 				level: 'debug',
 				target: 'console',
@@ -256,8 +250,8 @@ describe("Manage Handles", function() {
 		};
 		subject.removeHandle("myHandle2");
 		
-		actual = subject.handles;
-		expected = {
+		let actual = subject.handles;
+		let expected = {
 			"default": {
 				active: false,
 				formatter: 'default',
@@ -270,7 +264,7 @@ describe("Manage Handles", function() {
 				target: 'console',
 				formatter: 'default' 
 			},
-		}
+		};
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -279,7 +273,7 @@ describe("Manage Handles", function() {
 		
 		
 		subject.handles = {
-			 "default": {
+			"default": {
 				active: false,
 				level: 'debug',
 				target: 'console',
@@ -300,15 +294,15 @@ describe("Manage Handles", function() {
 		};
 		subject.removeHandle(["myHandle1", "myHandle2"]);
 		
-		actual = subject.handles;
-		expected = {
+		let actual = subject.handles;
+		let expected = {
 			"default": {
 				active: false,
 				formatter: 'default',
 				level: "debug",
 				target: 'console'
 			}
-		}
+		};
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -318,8 +312,8 @@ describe("Manage Handles", function() {
 		subject.addHandle([{"name": "myHandle1"}, {"name": "myHandle2"}]);
 		subject.clearHandles.call(subject);
 		
-		actual = Object.keys(subject.handles).sort();
-		expected = subject.predefinedHandles.sort();
+		let actual = Object.keys(subject.handles).sort();
+		let expected = subject.predefinedHandles.sort();
 		assert.deepEqual(actual, expected);
 		
 	});

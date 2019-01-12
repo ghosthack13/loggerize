@@ -1,3 +1,5 @@
+"use strict";
+
 var assert = require('assert');
 
 //Style 
@@ -10,10 +12,13 @@ describe('Library (index.js)', function(){
 		//Because Loggerize proxies request to a singleton that maintaines state,
 		//it is require to purge cache on each test to ensure settings brought forward
 		//from previous test
+
+		let Loggerize;
+		let subject; // eslint-disable-line no-unused-vars
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			Loggerize = require('../lib/index.js');
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
@@ -33,7 +38,7 @@ describe('Library (index.js)', function(){
 				"hasHandles": true,
 				"filters": [],
 				"level": 'debug'
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -59,7 +64,7 @@ describe('Library (index.js)', function(){
 				"hasHandles": true,
 				"filters": [],
 				"level": 'debug'
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -84,7 +89,7 @@ describe('Library (index.js)', function(){
 				"hasHandles": true,
 				"filters": [],
 				"level": 'error'
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -97,18 +102,20 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			Loggerize = require('../lib/index.js');
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
 		
 		it('should create a logger w/o any level, levelMapper or handles attached when passed name of an undefined logger', function(){
 			
-			let logger = Loggerize.getLogger("myLogger");
-			
+			let logger = Loggerize.getLogger("myLogger"); // eslint-disable-line no-unused-vars
 			let actual = subject.loggers;
 			let expected = {
 				root: {
@@ -157,7 +164,7 @@ describe('Library (index.js)', function(){
 				filters: [],
 				levelMapper: 'npm',
 				level: 'debug'
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -171,10 +178,13 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject; // eslint-disable-line no-unused-vars
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			Loggerize = require('../lib/index.js');
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
@@ -206,10 +216,13 @@ describe('Library (index.js)', function(){
 		//Because Loggerize proxies request to a singleton that maintaines state,
 		//it is require to purge cache on each test to ensure settings brought forward
 		//from previous test
+
+		let Loggerize;
+		let subject; // eslint-disable-line no-unused-vars
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			Loggerize = require('../lib/index.js');
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
@@ -262,7 +275,7 @@ describe('Library (index.js)', function(){
 				logOnResponse: true,
 				levelMapper: 'http',
 				level: 'information',
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -288,7 +301,7 @@ describe('Library (index.js)', function(){
 				logOnResponse: true,
 				levelMapper: 'python',
 				level: 'debug',
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -300,10 +313,13 @@ describe('Library (index.js)', function(){
 		//Because Loggerize proxies request to a singleton that maintaines state,
 		//it is require to purge cache on each test to ensure settings brought forward
 		//from previous test
+
+		let Loggerize;
+		let subject; // eslint-disable-line no-unused-vars
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			Loggerize = require('../lib/index.js');
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
@@ -321,10 +337,13 @@ describe('Library (index.js)', function(){
 		//Because Loggerize proxies request to a singleton that maintaines state,
 		//it is require to purge cache on each test to ensure settings brought forward
 		//from previous test
+
+		let Loggerize;
+		let subject; // eslint-disable-line no-unused-vars
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			Loggerize = require('../lib/index.js');
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
@@ -377,7 +396,7 @@ describe('Library (index.js)', function(){
 				logOnResponse: true,
 				levelMapper: 'http',
 				level: 'information',
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -403,7 +422,7 @@ describe('Library (index.js)', function(){
 				logOnResponse: true,
 				levelMapper: 'python',
 				level: 'debug',
-			}
+			};
 			
 			assert.deepEqual(actual, expected);
 		});
@@ -417,18 +436,21 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
 		
 		it("#should get the level as set on the master logger", function(){
 			
-			actual = subject.level;
-			expected = Loggerize.getLevel();
+			let actual = subject.level;
+			let expected = Loggerize.getLevel();
 			assert.strictEqual(actual, expected);
 		});
 		
@@ -437,8 +459,8 @@ describe('Library (index.js)', function(){
 			let levelName = "silly";
 			Loggerize.setLevel(levelName);
 			
-			actual = subject.level;
-			expected = levelName;
+			let actual = subject.level;
+			let expected = levelName;
 			assert.strictEqual(actual, expected);
 		});
 		
@@ -447,8 +469,8 @@ describe('Library (index.js)', function(){
 			let levelNum = 2;
 			Loggerize.setLevel(levelNum);
 			
-			actual = subject.level;
-			expected = "info";
+			let actual = subject.level;
+			let expected = "info";
 			assert.strictEqual(actual, expected);
 		});
 		
@@ -457,8 +479,8 @@ describe('Library (index.js)', function(){
 			let mapper = "python";
 			Loggerize.setLevelMap(mapper);
 			
-			actual = subject.levelMapper;
-			expected = mapper;
+			let actual = subject.levelMapper;
+			let expected = mapper;
 			assert.strictEqual(actual, expected);
 		});
 		
@@ -470,10 +492,13 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
@@ -484,8 +509,8 @@ describe('Library (index.js)', function(){
 				"format": "%{timestamp} %{level} '%{message}'"
 			});
 			
-			actual = subject.formatters["myFormatter"];
-			expected = { format: "%{timestamp} %{level} '%{message}'" }
+			let actual = subject.formatters["myFormatter"];
+			let expected = { format: "%{timestamp} %{level} '%{message}'" };
 			assert.deepEqual(actual, expected);
 		});
 		
@@ -500,8 +525,8 @@ describe('Library (index.js)', function(){
 			
 			Loggerize.removeFormatter("myFormatter");
 			
-			actual = subject.formatters;
-			expected = originalFormatters;
+			let actual = subject.formatters;
+			let expected = originalFormatters;
 			assert.deepEqual(actual, expected);
 		});
 		
@@ -513,10 +538,13 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
@@ -525,14 +553,14 @@ describe('Library (index.js)', function(){
 			
 			Loggerize.addHandle({"name": "myHandle"});
 			
-			actual = subject.handles["myHandle"];
-			expected = { 
+			let actual = subject.handles["myHandle"];
+			let expected = { 
 				active: true,
 				levelMapper: 'npm',
 				level: 'debug',
 				target: 'console',
 				formatter: 'default'
-			}
+			};
 			assert.deepEqual(actual, expected);
 		});
 		
@@ -543,8 +571,8 @@ describe('Library (index.js)', function(){
 			Loggerize.addHandle({"name": "myHandle"});
 			Loggerize.removeHandle("myHandle");
 			
-			actual = Object.keys(subject.handles);
-			expected = Object.keys(originalHandles);
+			let actual = Object.keys(subject.handles);
+			let expected = Object.keys(originalHandles);
 			assert.deepEqual(actual, expected);
 		});
 	});
@@ -555,26 +583,35 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
 		
 		it("#should add target called 'myTarget'", function(){
 			
-			// Loggerize.addTarget({
-				// "name": "myTarget",
-				// "target": function(logRecord, handleOpts){console.log(logRecord["output"])}
-			// });
+			/*
+			Loggerize.addTarget({
+				"name": "myTarget",
+				"target": function(logRecord, handleOpts){console.log(logRecord["output"])}
+			});
+			/**/
 			
 			//Alternative
-			Loggerize.addTarget("myTarget", function(logRecord, handleOpts){console.log(logRecord["output"])});
+			Loggerize.addTarget("myTarget", function(logRecord, handleOpts){ // eslint-disable-line no-unused-vars
+				console.log(logRecord["output"]); // eslint-disable-line no-console
+			});
 			
-			actual = subject.targets["myTarget"].toString();
-			expected = function(logRecord, handleOpts){console.log(logRecord["output"])}
+			let actual = subject.targets["myTarget"].toString();
+			let expected = function(logRecord, handleOpts){ // eslint-disable-line no-unused-vars
+				console.log(logRecord["output"]); // eslint-disable-line no-console
+			};
 			assert.equal(actual, expected.toString());
 		});
 		
@@ -582,11 +619,13 @@ describe('Library (index.js)', function(){
 			
 			let originalTargets = Object.keys(subject.targets);
 			
-			Loggerize.addTarget("myTarget", function(logRecord, handleOpts){console.log(logRecord["output"])});
+			Loggerize.addTarget("myTarget", function(logRecord, handleOpts){ // eslint-disable-line no-unused-vars
+				console.log(logRecord["output"]); // eslint-disable-line no-console
+			});
 			Loggerize.removeTarget("myTarget");
 			
-			actual = Object.keys(subject.targets);
-			expected = originalTargets;
+			let actual = Object.keys(subject.targets);
+			let expected = originalTargets;
 			assert.deepEqual(actual, expected);
 		});
 	});
@@ -597,26 +636,31 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
 		
 		it("#should add filter called 'myFilter'", function(){
 			
-			// Loggerize.addFilter({
-				// "name": "myFilter",
-				// "filter": function(logRecord){return true;}
-			// });
+			/*
+			Loggerize.addFilter({
+				"name": "myFilter",
+				"filter": function(logRecord){return true;}
+			});
+			/**/
 			
 			//Alternative
-			Loggerize.addFilter("myFilter", function(logRecord){return true;});
+			Loggerize.addFilter("myFilter", function(logRecord){return true;}); // eslint-disable-line no-unused-vars
 			
-			actual = subject.filters["myFilter"].toString();
-			expected = function(logRecord){return true;}
+			let actual = subject.filters["myFilter"].toString();
+			let expected = function(logRecord){return true;}; // eslint-disable-line no-unused-vars
 			assert.equal(actual, expected.toString());
 		});
 		
@@ -624,11 +668,13 @@ describe('Library (index.js)', function(){
 			
 			let originalFilters = Object.keys(subject.filters);
 			
-			Loggerize.addFilter("myFilter", function(logRecord, handleOpts){console.log(logRecord["output"])});
+			Loggerize.addFilter("myFilter", function(logRecord, handleOpts){ // eslint-disable-line no-unused-vars
+				console.log(logRecord["output"]); // eslint-disable-line no-console
+			});
 			Loggerize.removeFilter("myFilter");
 			
-			actual = Object.keys(subject.filters);
-			expected = originalFilters;
+			let actual = Object.keys(subject.filters);
+			let expected = originalFilters;
 			assert.deepEqual(actual, expected);
 		});
 		
@@ -640,10 +686,13 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
@@ -658,8 +707,8 @@ describe('Library (index.js)', function(){
 			//Alternative
 			// Loggerize.addTransformer("myTransformer", function(logRecord){return logRecord["output"].toUpperCase();});
 			
-			actual = subject.transformers["myTransformer"].toString();
-			expected = function(logRecord){return logRecord["output"].toUpperCase();}
+			let actual = subject.transformers["myTransformer"].toString();
+			let expected = function(logRecord){return logRecord["output"].toUpperCase();};
 			assert.equal(actual, expected.toString());
 		});
 		
@@ -667,11 +716,13 @@ describe('Library (index.js)', function(){
 			
 			let originalTransformers = Object.keys(subject.transformers);
 			
-			Loggerize.addTransformer("myTransformer", function(logRecord, handleOpts){console.log(logRecord["output"])});
+			Loggerize.addTransformer("myTransformer", function(logRecord, handleOpts){ // eslint-disable-line no-unused-vars
+				console.log(logRecord["output"]); // eslint-disable-line no-console
+			});
 			Loggerize.removeTransformer("myTransformer");
 			
-			actual = Object.keys(subject.transformers);
-			expected = originalTransformers;
+			let actual = Object.keys(subject.transformers);
+			let expected = originalTransformers;
 			assert.deepEqual(actual, expected);
 		});
 		
@@ -684,20 +735,23 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject; // eslint-disable-line no-unused-vars
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
 		
 		it("#on() should handle emitted event when a record is logged", function(){
 			
-			logger = Loggerize.getLogger("_anonymous");
+			let logger = Loggerize.getLogger("_anonymous");
 			Loggerize.on("logged", function(logRecord){
-				actual = logRecord["output"];
-				expected = "info Log Message Test!";
+				let actual = logRecord["output"];
+				let expected = "info Log Message Test!";
 				assert.equal(actual, expected);
 			});
 			
@@ -722,10 +776,13 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject;
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
@@ -733,8 +790,8 @@ describe('Library (index.js)', function(){
 		it("#error() Should log message at error level when passed a string", function(){
 			
 			Loggerize.on("logged", function(logRecord){
-				actual = logRecord["output"];
-				expected = "error Log Message Test!";
+				let actual = logRecord["output"];
+				let expected = "error Log Message Test!";
 				assert.equal(actual, expected);
 			});
 			
@@ -753,8 +810,8 @@ describe('Library (index.js)', function(){
 		it("#warn() Should log message at warn level when passed a string", function(){
 			
 			Loggerize.on("logged", function(logRecord){
-				actual = logRecord["output"];
-				expected = "warn Log Message Test!";
+				let actual = logRecord["output"];
+				let expected = "warn Log Message Test!";
 				assert.equal(actual, expected);
 			});
 			
@@ -768,13 +825,13 @@ describe('Library (index.js)', function(){
 			subject.loggers["_anonymous"].attachHandles("myHandle");
 			subject.loggers["_anonymous"].detachHandles("default");
 			
-			 Loggerize.warn("Log Message Test!");
+			Loggerize.warn("Log Message Test!");
 		});
 		it("#info() Should log message at info level when passed a string", function(){
 			
 			Loggerize.on("logged", function(logRecord){
-				actual = logRecord["output"];
-				expected = "info Log Message Test!";
+				let actual = logRecord["output"];
+				let expected = "info Log Message Test!";
 				assert.equal(actual, expected);
 			});
 			
@@ -793,8 +850,8 @@ describe('Library (index.js)', function(){
 		it("#verbose() Should log message at verbose level when passed a string", function(){
 			
 			Loggerize.on("logged", function(logRecord){
-				actual = logRecord["output"];
-				expected = "verbose Log Message Test!";
+				let actual = logRecord["output"];
+				let expected = "verbose Log Message Test!";
 				assert.equal(actual, expected);
 			});
 			
@@ -813,8 +870,8 @@ describe('Library (index.js)', function(){
 		it("#debug() Should log message at debug level when passed a string", function(){
 			
 			Loggerize.on("logged", function(logRecord){
-				actual = logRecord["output"];
-				expected = "debug Log Message Test!";
+				let actual = logRecord["output"];
+				let expected = "debug Log Message Test!";
 				assert.equal(actual, expected);
 			});
 			
@@ -839,10 +896,13 @@ describe('Library (index.js)', function(){
 			it is require to purge cache on each test to ensure settings brought forward
 			from previous test
 		*/
+
+		let Loggerize;
+		let subject; // eslint-disable-line no-unused-vars
 		beforeEach(function() {
-			delete require.cache[require.resolve('../lib/index.js')]
-			delete require.cache[require.resolve('../lib/logger.js')]
-			delete require.cache[require.resolve('../lib/loggerproxy.js')]
+			delete require.cache[require.resolve('../lib/index.js')];
+			delete require.cache[require.resolve('../lib/logger.js')];
+			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
 		});
@@ -850,7 +910,7 @@ describe('Library (index.js)', function(){
 		it("#should colorize level accoring to defaults when no parameter is passed", function(){
 			
 			Loggerize.colorizeLevels();
-			logger = Loggerize.getLogger("_anonymous");			
+			let logger = Loggerize.getLogger("_anonymous");			
 			
 			logger.log("error", "Color Coded Log Message");
 			logger.log("warn", 	"Color Coded Log Message");
@@ -862,11 +922,11 @@ describe('Library (index.js)', function(){
 		it("#should colorize level accoring to defined colorMap", function(){
 			
 			var colorMap = {
-				"error": 	"redBright", 
-				"warning": 	"yellowBright", 
-				"info": 	"purpleBright", 
-				"verbose": 	"blueBright", 
-				"debug": 	"greenBright",
+				// "error": 	"redBright", 
+				// "warning": 	"yellowBright", 
+				// "info": 	"purpleBright", 
+				// "verbose": 	"blueBright", 
+				// "debug": 	"greenBright",
 				
 				"error": "red bgcyan", 
 				"warn": ["yellow", "underline", ""], 
@@ -877,7 +937,7 @@ describe('Library (index.js)', function(){
 			};
 			
 			Loggerize.colorizeLevels(colorMap);
-			logger = Loggerize.getLogger("_anonymous");			
+			let logger = Loggerize.getLogger("_anonymous");			
 			
 			logger.log("error", "Color Coded Log Message");
 			logger.log("warn", 	"Color Coded Log Message");
@@ -890,7 +950,7 @@ describe('Library (index.js)', function(){
 		it("#should remove level colors", function(){
 			
 			Loggerize.decolorizeLevels();
-			logger = Loggerize.getLogger("_anonymous");			
+			let logger = Loggerize.getLogger("_anonymous");			
 			
 			logger.log("error", "Color Coded Log Message");
 			logger.log("warn", 	"Color Coded Log Message");

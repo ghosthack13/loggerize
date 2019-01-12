@@ -1,21 +1,17 @@
+"use strict";
+ 
 var assert = require('assert');
-var path = require('path');
 
-var http = require('http');
-var https = require('https');
-
-var parsers = require('../lib/options.js');
-var Logger = require('../lib/logger.js');
 
 describe("Manage Levels", function() {
 	
 	var predefinedLevelMappers = ['npm', 'http', 'syslog', 'python', 'defcon'];
 	
+	let subject;
 	beforeEach(function(){
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
-		Loggerize = require('../lib/index.js');
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
@@ -129,8 +125,8 @@ describe("Manage Levels", function() {
 			"info":  201,
 		};
 		
-		actual = subject.defineLevels.bind(subject, mapper, levelsObj, orderOfSeverity);
-		expected = new Error("Level value must be of type number");
+		let actual = subject.defineLevels.bind(subject, mapper, levelsObj, orderOfSeverity);
+		let expected = new Error("Level value must be of type number");
 		assert.throws(actual, expected);
 	});
 	

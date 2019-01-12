@@ -1,21 +1,14 @@
+"use strict";
+
 var assert = require('assert');
-var path = require('path');
-
-var http = require('http');
-var https = require('https');
-
-var parsers = require('../lib/options.js');
-var Logger = require('../lib/logger.js');
 
 describe("Manage Formatters", function() {
 	
-	
-  
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
-		Loggerize = require('../lib/index.js');
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
@@ -27,8 +20,8 @@ describe("Manage Formatters", function() {
 			"format": "%{timestamp} %{level} '%{message}'"
 		});
 		
-		actual = subject.formatters["myFormatter"];
-		expected = { format: "%{timestamp} %{level} '%{message}'" };
+		let actual = subject.formatters["myFormatter"];
+		let expected = { format: "%{timestamp} %{level} '%{message}'" };
 		assert.deepEqual(actual, expected);
 	});
 	
@@ -42,8 +35,8 @@ describe("Manage Formatters", function() {
 			{"name": "myFormatter3", "format": "%{timestamp} %{level} '%{message}'"}
 		]);
 		
-		actual = Object.keys(subject.formatters).sort();
-		expected = predefinedFormatters.concat(["myFormatter1", "myFormatter2", "myFormatter3"]).sort();
+		let actual = Object.keys(subject.formatters).sort();
+		let expected = predefinedFormatters.concat(["myFormatter1", "myFormatter2", "myFormatter3"]).sort();
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -63,8 +56,8 @@ describe("Manage Formatters", function() {
 		};
 		
 		subject.addFormatter(opts, parentName);
-		actual = subject.formatters["myFormatter"];
-		expected = {
+		let actual = subject.formatters["myFormatter"];
+		let expected = {
 			"timestamp": {"pattern": "%Y-%m"},		//child inherits parent timestamp specification since it didn't have one previously
 			"format": "%{timestamp} '%{message}'"	//child overwrites parent format because it has one defined of its own
 		};
@@ -76,16 +69,16 @@ describe("Manage Formatters", function() {
 		
 		let parentName = "myFormatterParent";
 		let opts = {"name": "myFormatter"};
-		actual = subject.addFormatter.bind(subject, opts, parentName);
-		expected = new Error("'" + parentName + "' is not a valid formatter");
+		let actual = subject.addFormatter.bind(subject, opts, parentName);
+		let expected = new Error("'" + parentName + "' is not a valid formatter");
 		assert.throws(actual, expected);
 	});
 	
 	it("#addFormatter - throws error if parent formatter is not of type 'string'", function(){
 		
 		let opts = {"name": "myFormatter"};
-		actual = subject.addFormatter.bind(subject, opts, ["parents"]);		
-		expected = new TypeError("Parent formatter must be of type 'string'");
+		let actual = subject.addFormatter.bind(subject, opts, ["parents"]);		
+		let expected = new TypeError("Parent formatter must be of type 'string'");
 		assert.throws(actual, expected);
 	});
 	
@@ -98,8 +91,8 @@ describe("Manage Formatters", function() {
 		});
 		
 		subject.removeFormatter();
-		actual = subject.formatters["myFormatter"];		
-		expected = { format: "%{timestamp} %{level} '%{message}'" };
+		let actual = subject.formatters["myFormatter"];		
+		let expected = { format: "%{timestamp} %{level} '%{message}'" };
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -112,8 +105,8 @@ describe("Manage Formatters", function() {
 		});
 		
 		subject.removeFormatter("myFormatter");
-		actual = subject.formatters["myFormatter"];
-		expected = undefined;
+		let actual = subject.formatters["myFormatter"];
+		let expected = undefined;
 		
 		assert.strictEqual(actual, expected);
 	});
@@ -127,11 +120,10 @@ describe("Manage Formatters", function() {
 			{"name": "myFormatter4", "format": "%{timestamp} %{level} '%{message}'"},
 		]);
 		
-		let origFormatterList = Object.keys(subject.formatters);		
 		subject.removeFormatter(["myFormatter2"]);
 		
-		actual = subject.formatters["myFormatter2"];		
-		expected = undefined;
+		let actual = subject.formatters["myFormatter2"];		
+		let expected = undefined;
 		assert.strictEqual(actual, expected);
 	});
 	
@@ -144,11 +136,11 @@ describe("Manage Formatters", function() {
 		});
 		
 		subject.clearFormatters();
-		actual = subject.customTokens;
-		expected = {
+		let actual = subject.customTokens;
+		let expected = {
 			"tag": "%{timestamp}_myCustomToken",
 			"label": "MyLabel: "
-		}
+		};
 		assert.deepEqual(actual, expected);
 	});
 	
@@ -157,7 +149,7 @@ describe("Manage Formatters", function() {
 		let mockLogRecord = {
 			"level": "debug",
 			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 00, 59)
+			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
 		};
 		
 		subject.addTokens({
@@ -181,8 +173,8 @@ describe("Manage Formatters", function() {
 		subject.setHandleOpts({"formatter": "myFormatter"}, "myHandle");
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
-		actual = formattedLogRecord["output"];
-		expected = "%{level} 2020-12 debug MyLabel: 'Sample Log Message' 2020-12_myCustomToken";
+		let actual = formattedLogRecord["output"];
+		let expected = "%{level} 2020-12 debug MyLabel: 'Sample Log Message' 2020-12_myCustomToken";
 		assert.deepEqual(actual, expected);
 	});
 	
@@ -191,7 +183,7 @@ describe("Manage Formatters", function() {
 		let mockLogRecord = {
 			"level": "debug",
 			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 00, 59)
+			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
 		};
 		
 		subject.addFormatter({
@@ -210,8 +202,8 @@ describe("Manage Formatters", function() {
 		});
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
-		actual = formattedLogRecord["output"];
-		expected = "%{level}   'Sample Log Message'";
+		let actual = formattedLogRecord["output"];
+		let expected = "%{level}   'Sample Log Message'";
 		assert.equal(actual, expected);
 	});
 	
@@ -220,7 +212,7 @@ describe("Manage Formatters", function() {
 		let mockLogRecord = {
 			"level": "debug",
 			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 00, 59)
+			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
 		};
 		
 		subject.addFormatter({
@@ -240,8 +232,8 @@ describe("Manage Formatters", function() {
 		});
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
-		actual = formattedLogRecord["output"];
-		expected = "%{level} -- -- 'Sample Log Message'";
+		let actual = formattedLogRecord["output"];
+		let expected = "%{level} -- -- 'Sample Log Message'";
 		assert.equal(actual, expected);
 	});
 	
@@ -250,7 +242,7 @@ describe("Manage Formatters", function() {
 		let mockLogRecord = {
 			"level": "debug",
 			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 00, 59)
+			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
 		};
 		
 		subject.addFormatter({
@@ -271,8 +263,8 @@ describe("Manage Formatters", function() {
 		});
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
-		actual = formattedLogRecord["output"];
-		expected = '{"level":"debug","message":"Sample Log Message"}';
+		let actual = formattedLogRecord["output"];
+		let expected = '{"level":"debug","message":"Sample Log Message"}';
 		assert.equal(actual, expected);
 	});
 	
@@ -281,7 +273,7 @@ describe("Manage Formatters", function() {
 		let mockLogRecord = {
 			"level": "debug",
 			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 00, 59)
+			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
 		};
 		
 		subject.addFormatter({
@@ -302,8 +294,8 @@ describe("Manage Formatters", function() {
 		});
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
-		actual = formattedLogRecord["output"];
-		expected = "%{level} 2020-12 DEBUG 'Sample Log Message'";
+		let actual = formattedLogRecord["output"];
+		let expected = "%{level} 2020-12 DEBUG 'Sample Log Message'";
 		assert.equal(actual, expected);
 	});
 	
@@ -312,7 +304,7 @@ describe("Manage Formatters", function() {
 		let mockLogRecord = {
 			"level": "debug",
 			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 00, 59)
+			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
 		};
 		
 		subject.addFormatter({
@@ -331,8 +323,8 @@ describe("Manage Formatters", function() {
 		});
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
-		actual = formattedLogRecord["output"];
-		expected = "%{LEVEL} 2020-12 DEBUG 'SAMPLE LOG MESSAGE'";
+		let actual = formattedLogRecord["output"];
+		let expected = "%{LEVEL} 2020-12 DEBUG 'SAMPLE LOG MESSAGE'";
 		assert.equal(actual, expected);
 	});
 	
@@ -347,9 +339,9 @@ describe("Manage Formatters", function() {
 		});
 		subject.clearFormatters();
 		
-		actual = Object.keys(subject.formatters).sort();
+		let actual = Object.keys(subject.formatters).sort();
 		
-		expected = predefinedFormatters;
+		let expected = predefinedFormatters;
 		assert.deepEqual(actual, expected);
 	});
 	

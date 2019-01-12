@@ -1,3 +1,5 @@
+"use strict";
+
 var assert = require('assert');
 
 var os = require('os');
@@ -5,7 +7,7 @@ var fs = require('fs');
 var path = require('path');
 
 var http = require('http');
-var https = require('https');
+// var https = require('https');
 
 var url = require("url");
 var querystring= require('querystring');
@@ -53,12 +55,12 @@ describe("Targets (Intergation Test)", function(){
 	
 	var logDir =  path.join(__dirname, "logs" + path.sep);
 	
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
-		Loggerize = require('../lib/index.js');
 	});
 	
 	after(function(){
@@ -108,7 +110,7 @@ describe("Targets (Intergation Test)", function(){
 				//Check
 				let actual = data;
 				let expected = "info File Target Test Line 1" + os.EOL;
-				assert.equal(data, expected);
+				assert.equal(actual, expected);
 				
 				//remove test file after test
 				// fs.unlink(targetPath, function(err){});
@@ -135,9 +137,9 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"] + "_2020_02_28_14_00_00.log");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -196,9 +198,9 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"] + "-2020-Feb.log");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -258,9 +260,9 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, "targets.log.1");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -320,9 +322,9 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, "targets_1_.log");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -464,10 +466,10 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"]);
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -493,7 +495,7 @@ describe("Targets (Intergation Test)", function(){
 			});
 		});
 		
-		fs.stat(targetPath, function(err, stats){
+		fs.stat(targetPath, function(err, stats){ 
 			
 			if (typeof(stats) != "undefined"){
 				fs.unlinkSync(targetPath);
@@ -536,10 +538,10 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"]);
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;

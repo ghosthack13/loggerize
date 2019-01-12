@@ -1,10 +1,13 @@
-var assert = require('assert');
-var path = require("path")
+"use strict";
 
-describe("", function(){
+var assert = require('assert');
+var path = require("path");
+
+describe("Manage Filters", function(){
 	
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/logger.js')]
+		delete require.cache[require.resolve('../lib/logger.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
@@ -63,7 +66,7 @@ describe("", function(){
 	
 	it("#LogFilterFactory should return a LogFilter with a 'filter' method defined as the function passed in 1st argument", function(){
 		
-		let myFilter = function(){return true;}
+		let myFilter = function(){return true;};
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		
 		let actual = logFilter.filter.toString();
@@ -115,7 +118,7 @@ describe("", function(){
 	it("#runFilters should return true when passed a logRecord and array of constructed filters", function(){
 		
 		let mockLogRecord = {"level": "info", "message": "runFilters log test!"};
-		let myFilter = function(){return true;}
+		let myFilter = function(){return true;};
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		let _filters = [logFilter];
 		
@@ -126,8 +129,8 @@ describe("", function(){
 	
 	it("#runFilters should return false when any filter in filter array returns false", function(){
 		
-		let myFilter = function(){return true;}
-		let myFilter2 = function(){return false;}
+		let myFilter = function(){return true;};
+		let myFilter2 = function(){return false;};
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		let logFilter2 = subject.LogFilterFactory.call(subject, myFilter2);
 		
@@ -165,5 +168,5 @@ describe("", function(){
 	});
 	
 	
-})
+});
 

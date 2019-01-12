@@ -1,12 +1,7 @@
+"use strict";
+
 var assert = require('assert');
-var path = require('path');
-
-var http = require('http');
-var https = require('https');
-
-var parsers = require('../lib/options.js');
-var Logger = require('../lib/logger.js');
-
+var path = require("path");
 
 describe("Set Handle Options", function() {
 	
@@ -14,12 +9,13 @@ describe("Set Handle Options", function() {
 		it is require to purge cache on each test to ensure settings brought forward
 		from previous test
 	*/
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
-		Loggerize = require('../lib/index.js');
+		//Loggerize = require('../lib/index.js');
 	});
 	
 	
@@ -31,8 +27,8 @@ describe("Set Handle Options", function() {
 		
 		subject.setHandleOpts.call(subject, {});
 		
-		actual = subject.handles["myHandle"];
-		expected = {
+		let actual = subject.handles["myHandle"];
+		let expected = {
 			active: true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -40,7 +36,7 @@ describe("Set Handle Options", function() {
 			formatter: 'default'
 		};
 		
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleOpts - should change specified handle options when handle named specified in 2nd parameter", function() {
@@ -52,8 +48,8 @@ describe("Set Handle Options", function() {
 			"fileName": "test.logy",
 		}, "myHandle");
 		
-		actual = subject.handles["myHandle"];
-		expected =  { 
+		let actual = subject.handles["myHandle"];
+		let expected =  { 
 			active: true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -64,7 +60,7 @@ describe("Set Handle Options", function() {
 			fileExtension: '.logy'
 		};
 		
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleOpts - Should alter handle options when named passed inside handle's options", function() {
@@ -80,8 +76,8 @@ describe("Set Handle Options", function() {
 			"fileName": "test.logy",
 		});
 		
-		actual = subject.handles["myHandle"];
-		expected =  { 
+		let actual = subject.handles["myHandle"];
+		let expected =  { 
 			active: true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -92,7 +88,7 @@ describe("Set Handle Options", function() {
 			fileExtension: '.logy'
 		};
 		
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it.skip("#setHandleOpts - Change anonymous' handle options (i.e. no other handles were added)", function() {
@@ -103,12 +99,12 @@ describe("Set Handle Options", function() {
 			"fileName": "test.logy",
 		});
 		// console.log(subject.handles);
-		actual = subject.handles;
-		expected =  { 
+		let actual = subject.handles;
+		let expected =  { 
 			"default": {
 				active: false,
 				levelMapper: subject.levelMapper,
-			level: subject.level,
+				level: subject.level,
 				target: 'console',
 				formatter: 'default'
 			},
@@ -118,13 +114,13 @@ describe("Set Handle Options", function() {
 				fileName: 'test',
 				active: true,
 				levelMapper: subject.levelMapper,
-			level: subject.level,
+				level: subject.level,
 				formatter: 'default',
 				fileExtension: '.logy'
 			} 
 		};
 		
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleOpts - Should change multiple handle' options when given array of handle names", function() {
@@ -150,7 +146,7 @@ describe("Set Handle Options", function() {
 			directory: '/home/daniel/playground/javascript/logger/',
 			fileName: 'test',
 			fileExtension: '.logy'
-		}
+		};
 		let expected2 = {
 			active: true,
 			levelMapper: subject.levelMapper,
@@ -160,7 +156,7 @@ describe("Set Handle Options", function() {
 			directory: '/home/daniel/playground/javascript/logger/',
 			fileName: 'test',
 			fileExtension: '.logy' 
-		}
+		};
 		
 		assert.deepEqual(subject.handles["myHandle1"], expected1);
 		assert.deepEqual(subject.handles["myHandle2"], expected2);
@@ -180,8 +176,8 @@ describe("Set Handle Options", function() {
 			"fileName": "test.logy",
 		});
 		
-		actual = subject.setHandleOpts.bind(subject, opts);
-		expected = new Error('Desired handle to change is ambiguous. Specify the handle(s) to change in the second argument');
+		let actual = subject.setHandleOpts.bind(subject, opts);
+		let expected = new Error('Desired handle to change is ambiguous. Specify the handle(s) to change in the second argument');
 		assert.throws(actual, expected);
 	});
 	
@@ -194,12 +190,13 @@ describe("Set Formatter Options", function() {
 		it is require to purge cache on each test to ensure settings brought forward
 		from previous test
 	*/
+	
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
-		Loggerize = require('../lib/index.js');
 	});
 	
 	
@@ -213,9 +210,9 @@ describe("Set Formatter Options", function() {
 		let origFormatters = JSON.parse(JSON.stringify(subject.formatters));
 		subject.setFormatterOpts({}, "myFormatter");
 		
-		actual = subject.formatters;
-		expected = origFormatters;
-		assert.deepEqual(actual, expected)
+		let actual = subject.formatters;
+		let expected = origFormatters;
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setFormatterOpts - should add a timestamp token mutator to the named formatter when named passed as 2nd argument", function() {
@@ -229,12 +226,12 @@ describe("Set Formatter Options", function() {
 			"timestamp": {"pattern": "%Y-%b"}
 		}, "myFormatter");
 		
-		actual = subject.formatters["myFormatter"];
-		expected = { 
+		let actual = subject.formatters["myFormatter"];
+		let expected = { 
 			"format": '%{timestamp} %{level} %{message}',
 			"timestamp": { pattern: '%Y-%b' } 
 		};
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setFormatterOpts - Should alter formatter options when named passed inside formatter's options", function() {
@@ -249,12 +246,12 @@ describe("Set Formatter Options", function() {
 			"timestamp": {"pattern": "%Y-%b"}
 		});
 		
-		actual = subject.formatters["myFormatter"];
-		expected = { 
+		let actual = subject.formatters["myFormatter"];
+		let expected = { 
 			"format": '%{timestamp} %{level} %{message}',
 			"timestamp": { pattern: '%Y-%b' } 
 		};
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setFormatterOpts - Should change multiple formatters' options when given array of formatter names", function() {
@@ -286,8 +283,8 @@ describe("Set Formatter Options", function() {
 			"fileName": "test.logy",
 		});
 		
-		actual = subject.setFormatterOpts.bind(subject, opts);
-		expected = new Error('Please specify the name of the formatter you will like to set options on');
+		let actual = subject.setFormatterOpts.bind(subject, opts);
+		let expected = new Error('Please specify the name of the formatter you will like to set options on');
 		assert.throws(actual, expected);
 	});
 	
@@ -299,36 +296,36 @@ describe("Validate Handle Options", function() {
 		it is require to purge cache on each test to ensure settings brought forward
 		from previous test
 	*/
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
-		Loggerize = require('../lib/index.js');
 	});
 	
 	
 	it("#validateHandleOpts - throws error when handle is not of type object", function(){
 		let opts = 32;
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error('Handle must be of type object in the form --> {name: handleName, "handleProperty1": "value1", "handleProperty2": "value2"}');
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error('Handle must be of type object in the form --> {name: handleName, "handleProperty1": "value1", "handleProperty2": "value2"}');
 		assert.throws(actual, expected);
 	});
 	
 	it("#validateHandleOpts - throws error if handle doesn not have a 'name' option defined", function(){
 		let opts = {};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("Handle must have a 'name' option defined");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Handle must have a 'name' option defined");
 		assert.throws(actual, expected);
 	});
 	
 	it("#validateHandleOpts - throws error if a trying to alter options of default handle", function(){
 		let opts = {"name": "default", "target": "file"};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("Cannot alter properties of 'default' handler");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Cannot alter properties of 'default' handler");
 		assert.throws(actual, expected);
 	});
 	
@@ -340,8 +337,8 @@ describe("Validate Handle Options", function() {
 			"maxsize": "123456789",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = Error;
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = Error;
 		assert.throws(actual, expected);
 	});
 	
@@ -351,8 +348,8 @@ describe("Validate Handle Options", function() {
 			"name": {"handleName": "myHandle"}
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = Error;
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = Error;
 		assert.throws(actual, expected);
 	});
 	
@@ -363,8 +360,8 @@ describe("Validate Handle Options", function() {
 			"active": "truth",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new TypeError("Expected 'active' option to be of type 'Boolean' or type 'Number'");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new TypeError("Expected 'active' option to be of type 'Boolean' or type 'Number'");
 		assert.throws(actual, expected);
 	});
 	
@@ -375,8 +372,8 @@ describe("Validate Handle Options", function() {
 			"level": "errors",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new TypeError("'errors' is not a valid log level.\nUse a custom or predefined level mapping value.");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new TypeError("'errors' is not a valid log level.\nUse a custom or predefined level mapping value.");
 		assert.throws(actual, expected);
 	});
 	
@@ -387,8 +384,8 @@ describe("Validate Handle Options", function() {
 			"formatter": "myFormatter",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("Formatter '" + opts["formatter"] + "' is not defined");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Formatter '" + opts["formatter"] + "' is not defined");
 		assert.throws(actual, expected);
 	});
 	
@@ -399,8 +396,8 @@ describe("Validate Handle Options", function() {
 			"formatter": 21,
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("Formatter must be a named formatter of type 'string' or defined on the fly via an 'object' definition.");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Formatter must be a named formatter of type 'string' or defined on the fly via an 'object' definition.");
 		assert.throws(actual, expected);
 	});
 	
@@ -411,8 +408,8 @@ describe("Validate Handle Options", function() {
 			"path": [],
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new TypeError("Expected path option to be of type 'string'");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new TypeError("Expected path option to be of type 'string'");
 		assert.throws(actual, expected);
 	});
 	
@@ -423,8 +420,8 @@ describe("Validate Handle Options", function() {
 			"path": "./logs",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = Error;
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = Error;
 		assert.throws(actual, expected);
 	});
 	
@@ -437,8 +434,8 @@ describe("Validate Handle Options", function() {
 			"fileNamePattern": "%{fileName}-%Y-%b% {fileExtension}",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("The option 'fileNamePattern' cannot contain spaces/blanks");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("The option 'fileNamePattern' cannot contain spaces/blanks");
 		assert.throws(actual, expected);
 	});
 	
@@ -451,8 +448,8 @@ describe("Validate Handle Options", function() {
 			"fileExtension": .123,
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new TypeError("fileExtension must be of type 'string'");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new TypeError("fileExtension must be of type 'string'");
 		assert.throws(actual, expected);
 	});
 	
@@ -463,8 +460,8 @@ describe("Validate Handle Options", function() {
 			"target": "rotatingFiles",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("'rotatingFiles' is not a valid target");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("'rotatingFiles' is not a valid target");
 		assert.throws(actual, expected);
 	});
 	
@@ -476,8 +473,8 @@ describe("Validate Handle Options", function() {
 			"rotationType": "periodic",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("Invalid rotation type: 'periodic'");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Invalid rotation type: 'periodic'");
 		assert.throws(actual, expected);
 	});
 	
@@ -490,8 +487,8 @@ describe("Validate Handle Options", function() {
 			"interval": "daily",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("Invalid rotation interval: '" + opts["interval"] + "'");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Invalid rotation interval: '" + opts["interval"] + "'");
 		assert.throws(actual, expected);
 	});
 	
@@ -505,8 +502,8 @@ describe("Validate Handle Options", function() {
 			"rotateDay": "Tues" // 'Tue' is valid
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("Invalid rotation day: '" + opts["rotateDay"] + "'");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Invalid rotation day: '" + opts["rotateDay"] + "'");
 		assert.throws(actual, expected);
 	});
 	
@@ -518,12 +515,12 @@ describe("Validate Handle Options", function() {
 			"filter": {},
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
+		let actual = subject.validateHandleOpts.bind(subject, opts);
 		let err = new TypeError(
 			"Expected filter of type 'function' or of type 'string' or an array of string types\n" + 
 			"Instead received type: " + typeof(opts["filter"])
 		);
-		expected = err
+		let expected = err;
 		assert.throws(actual, expected);
 	});
 	
@@ -535,8 +532,8 @@ describe("Validate Handle Options", function() {
 			"filter": "someRandomFilter",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
-		expected = new Error("The filter '" + opts["filter"] + "' has not been defined!");
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("The filter '" + opts["filter"] + "' has not been defined!");
 		assert.throws(actual, expected);
 	});
 	
@@ -545,7 +542,7 @@ describe("Validate Handle Options", function() {
 		
 		subject.addFilter({
 			"name": "myFilter",
-			"filter": function(logRecord){
+			"filter": function(logRecord){ // eslint-disable-line no-unused-vars
 				return false;
 			}
 		});
@@ -556,7 +553,7 @@ describe("Validate Handle Options", function() {
 			"filter": "myFilter",
 		};
 		
-		actual = subject.validateHandleOpts.bind(subject, opts);
+		let actual = subject.validateHandleOpts.bind(subject, opts);
 		assert.doesNotThrow(actual);
 	});
 	
@@ -568,12 +565,12 @@ describe("Validate Formatter Options", function() {
 		it is require to purge cache on each test to ensure settings brought forward
 		from previous test
 	*/
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
-		Loggerize = require('../lib/index.js');
 	});
 	
 	
@@ -581,48 +578,48 @@ describe("Validate Formatter Options", function() {
 		
 		let opts = 32;
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new Error('formatter must be of type object in the form --> {name: formatterName, "formatterProperty1": "value1", "formatterProperty2": "value2"}');
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new Error('formatter must be of type object in the form --> {name: formatterName, "formatterProperty1": "value1", "formatterProperty2": "value2"}');
 		assert.throws(actual, expected);
 	});
 	
 	it("#validateFormatterOpts - should throw error if formatter doesn not have a 'name' option defined", function(){
 		let opts = {};
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new Error("The formatter must have a 'name' option defined");
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new Error("The formatter must have a 'name' option defined");
 		assert.throws(actual, expected);
 	});
 	
 	it("#validateFormatterOpts - should throw error if formatter's name is not of type string", function(){
 		let opts = {"name": 32};
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new TypeError("formatter name must be of type 'string'");
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new TypeError("formatter name must be of type 'string'");
 		assert.throws(actual, expected);
 	});
 	
 	it("#validateFormatterOpts - should throw error if a trying to alter options of default formatter", function(){
 		let opts = {"name": "default", "format": "%{message}"};
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new Error('The default formatter is internally defined and CANNOT be altered');
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new Error('The default formatter is internally defined and CANNOT be altered');
 		assert.throws(actual, expected);
 	});
 	
 	it("#validateFormatterOpts - should throw error if format field is not of type string", function(){
 		let opts = {"name": "myFormatter", "format": {}};
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new TypeError("Format must be of type 'string'");
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new TypeError("Format must be of type 'string'");
 		assert.throws(actual, expected);
 	});
 	
 	it("#validateFormatterOpts - should throw error if json is requested without specifying fields", function(){
 		let opts = {"name": "myFormatter", "json": true};
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new TypeError(
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new TypeError(
 			"When using JSON format, a list of desired fields must be stated in the formatter's fields property. " +
 			"\nE.g. {name: formatterName, 'json': true, fields: [timestamp, level, message]"
 		);
@@ -632,8 +629,8 @@ describe("Validate Formatter Options", function() {
 	it("#validateFormatterOpts - should throw error if transformer is neither function nor string", function(){
 		let opts = {"name": "myFormatter", "transformer": true};
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new TypeError(
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new TypeError(
 			"Expected transformer to be of type 'function' or type 'string' or array of string types\n" + 
 			"Instead received type: " + typeof(opts["transformer"])
 		);
@@ -645,8 +642,8 @@ describe("Validate Formatter Options", function() {
 		let transformer = "myTransformer";
 		let opts = {"name": "myFormatter", "transformer": transformer};
 		
-		actual = subject.validateFormatterOpts.bind(subject, opts);
-		expected = new Error("The transformer '" + transformer + "' has not been defined!");
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new Error("The transformer '" + transformer + "' has not been defined!");
 		assert.throws(actual, expected);
 	});
 	
@@ -658,12 +655,12 @@ describe("Set Default Handle Options", function() {
 		it is require to purge cache on each test to ensure settings brought forward
 		from previous test
 	*/
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
-		Loggerize = require('../lib/index.js');
 	});
 	
 	
@@ -672,8 +669,8 @@ describe("Set Default Handle Options", function() {
 		let opts = {};			
 		subject.setHandleDefaults(opts);
 		
-		actual = opts;
-		expected = {
+		let actual = opts;
+		let expected = {
 			active: true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -681,7 +678,7 @@ describe("Set Default Handle Options", function() {
 			formatter: 'default',
 		};
 		
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleDefaults - should set default directory, fileName and extension when 'file' target is set", function() {
@@ -689,8 +686,8 @@ describe("Set Default Handle Options", function() {
 		let opts = {"name": "myHandle", "target": 'file'};			
 		subject.setHandleDefaults(opts);
 		
-		actual = opts;
-		expected = {
+		let actual = opts;
+		let expected = {
 			"active": true,
 			"levelMapper": subject.levelMapper,
 			"level": subject.level,
@@ -701,7 +698,7 @@ describe("Set Default Handle Options", function() {
 			"fileName": 'runnable',
 			"fileExtension": '.log',
 		};
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleDefaults - should default to 'file' target when 'path' is defined", function() {
@@ -712,8 +709,8 @@ describe("Set Default Handle Options", function() {
 		};			
 		subject.setHandleDefaults(opts);
 		
-		actual = opts;
-		expected = {
+		let actual = opts;
+		let expected = {
 			"active": true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -725,7 +722,7 @@ describe("Set Default Handle Options", function() {
 			"fileName": 'testfile',
 			"fileExtension": '.logy',
 		};
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleDefaults - should default to interval when 'rotatingFile' is set without a 'rotationType'", function() {
@@ -736,8 +733,8 @@ describe("Set Default Handle Options", function() {
 		};			
 		subject.setHandleDefaults(opts);
 		
-		actual = opts;
-		expected = {
+		let actual = opts;
+		let expected = {
 			"active": true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -752,7 +749,7 @@ describe("Set Default Handle Options", function() {
 			"fileName": "runnable",
 			"fileExtension": '.log',
 		};
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleDefaults - should default to a rotateDay of 'sunday' when rotating on week interval", function() {
@@ -764,8 +761,8 @@ describe("Set Default Handle Options", function() {
 		};			
 		subject.setHandleDefaults(opts);
 		
-		actual = opts;
-		expected = {
+		let actual = opts;
+		let expected = {
 			"active": true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -781,7 +778,7 @@ describe("Set Default Handle Options", function() {
 			"fileName": "runnable",
 			"fileExtension": '.log',
 		};
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleDefaults - should default maxFiles to Infinity when rotating file by size", function() {
@@ -793,8 +790,8 @@ describe("Set Default Handle Options", function() {
 		};			
 		subject.setHandleDefaults(opts);
 		
-		actual = opts;
-		expected = {
+		let actual = opts;
+		let expected = {
 			"active": true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
@@ -810,7 +807,7 @@ describe("Set Default Handle Options", function() {
 			"fileName": "runnable",
 			"fileExtension": '.log',
 		};
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleDefaults - should default method to get and port to 80 when given a url under the http target", function() {
@@ -822,13 +819,12 @@ describe("Set Default Handle Options", function() {
 		};
 		
 		subject.setHandleDefaults(opts);
-		delete opts["connection"]; //remove connection which stores node's http or https module
 		
-		actual = opts;
-		expected = {
+		let actual = opts;
+		let expected = {
 			"active": true,
-			levelMapper: subject.levelMapper,
-			level: subject.level,
+			"levelMapper": subject.levelMapper,
+			"level": subject.level,
 			"name": "myHandle",
 			"target": 'http',
 			"formatter": 'default',
@@ -843,7 +839,7 @@ describe("Set Default Handle Options", function() {
 			"url": "https://example.com/test?apikey=1234567890",
 		};
 		
-		assert.deepEqual(actual, expected)
+		assert.deepEqual(actual, expected);
 	});
 	
 	it("#setHandleDefaults - should throw error when rotationType is ambiguous", function() {
@@ -855,8 +851,8 @@ describe("Set Default Handle Options", function() {
 			"maxSize": "123456789",
 		};
 		
-		actual = subject.setHandleDefaults.bind(subject, opts);
-		expected = Error;
+		let actual = subject.setHandleDefaults.bind(subject, opts);
+		let expected = Error;
 		
 		assert.throws(actual, expected);
 	});
