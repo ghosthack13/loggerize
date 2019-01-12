@@ -194,9 +194,8 @@ describe('LoggerProxy', function() {
 		
 		let logger = Loggerize.getLogger("myLogger");
 		logger.attachFilter("regex", {"onMatch": "deny"});
-		logger.attachFilter("burst", {"rate": 10.0, "maxBurst": 100});
 		
-		logger.detachFilter(["regex", "burst"]);
+		logger.detachFilter(["regex"]);
 		
 		let actual = logger;
 		let expected = {

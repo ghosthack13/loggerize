@@ -8,7 +8,10 @@ describe("", function(){
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
-	var predefinedFilters = ["burst", "dynamicLevel", "level", "regex"];
+	var predefinedFilters = [
+		//"burst", "dynamicLevel", "level", 
+		"regex"
+	];
 	
 	it("#loadFilters should import the filters contained in the filters folder", function(){
 		
