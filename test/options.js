@@ -507,20 +507,16 @@ describe("Validate Handle Options", function() {
 		assert.throws(actual, expected);
 	});
 	
-	it("#validateHandleOpts - Throw Error if filter is of an invalid type", function(){
+	it("#validateHandleOpts - Throw Error if filter object is invalid", function(){
 		
 		let opts = {
 			"name": "myHandle",
 			"target": "console",
-			"filter": {},
+			"filter": {"fakeFilter": {"dummyOpts": "dummyVal"}},
 		};
 		
 		let actual = subject.validateHandleOpts.bind(subject, opts);
-		let err = new TypeError(
-			"Expected filter of type 'function' or of type 'string' or an array of string types\n" + 
-			"Instead received type: " + typeof(opts["filter"])
-		);
-		let expected = err;
+		let expected = new Error("The filter 'fakeFilter' has not been defined!");
 		assert.throws(actual, expected);
 	});
 	
