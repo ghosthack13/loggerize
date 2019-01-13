@@ -690,8 +690,8 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'file',
 			"formatter": 'default',
-			"directory": './logs/',
-			"fileName": 'runnable',
+			"directory": process.cwd() + '/logs/',
+			"fileName": 'options',
 			"fileExtension": '.log',
 		};
 		assert.deepEqual(actual, expected);
@@ -741,8 +741,8 @@ describe("Set Default Handle Options", function() {
 			"rotationType": "interval",
 			"interval": 'day',
 			
-			"directory": './logs/',
-			"fileName": "runnable",
+			"directory": process.cwd() + '/logs/',
+			"fileName": 'options',
 			"fileExtension": '.log',
 		};
 		assert.deepEqual(actual, expected);
@@ -770,8 +770,8 @@ describe("Set Default Handle Options", function() {
 			"interval": 'week',
 			"rotateDay": "sunday",
 			
-			"directory": './logs/',
-			"fileName": "runnable",
+			"directory": process.cwd() + '/logs/',
+			"fileName": 'options',
 			"fileExtension": '.log',
 		};
 		assert.deepEqual(actual, expected);
@@ -799,8 +799,8 @@ describe("Set Default Handle Options", function() {
 			"maxSize": 123456789,
 			"rotationType": "size",
 			
-			"directory": './logs/',
-			"fileName": "runnable",
+			"directory": process.cwd() + '/logs/',
+			"fileName": 'options',
 			"fileExtension": '.log',
 		};
 		assert.deepEqual(actual, expected);
@@ -811,7 +811,7 @@ describe("Set Default Handle Options", function() {
 		let opts = {
 			"name": "myHandle", 
 			"target": 'http',
-			"url": "https://example.com/test?apikey=1234567890",
+			"url": "http://example.com/test?apikey=1234567890",
 		};
 		
 		subject.setHandleDefaults(opts);
@@ -831,6 +831,106 @@ describe("Set Default Handle Options", function() {
 			"host": "example.com",
 			"port": 80,
 			"headers": {"User-Agent": "Remote Logger"},
+			
+			"url": "http://example.com/test?apikey=1234567890",
+		};
+		
+		assert.deepEqual(actual, expected);
+	});
+	
+	it("#setHandleDefaults - should overide port defined in URL when port defined on handle", function() {
+		
+		let opts = {
+			"name": "myHandle", 
+			"target": 'http',
+			"url": "http://example.com:80/test?apikey=1234567890",
+			"port": 3000,
+		};
+		
+		subject.setHandleDefaults(opts);
+		
+		let actual = opts;
+		let expected = {
+			"active": true,
+			"levelMapper": subject.levelMapper,
+			"level": subject.level,
+			"name": "myHandle",
+			"target": 'http',
+			"formatter": 'default',
+			
+			"keepAlive": true,
+			"path": "/test?apikey=1234567890",
+			"method": "GET",
+			"host": "example.com",
+			"port": 3000,
+			"headers": {"User-Agent": "Remote Logger"},
+			
+			"url": "http://example.com:80/test?apikey=1234567890",
+		};
+		
+		assert.deepEqual(actual, expected);
+	});
+	
+	it("#setHandleDefaults - should overide default user agent when header with user agent defined on handle", function() {
+		
+		let opts = {
+			"name": "myHandle", 
+			"target": 'http',
+			"url": "http://example.com:80/test?apikey=1234567890",
+			"port": 3000,
+			"headers": {"User-Agent": "myAgent"}
+		};
+		
+		subject.setHandleDefaults(opts);
+		
+		let actual = opts;
+		let expected = {
+			"active": true,
+			"levelMapper": subject.levelMapper,
+			"level": subject.level,
+			"name": "myHandle",
+			"target": 'http',
+			"formatter": 'default',
+			
+			"keepAlive": true,
+			"path": "/test?apikey=1234567890",
+			"method": "GET",
+			"host": "example.com",
+			"port": 3000,
+			"headers": {"User-Agent": "myAgent"},
+			
+			"url": "http://example.com:80/test?apikey=1234567890",
+		};
+		
+		assert.deepEqual(actual, expected);
+	});
+	
+	it("#setHandleDefaults - should deduce port from protocol when no port is given", function() {
+		
+		let opts = {
+			"name": "myHandle", 
+			"target": 'http',
+			"url": "https://example.com/test?apikey=1234567890",
+			"headers": {"User-Agent": "myAgent"}
+		};
+		
+		subject.setHandleDefaults(opts);
+		
+		let actual = opts;
+		let expected = {
+			"active": true,
+			"levelMapper": subject.levelMapper,
+			"level": subject.level,
+			"name": "myHandle",
+			"target": 'http',
+			"formatter": 'default',
+			
+			"keepAlive": true,
+			"path": "/test?apikey=1234567890",
+			"method": "GET",
+			"host": "example.com",
+			"port": 443,
+			"headers": {"User-Agent": "myAgent"},
 			
 			"url": "https://example.com/test?apikey=1234567890",
 		};
