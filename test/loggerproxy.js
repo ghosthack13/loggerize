@@ -1089,7 +1089,7 @@ describe('LoggerProxy', function() {
 		
 	});
 	
-	it("#error() should log and string interpolate/merge message at error level under the npm level mapper when passed four strings", function(){
+	it("#error() should log message at error level under the npm level mapper when passed single object", function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
