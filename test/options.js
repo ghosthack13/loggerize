@@ -827,7 +827,7 @@ describe("Set Default Handle Options", function() {
 			
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
-			"method": "GET",
+			"method": "POST",
 			"host": "example.com",
 			"port": 80,
 			"headers": {"User-Agent": "Remote Logger"},
@@ -860,7 +860,7 @@ describe("Set Default Handle Options", function() {
 			
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
-			"method": "GET",
+			"method": "POST",
 			"host": "example.com",
 			"port": 3000,
 			"headers": {"User-Agent": "Remote Logger"},
@@ -894,7 +894,7 @@ describe("Set Default Handle Options", function() {
 			
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
-			"method": "GET",
+			"method": "POST",
 			"host": "example.com",
 			"port": 3000,
 			"headers": {"User-Agent": "myAgent"},
@@ -927,7 +927,7 @@ describe("Set Default Handle Options", function() {
 			
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
-			"method": "GET",
+			"method": "POST",
 			"host": "example.com",
 			"port": 443,
 			"headers": {"User-Agent": "myAgent"},
