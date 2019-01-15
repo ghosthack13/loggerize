@@ -313,7 +313,7 @@ describe("Manage Formatters", function() {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"transformer": function(mockLogRecord){ return mockLogRecord["output"].toUpperCase(); },
+			"transformer": function(input){ return input.toUpperCase(); },
 			"format": "%%{level} %{timestamp} %{level} '%{message}'"
 		});
 		
