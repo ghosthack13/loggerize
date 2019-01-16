@@ -507,6 +507,32 @@ describe("Validate Handle Options", function() {
 		assert.throws(actual, expected);
 	});
 	
+	it("#validateHandleOpts - Throw Error if protocol is http when allowInsecure is not true", function(){
+		
+		let opts = {
+			"name": "myHandle",
+			"target": "http",
+			"url": "http://example.com/",
+		};
+		
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		let expected = new Error("Designated URL is not an HTTPS resource. Use the option 'allowInsecure' to permit unencrypted HTTP requests");
+		assert.throws(actual, expected);
+	});
+	
+	it.only("#validateHandleOpts - Does not Throw Error when valid filter added", function(){
+		
+		let opts = {
+			"name": "myHandle",
+			"target": "http",
+			"url": "http://example.com/",
+			"allowInsecure": true,
+		};
+		
+		let actual = subject.validateHandleOpts.bind(subject, opts);
+		assert.doesNotThrow(actual);
+	});
+	
 	it("#validateHandleOpts - Throw Error if filter object is invalid", function(){
 		
 		let opts = {
