@@ -178,35 +178,6 @@ describe("Manage Formatters", function() {
 		assert.deepEqual(actual, expected);
 	});
 	
-	it("#format - Limit Log Record to specified fields", function() {
-		
-		let mockLogRecord = {
-			"level": "debug",
-			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
-		};
-		
-		subject.addFormatter({
-			"name": "myFormatter",
-			"fields": ["message"],
-			"timestamp": {
-				"pattern": "%Y-%m",
-				// "pattern": "ISO"
-			},
-			"format": "%%{level} %{timestamp} %{level} '%{message}'"
-		});
-		
-		subject.addHandle({
-			"name": "myHandle",
-			"formatter": "myFormatter"
-		});
-		
-		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
-		let actual = formattedLogRecord["output"];
-		let expected = "%{level}   'Sample Log Message'";
-		assert.equal(actual, expected);
-	});
-	
 	it("#format - Set default substitution for missing tokens (program default is \"\", empty string)", function() {
 		
 		let mockLogRecord = {
@@ -223,7 +194,7 @@ describe("Manage Formatters", function() {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"format": "%%{level} %{timestamp} %{level} '%{message}'"
+			"format": "%%{level} %{datetime} %{severity} '%{message}'"
 		});
 		
 		subject.addHandle({
@@ -254,7 +225,7 @@ describe("Manage Formatters", function() {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"format": "%%{level} %{timestamp} %{level} '%{message}'"
+			"format": "%%{level} %{datetime} %{level} '%{message}'"
 		});
 		
 		subject.addHandle({
