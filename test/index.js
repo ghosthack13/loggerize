@@ -227,17 +227,22 @@ describe('Library (index.js)', function(){
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
 		
-		it('should create a middleware logger named after string parameter', function(){
+		it.only('should create a middleware logger named after string parameter', function(){
 			
-			let logger = Loggerize.createMiddleware("myMiddleware");
-			delete logger.getMiddleware; //Function to complicated and dynamic to assert
+			let logger = Loggerize.createHTTPLogger({"name": "myMiddleware", "isMiddleware": true});
+			
+			//Ensure middleware logger was added to handles
+			assert.strictEqual(Array.isArray(logger.handles), logger.handles.length == 1);
+			delete logger.handles;
+			
+			delete logger.httpListener; //Function to complicated and dynamic to assert
 			
 			let actual = logger;
 			let expected = {
 				name: 'myMiddleware',
 				propogate: false,
 				isMuted: false,
-				handles: [ 'netMiddleware' ],
+				// handles: [ 'netMiddleware' ],
 				hasHandles: true,
 				filters: [],
 				logOnRequest: false,
@@ -261,7 +266,7 @@ describe('Library (index.js)', function(){
 				}
 			};
 			let logger = Loggerize.createMiddleware(opts);
-			delete logger.getMiddleware; //Function to complicated and dynamic to assert
+			delete logger.httpListener; //Function to complicated and dynamic to assert
 			
 			let actual = logger;
 			let expected = {
@@ -287,7 +292,7 @@ describe('Library (index.js)', function(){
 				"levelMapper": 'python'
 			};
 			let logger = Loggerize.createMiddleware(opts);
-			delete logger.getMiddleware; //Function to complicated and dynamic to assert
+			delete logger.httpListener; //Function to complicated and dynamic to assert
 			
 			let actual = logger;
 			let expected = {

@@ -520,7 +520,7 @@ describe("Validate Handle Options", function() {
 		assert.throws(actual, expected);
 	});
 	
-	it.only("#validateHandleOpts - Does not Throw Error when valid filter added", function(){
+	it("#validateHandleOpts - Does not Throw Error when valid filter added", function(){
 		
 		let opts = {
 			"name": "myHandle",
