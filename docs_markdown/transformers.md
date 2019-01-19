@@ -29,7 +29,9 @@ Transformers can also
 
 "transformer": function(input){ return input.substring(0, 10); },
 
+**NOTE** Transformers only run on text output, hence it does not run on JSON.
 
+Transformers applied to the whole output string (not individual tokens) that affect case
 
 
 
