@@ -1,6 +1,17 @@
 var Loggerize = require("../lib/index.js");
 
-let logger = Loggerize.createLogger({name: "myLogger"});
+let logger = Loggerize.createLogger({
+	name: "myLogger",
+	handle: {
+		name: "myHandle",
+		formatter: {
+			name: "myFormatter",
+			style: "cyan",
+			// format: "%{level} %{message}"
+			format: "%{timestamp} %{level} %{message}"
+		}
+	},
+});
 
 var colorMap = {
 	"error": 	"redBright", 
