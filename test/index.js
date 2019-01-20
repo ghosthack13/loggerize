@@ -227,7 +227,7 @@ describe('Library (index.js)', function(){
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
 		
-		it.only('should create a middleware logger named after string parameter', function(){
+		it('should create a middleware logger named after string parameter', function(){
 			
 			let logger = Loggerize.createHTTPLogger({"name": "myMiddleware", "isMiddleware": true});
 			
