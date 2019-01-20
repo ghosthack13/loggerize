@@ -214,10 +214,8 @@ Font styles:
 Font Colors: 
 > `black, red, green, yellow, blue, magenta, cyan, white`
 
-
 Font Colors (Bright):
-> `gray ("bright black"), redBright, greenBright, yellowBright, blueBright, magentaBright, cyanBright, whiteBright`
-
+> `gray/grey ("brightblack"), redBright, greenBright, yellowBright, blueBright, magentaBright, cyanBright, whiteBright`
 
 Background colors: 
 >`bgBlack, bgRed, bgGreen, bgYellow, bgBlue, bgMagenta, bgCyan, bgWhite`

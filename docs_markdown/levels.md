@@ -34,6 +34,8 @@ To set an alternative logging level Mapping for your program such as `python` fo
 This should be done before setting any other options because Loggerize will not alter levelMappers already defined on loggers and handles.
 Additionally you can define your own levelMapper with associated logging levels as explained in the [advance](#) section.
 
+In order to log an event, the logger in question must have a `levelMapper`. 
+
 ### Using Logging Levels
 
 Logging levels indicate the minimum severity that will cause the logger to output a log message.

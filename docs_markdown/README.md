@@ -14,14 +14,13 @@ enough satisfy even the most demanding and experienced coder.
 - No third party dependencies to cause untraceable bugs
 - Hundreds of unit/integration test for stability
 - Extensive documentation with dozens of bespoke exmples
-- Semanticly named and strictly validated configurations
 - Simple to memorize configurations defined as plain text strings instead of complicated 
   multilevel class methods
 - Easily extends functionally with nothing more than anonymous functions or JavaScript objects
 - Advance state aware filters
 - Custom log levels and level colors
 - Text string and JSON log output formats
-- Fully supports heirarchial logger names and ancestors
+- Heirarchial logger names and ancestor traversal
 
 ## Installation
 
@@ -32,6 +31,10 @@ enough satisfy even the most demanding and experienced coder.
 `npm test`
 
 /path/to/bin/mocha
+
+## Table of Contents
+
+
 
 ## Versioning
 
