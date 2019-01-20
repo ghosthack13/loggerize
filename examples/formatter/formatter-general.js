@@ -1,4 +1,4 @@
-var Loggerize = require("../lib/index.js");
+var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -6,6 +6,7 @@ let logger = Loggerize.createLogger({
 		name: "myHandle", 
 		formatter: {
 			name: "myFormatter",
+			style: "inverse",
 			format: "loggerName: %{loggerName} | levelNum: %{levelNum} | uuid: %{uuid} | timestamp: %{timestamp}",
 		},
 	}

@@ -3,7 +3,7 @@ var http = require('http');
 var https = require('https');
 var querystring= require('querystring');
 
-var Loggerize = require('../lib/index.js');
+var Loggerize = require('../../lib/index.js');
 
 // var myReqListener = Loggerize.createHTTPLogger("myReqListenerBoy");
 var myReqListener = Loggerize.createHTTPLogger({
