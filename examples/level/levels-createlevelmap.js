@@ -1,4 +1,4 @@
-var Loggerize = require("../lib/index.js");
+var Loggerize = require("../../lib/index.js");
 
 //level config object
 let levelMap = {
@@ -10,8 +10,8 @@ let levelMap = {
 };
 
 //Define level Mapper called 'apocalypse' based on level config
-Loggerize.defineLevels("apocalypse", levelMap, "desc");
-Loggerize.setLevelMap("apocalypse");
+Loggerize.createLevelMap("apocalypse", levelMap, "desc");
+Loggerize.setLevelMapper("apocalypse");
 
 let logger = Loggerize.createLogger({
 	"name": "myLogger",

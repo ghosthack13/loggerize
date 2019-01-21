@@ -1,4 +1,4 @@
-var Loggerize = require("../lib/index.js");
+var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger("myLogger");
 logger.setLevel("warn");	//Set severity to the 'warn' level (numeric severity == 1). Uses the npm levelMapper by default
