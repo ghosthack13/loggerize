@@ -16,7 +16,7 @@ describe("Manage Levels", function() {
 	});
 	
 	
-	it("#defineLevels - should Define custom logging map", function(){
+	it("#createLevelMap - should Define custom logging map", function(){
 		
 		let orderOfSeverity = -1;
 		let mapper = "myLevelMap";
@@ -26,14 +26,14 @@ describe("Manage Levels", function() {
 			"info": 	201,
 		};
 		
-		subject.defineLevels(mapper, levelsObj, orderOfSeverity);
+		subject.createLevelMap(mapper, levelsObj, orderOfSeverity);
 		
 		let actual = subject.levelMappings["myLevelMap"];
 		let expected = levelsObj;
 		assert.deepEqual(actual, expected);
 	});
 	
-	it("#defineLevels - should Define reverse logging map when custom level map was already defined", function(){
+	it("#createLevelMap - should Define reverse logging map when custom level map was already defined", function(){
 		
 		let levelsObj = {
 			"error": 	100,
@@ -49,7 +49,7 @@ describe("Manage Levels", function() {
 		
 		let orderOfSeverity = -1;
 		let mapper = "myLevelMap";
-		subject.defineLevels(mapper, levelsObj, orderOfSeverity);
+		subject.createLevelMap(mapper, levelsObj, orderOfSeverity);
 		
 		let actual = subject.reverseMappings["myLevelMap"];
 		let expected = reverseMap;
@@ -115,7 +115,7 @@ describe("Manage Levels", function() {
 		assert.deepEqual(actual, expected);
 	});
 	
-	it("#defineLevels - throws error indicating level value is not a number", function(){
+	it("#createLevelMap - throws error indicating level value is not a number", function(){
 		
 		let orderOfSeverity = -1;
 		let mapper = "myLevelMap";
@@ -125,7 +125,7 @@ describe("Manage Levels", function() {
 			"info":  201,
 		};
 		
-		let actual = subject.defineLevels.bind(subject, mapper, levelsObj, orderOfSeverity);
+		let actual = subject.createLevelMap.bind(subject, mapper, levelsObj, orderOfSeverity);
 		let expected = new Error("Level value must be of type number");
 		assert.throws(actual, expected);
 	});
