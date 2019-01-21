@@ -136,6 +136,39 @@ Loggerize allows you to capture Node's 'uncaughtException' event. When an except
 and makes it way into Node's event loop without being caught, Node will automatically emit an 'uncaughtException' 
 event with the details of the problem. Loggerize allows you to capture and log these details.
 
+```javascript
+var Loggerize = require("../../lib/index.js");
 
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	hasHandles: false,
+});
 
+//Add the uncaught exception handle
+Loggerize.addExceptionHandle({
+	name: "_exception",
+	target: 'console',
+	formatter: 'exceptFmt',
+	level: 'debug',
+	emitEvents: true,
+	levelMapper: 'npm',
+});
 
+// Run some application/server code
+throw Error();
+// Run some more application/server code
+
+```
+The above example uses the module-level `addExceptionHandle` function to create a handle that manages 
+uncaught exceptions. `addExceptionHandle` took a handle config object as an argument will log 
+uncaught exceptions to the console. The is actually the default config that `addExceptionHandle` uses 
+and thus will produce the same output as if called without any arguments. To configure the uncaught exceptions 
+to be save to a file instead simply choose 'file' as the target instead of the console and any other valid 
+handle configurations you desire.
+
+**Note**: Loggerize does not allow the option to continue the program after an uncaught even occurs. 
+As a general programming best practice, you should **NEVER** continue running a program if an exception 
+is left uncaught.
+
+If you no longer want to log uncaught exceptions, you can easily remove the uncaught Exception 
+handle using the module-level `Loggerize.removeExceptionHandle()`.

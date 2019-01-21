@@ -46,7 +46,6 @@ enough satisfy even the most demanding and experienced coder.
 - [Handles](#)
 	- [Creating Handles](#)
 	- [Deleting Handles](#)
-	- [Activation/Deactivation](#)
 	- [The Uncaught Exception Handle](#)
 - [Targets](#)
 	- [Console Target](#)
