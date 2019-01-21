@@ -211,7 +211,7 @@ describe('Library (index.js)', function(){
 	});
 	
 	
-	describe('#createMiddleware()', function() {
+	describe('#createHTTPLogger()', function() {
 		
 		//Because Loggerize proxies request to a singleton that maintaines state,
 		//it is require to purge cache on each test to ensure settings brought forward
@@ -265,7 +265,7 @@ describe('Library (index.js)', function(){
 					"target": "console"
 				}
 			};
-			let logger = Loggerize.createMiddleware(opts);
+			let logger = Loggerize.createHTTPLogger(opts);
 			delete logger.httpListener; //Function to complicated and dynamic to assert
 			
 			let actual = logger;
@@ -291,7 +291,14 @@ describe('Library (index.js)', function(){
 				"name": "myMiddleware",
 				"levelMapper": 'python'
 			};
-			let logger = Loggerize.createMiddleware(opts);
+			let logger = Loggerize.createHTTPLogger(opts);
+			
+			//Individually check dynamic handle
+			assert.equal(/_defaultHTTP\d{13}/.test(logger.handles[0]), true);
+			delete logger.handles;
+			
+			//Let it be sufficient to check that function exists
+			assert.strictEqual(typeof(logger.httpListener), "function");
 			delete logger.httpListener; //Function to complicated and dynamic to assert
 			
 			let actual = logger;
@@ -299,11 +306,12 @@ describe('Library (index.js)', function(){
 				name: 'myMiddleware',
 				propogate: false,
 				isMuted: false,
-				handles: [ 'netMiddleware' ],
+				// handles: [ '_defaultHTTP1548030059653' ],
 				hasHandles: true,
 				filters: [],
 				logOnRequest: false,
 				logOnResponse: true,
+				// "httpListener": [Function],
 				levelMapper: 'python',
 				level: 'debug',
 			};
@@ -355,22 +363,26 @@ describe('Library (index.js)', function(){
 		
 		it('should create a request/response logger named after string parameter', function(){
 			
-			let logger = Loggerize.createRequestListener("myRequestListener");
-			delete logger.requestListener; //Function to complicated and dynamic to assert
+			let logger = Loggerize.createHTTPLogger("myRequestListener");
+			
+			//Let it be sufficient to check that function exists
+			assert.strictEqual(typeof(logger.httpListener), "function");
+			delete logger.httpListener; //Function to complicated and dynamic to assert
+			
 			
 			let actual = logger;
 			let expected = {
 				name: 'myRequestListener',
 				propogate: false,
 				isMuted: false,
-				handles: ['reqListener'],
+				handles: ['defaultHTTP'],
 				hasHandles: true,
 				filters: [],
 				logOnRequest: false,
 				logOnResponse: true,
 				levelMapper: 'http',
 				level: 'information',
-				// requestListener: Function
+				// "httpListener": [Function],
 			};
 			
 			assert.deepEqual(actual, expected);
@@ -386,8 +398,12 @@ describe('Library (index.js)', function(){
 					"target": "console"
 				}
 			};
-			let logger = Loggerize.createRequestListener(opts);
-			delete logger.requestListener; //Function to complicated and dynamic to assert
+			let logger = Loggerize.createHTTPLogger(opts);
+			
+			//Let it be sufficient to check that function exists
+			assert.strictEqual(typeof(logger.httpListener), "function");
+			delete logger.httpListener; //Function to complicated and dynamic to assert
+			
 			
 			let actual = logger;
 			let expected = {
@@ -401,6 +417,7 @@ describe('Library (index.js)', function(){
 				logOnResponse: true,
 				levelMapper: 'http',
 				level: 'information',
+				// "httpListener": [Function],
 			};
 			
 			assert.deepEqual(actual, expected);
@@ -412,21 +429,29 @@ describe('Library (index.js)', function(){
 				"name": "myRequestListener",
 				"levelMapper": 'python'
 			};
-			let logger = Loggerize.createRequestListener(opts);
-			delete logger.requestListener; //Function to complicated and dynamic to assert
+			let logger = Loggerize.createHTTPLogger(opts);
+			
+			//Individually check dynamic handle
+			assert.equal(/_defaultHTTP\d{13}/.test(logger.handles[0]), true);
+			delete logger.handles;
+			
+			//Let it be sufficient to check that function exists
+			assert.strictEqual(typeof(logger.httpListener), "function");
+			delete logger.httpListener; //Function to complicated and dynamic to assert
 			
 			let actual = logger;
 			let expected = {
 				name: 'myRequestListener',
 				propogate: false,
 				isMuted: false,
-				handles: [ 'reqListener' ],
+				// handles: [ 'reqListener' ],
 				hasHandles: true,
 				filters: [],
 				logOnRequest: false,
 				logOnResponse: true,
 				levelMapper: 'python',
 				level: 'debug',
+				// "httpListener": [Function],
 			};
 			
 			assert.deepEqual(actual, expected);
