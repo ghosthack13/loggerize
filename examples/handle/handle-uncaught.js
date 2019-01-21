@@ -6,7 +6,14 @@ let logger = Loggerize.createLogger({
 });
 
 //Add the uncaught exception handle
-Loggerize.addExceptionHandle();
+Loggerize.addExceptionHandle({
+	name: "_exception",
+	target: 'console',
+	formatter: 'exceptFmt',
+	level: 'debug',
+	emitEvents: true,
+	levelMapper: 'npm',
+});
 
 // Run some server code
 throw Error();
