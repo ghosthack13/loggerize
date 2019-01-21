@@ -58,7 +58,7 @@ Loggerize.createLogger({
 });
 ```
 
-### Logging
+### Application Logging
 
 In order to actually log an incident/event we need to call the `log` method on our logger. 
 The standard way to create log output is to pass the name of a `level` as the first parameter 
@@ -105,7 +105,7 @@ logger.verbose("Logger Test!"); // outputs => 'verbose Logger Test!'
 logger.debug("Logger Test!");	// outputs => 'debug '
 ```
 
-### Logging HTTP/Middleware
+### HTTP/Middleware Logging
 
 Loggerize natively supports logging request on both Node's standard HTTP server and 
 express/connect middleware. The below example uses a vanilla HTTP server and will 
@@ -128,7 +128,7 @@ var Loggerize = require("../../lib/index.js");
 Navigate your browser to http://localhost:3000/ and watch as log messages appear on the terminal.
 
 
-#### Split Logging
+#### Split Request/Response Logging
 
 Loggerize can log HTTP request on both request and response or only log on one and not the other. 
 By default Loggerize will log only on HTTP response. This means that a log will the most complete 

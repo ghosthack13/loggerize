@@ -1,6 +1,6 @@
 ## Handles
 
-Loggerize's handles indicate how logs should be managed. A handle controls the options 
+Loggerize's handles dicate how logs should be managed. A handle controls the options 
 that defined how a target should operate, as well as acts as a link between the target and 
 a formatter.
 
@@ -23,45 +23,100 @@ See [Targets](#targets) for more information.
 
 ### Creating Handles
 
-Handles are created by passing a config object to the module-level funtion `addHandle`. Having 
-handles created at the module-level allows the flexibility for any logger to use any handle 
-simply by passing the desired handles' names to the `attachHandles` method of the logger. 
-A logger cannot output a log message without having a handle attached that manages how that log 
-output is supposed to be processed. 
+Handles can be created/defined in several ways. 
+
+#### Create Handle while creating logger
+
+The easiest method is probably to define the handle 
+directly in the config object with passed to `createLogger`. The following example will create a 
+logger with a handle called 'myHandle' at the 'info' severity level and attach it to the logger 
+called 'myLogger'.
 
 ```javascript
-var Loggerize = require("../lib/index.js");
-Loggerize.addHandle({
-	"name": "myHandle",
-	//"target": "console", // target defaults to console if not explicitly set
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	handle: {
+		name: "myHandle",
+		level: "info",
+	},
 });
-
-let logger = Loggerize.createLogger("myLogger");
-logger.attachHandle("myHandle");	//Attach the added handle called 'myHandle'
 
 logger.info("Log Test!");	//Output => 'info Log Test!'
 ```
 
-The above example will output 'info Log Test!' to the console, twice. A logger can have an unlimited 
-number of handles attached to it and will produce a log output as defined by each handle that 
-is attached. Consequently, the logger will output 'info Log Test!' twice (on separate lines) 
-because the `createLogger` would have automatically attached the 'default' handle.
+#### Create Handle via attachment to logger
+
+Alternatively, one can create a handle simply by passing a handle config object to 
+the `attachHandles` method of any logger. The following example will create the same 
+handle as above while attaching it to the logger called 'myLogger'. The example also 
+sets the `hasHandles` field to `false` which tells the logger not to attach the default 
+handle. This is needed because `createLogger` automatically attaches the default handle 
+if no other handles are defined/attached.
+
+```javascript
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	hasHandles: false,
+});
+
+//Create and Attach the added handle called 'myHandle'
+logger.attachHandles({
+	name: "myHandle",
+	level: "info",
+});
+
+logger.info("Log Test!");	//Output => 'info Log Test!'
+```
+
+#### Create Handle via module-level
+
+The final way to add a handle is to use the module-level function `addHandle`.
+
+```
+Loggerize.addHandle({
+	"name": "myHandle",
+	"level": "info",
+});
+
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	hasHandles: false	//Set to false to not add default handle
+});
+
+logger.attachHandles("myHandle");	//Attach the handle called 'myHandle'
+logger.info("Log Test!");			//Output => 'info Log Test!'
+```
+
+This third method is actually how Loggerize adds handles internally. The previous two methods 
+are just wrappers for the module-level `addHandle` method. All handles are created at the module-level. 
+This allows the flexibility for any logger to use any handle simply by passing the desired handles' 
+names to the `attachHandles` method of the logger. 
+
+```javascript
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	hasHandles: false,
+});
+
+logger.attachHandles("default"); //Attach the handle called 'default'
+logger.info("Log Test!");		//Output => 'info Log Test!'
+```
 
 ### Deleting Handles
 
-If we no longer want a logger to use a particular handle, that handle can be detached using the 
+If you no longer want a logger to use a particular handle, that handle can be detached using the 
 `detachHandle` method of that logger.
 
 ```javascript
 var Loggerize = require("../lib/index.js");
 Loggerize.addHandle({
 	"name": "myHandle",
-	//"target": "console", // target defaults to console if not explicitly set
+	"level": "info",
 });
 
 let logger = Loggerize.createLogger("myLogger");
-logger.attachHandle("myHandle");	//Attach the added handle called 'myHandle'
 logger.detachHandle("default");		//Detach the default handle added by `createLogger`
+logger.attachHandle("myHandle");	//Attach the added handle called 'myHandle'
 
 logger.info("Log Test!");	//Output => 'info Log Test!'
 ```
@@ -74,5 +129,13 @@ to attach it later.
 To permanently remove a handle, you must use the library-level function 
 `removeHandle()`. `removeHandle()` accepts a string or an array of strings with names of handles to 
 be removed as the only parameter. For example `removeHandle("myHandle")` will remove the named handle.
+
+### The Uncaught Exception Handle
+
+Loggerize allows you to capture Node's 'uncaughtException' event. When an exception occurs in your process 
+and makes it way into Node's event loop without being caught, Node will automatically emit an 'uncaughtException' 
+event with the details of the problem. Loggerize allows you to capture and log these details.
+
+
 
 

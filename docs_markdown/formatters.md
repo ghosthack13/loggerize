@@ -115,7 +115,7 @@ HTTP requests/responses.
 | res.contentLength	| 4627 |The size of the payload sent with the response		|
 
 
-#### Custom Tokens
+#### User-Defined Tokens
 
 In addition to the built in tokens, Loggerize allows for the creation of user defined tokens as well.
 Tokens are added using the module-level function `addTokens` which accepts a Javascript object which 
