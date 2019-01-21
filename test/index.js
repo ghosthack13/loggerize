@@ -460,7 +460,7 @@ describe('Library (index.js)', function(){
 	});
 	
 	
-	describe('Manage Levels: #getLevel(), #setLevel(), #setLevelMap()', function() {
+	describe('Manage Levels: #getLevel(), #setLevel(), #setLevelMapper()', function() {
 			
 		/** Because Loggerize proxies request to a singleton that maintaines state,
 			it is require to purge cache on each test to ensure settings brought forward
@@ -507,7 +507,7 @@ describe('Library (index.js)', function(){
 		it("#should set the levelMapper on the master logger", function(){
 			
 			let mapper = "python";
-			Loggerize.setLevelMap(mapper);
+			Loggerize.setLevelMapper(mapper);
 			
 			let actual = subject.levelMapper;
 			let expected = mapper;

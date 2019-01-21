@@ -83,9 +83,9 @@ describe("Manage Levels", function() {
 		
 	});
 	
-	it("#setLevelMap - should set the global levelMapper", function(){
+	it("#setLevelMapper - should set the global levelMapper", function(){
 		
-		subject.setLevelMap("defcon");
+		subject.setLevelMapper("defcon");
 		
 		let actual = subject.levelMapper;
 		let expected = "defcon";

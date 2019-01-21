@@ -289,10 +289,10 @@ describe('LoggerProxy', function() {
 	});
 	
 	
-	it('#setLevelMap() should define/change the levelMapper of the logger', function(){
+	it('#setLevelMapper() should define/change the levelMapper of the logger', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("python");
+		logger.setLevelMapper("python");
 		
 		let actual = logger;
 		let expected = {
@@ -312,7 +312,7 @@ describe('LoggerProxy', function() {
 	it('#setLevel() should define/change the level of the logger', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("defcon");
+		logger.setLevelMapper("defcon");
 		logger.setLevel("defcon5");
 		
 		let actual = logger;
@@ -343,7 +343,7 @@ describe('LoggerProxy', function() {
 	it('#getLevel() should get the level the logger was assigned', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("defcon");
+		logger.setLevelMapper("defcon");
 		logger.setLevel("defcon5");
 		
 		let actual = logger.getLevel();
@@ -355,7 +355,7 @@ describe('LoggerProxy', function() {
 	it('#getEffectiveLevel() effective level should equal the level the logger was assigned', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("defcon");
+		logger.setLevelMapper("defcon");
 		logger.setLevel("defcon5");
 		
 		let actual = logger.getEffectiveLevel();
@@ -367,11 +367,11 @@ describe('LoggerProxy', function() {
 	it('#getEffectiveLevel() effective level for a logger w/an undefined level should equal the level of its least severe ancestor', function(){
 		
 		let parentLogger = Loggerize.getLogger("myParentLogger");
-		parentLogger.setLevelMap("npm");
+		parentLogger.setLevelMapper("npm");
 		parentLogger.setLevel("warn");
 		
 		let childLogger = Loggerize.getLogger("myParentLogger.myChildLogger");
-		childLogger.setLevelMap("npm");
+		childLogger.setLevelMapper("npm");
 		
 		let actual = childLogger.getEffectiveLevel();
 		let expected = "warn";
@@ -742,7 +742,7 @@ describe('LoggerProxy', function() {
 		myGrandParent.detachHandles("default");
 		
 		let myParent = Loggerize.createLogger("myGrandParent.myParent");
-		myParent.setLevelMap("defcon");
+		myParent.setLevelMapper("defcon");
 		myParent.setLevel("defcon5");
 		myParent.attachHandles("myHandle2");
 		myParent.detachHandles("default");
@@ -987,7 +987,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.silly("Log Message Test!");
 		
@@ -1011,7 +1011,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.debug("Log %s Test!", "Message");
 		
@@ -1035,7 +1035,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.verbose("%drd Log Message Test!", 103);
 		
@@ -1059,7 +1059,7 @@ describe('LoggerProxy', function() {
 			"target": null
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.info("Log Message %s. %s!", "Test", "Success");
 		
@@ -1083,7 +1083,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.warn("Log Message %s. %s!", "Test", "Success", "Finished");
 		
@@ -1107,7 +1107,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.error(new TypeError("Basic error object log test"));
 		
@@ -1132,7 +1132,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.notice("Log Message Test!");
 		
@@ -1156,7 +1156,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.warning("Log Message Test!");
 		
@@ -1180,7 +1180,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.err("Log Message Test!");
 		
@@ -1204,7 +1204,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.crit("Log Message Test!");
 		
@@ -1228,7 +1228,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.alert("Log Message Test!");
 		
@@ -1252,7 +1252,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.emerg("Log Message Test!");
 		
@@ -1277,7 +1277,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("python");
+		logger.setLevelMapper("python");
 		logger.attachHandles("myHandle");
 		logger.critical("Log Message Test!");
 		
