@@ -153,7 +153,7 @@ describe("Manage Formatters", function() {
 		};
 		
 		subject.addTokens({
-			"tag": "%{timestamp}_myCustomToken",
+			"tag": "_myCustomToken",
 			"label": "MyLabel:"
 		});
 		
@@ -174,7 +174,7 @@ describe("Manage Formatters", function() {
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
 		let actual = formattedLogRecord["output"];
-		let expected = "%{level} 2020-12 debug MyLabel: 'Sample Log Message' 2020-12_myCustomToken";
+		let expected = "%{level} 2020-12 debug MyLabel: 'Sample Log Message' _myCustomToken";
 		assert.deepEqual(actual, expected);
 	});
 	
