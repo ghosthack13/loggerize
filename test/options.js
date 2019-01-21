@@ -110,7 +110,7 @@ describe("Set Handle Options", function() {
 			},
 			"anonymous": {
 				target: 'file',
-				directory: '/home/daniel/playground/javascript/logger/',
+				directory: process.cwd() + path.sep,
 				fileName: 'test',
 				active: true,
 				levelMapper: subject.levelMapper,
@@ -143,7 +143,7 @@ describe("Set Handle Options", function() {
 			level: subject.level,
 			target: 'file',
 			formatter: 'default',
-			directory: '/home/daniel/playground/javascript/logger/',
+			directory: process.cwd() + path.sep,
 			fileName: 'test',
 			fileExtension: '.logy'
 		};
@@ -153,7 +153,7 @@ describe("Set Handle Options", function() {
 			level: subject.level,
 			target: 'file',
 			formatter: 'default',
-			directory: '/home/daniel/playground/javascript/logger/',
+			directory: process.cwd() + path.sep,
 			fileName: 'test',
 			fileExtension: '.logy' 
 		};
@@ -727,7 +727,7 @@ describe("Set Default Handle Options", function() {
 		
 		let opts = {
 			"name": "myHandle", 
-			"path": "/home/daniel/playground/javascript/logger/dwaesd/testfile.logy",
+			"path": path.join(__dirname, "logs", "testfile.logy"),
 		};			
 		subject.setHandleDefaults(opts);
 		
@@ -739,8 +739,8 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'file',
 			"formatter": 'default',
-			"path": "/home/daniel/playground/javascript/logger/dwaesd/testfile.logy",
-			"directory": '/home/daniel/playground/javascript/logger/dwaesd/',
+			"path": path.join(__dirname, "logs", "testfile.logy"),
+			"directory": path.join(__dirname, "logs") + path.sep,
 			"fileName": 'testfile',
 			"fileExtension": '.logy',
 		};
