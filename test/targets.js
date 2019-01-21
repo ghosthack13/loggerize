@@ -96,7 +96,8 @@ describe("Targets (Intergation Test)", function(){
 			
 			let mockLogRecord = {
 				"level": "info", 
-				"message": "File Target Test Line 1"
+				"message": "File Target Test Line 1",
+				"DateObj": new Date(),
 			};
 			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
@@ -214,7 +215,7 @@ describe("Targets (Intergation Test)", function(){
 					
 					//Assert File contents match expected
 					let actual = data;
-					let expected = "info Rotating File (Interval) Target Test 2/28/2020, 10:00:00 AM" + os.EOL;
+					let expected = "info Rotating File (Interval) Target Test 28 Feb 2020 10:00:00 -0400" + os.EOL;
 					assert.equal(actual, expected);
 					
 					//Remove just created file
@@ -276,7 +277,7 @@ describe("Targets (Intergation Test)", function(){
 					
 					//Assert File contents match expected
 					let actual = data;
-					let expected = "info Rotating File (Interval) Target Test 2/28/2020, 10:00:00 AM" + os.EOL;
+					let expected = "info Rotating File (Interval) Target Test 28 Feb 2020 10:00:00 -0400" + os.EOL;
 					assert.equal(actual, expected);
 					
 					//Remove just created file
@@ -338,7 +339,7 @@ describe("Targets (Intergation Test)", function(){
 					
 					//Assert File contents match expected
 					let actual = data;
-					let expected = "info Rotating File (Interval) Target Test 2/28/2020, 10:00:00 AM" + os.EOL;
+					let expected = "info Rotating File (Interval) Target Test 28 Feb 2020 10:00:00 -0400" + os.EOL;
 					assert.equal(actual, expected);
 					
 					//Remove just created file
@@ -388,7 +389,7 @@ describe("Targets (Intergation Test)", function(){
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = "Received GET Request with query: level=info&message=HTTP Target Test!&timestamp=2/28/2020, 10:00:00 AM&output=info HTTP Target Test! 2/28/2020, 10:00:00 AM";
+			let expected = "Received GET Request with query: level=info&message=HTTP Target Test!&timestamp=28 Feb 2020 10:00:00 -0400&output=info HTTP Target Test! 28 Feb 2020 10:00:00 -0400";
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
@@ -424,7 +425,7 @@ describe("Targets (Intergation Test)", function(){
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = 'Received POST Request with payload: {"level":"info","message":"HTTP Target Test!","timestamp":"2/28/2020, 10:00:00 AM","output":"info HTTP Target Test! 2/28/2020, 10:00:00 AM"}';
+			let expected = 'Received POST Request with payload: {"level":"info","message":"HTTP Target Test!","timestamp":"28 Feb 2020 10:00:00 -0400","output":"info HTTP Target Test! 28 Feb 2020 10:00:00 -0400"}';
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
