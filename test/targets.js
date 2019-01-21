@@ -379,6 +379,7 @@ describe("Targets (Intergation Test)", function(){
 			"target": "http",
 			"port": 3000,
 			"method": "GET",
+			"allowInsecure": true,
 			"url": "http://192.168.154.130/",
 			"formatter": {
 				"name": "myFormatter", 
@@ -414,6 +415,7 @@ describe("Targets (Intergation Test)", function(){
 			"name": "myHandle",
 			"target": "http",
 			"port": 3000,
+			"allowInsecure": true,
 			"method": "POST",
 			"url": "http://192.168.154.130/",
 			"formatter": {
