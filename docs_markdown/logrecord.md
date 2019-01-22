@@ -15,7 +15,7 @@ to each parent logger in any logger hierarchies.
 The logRecord will generally only be made available in advance circumstances such 
 as being default argument to a filter. The log record conveniently makes fields 
 available that can be examined to decide whether or not to filter a potential log 
-output. 
+output.
 
 Additionally the logRecord is made available as an argument to targets. 
 The target can then choose to write the logRecord's output field as is, or 
@@ -34,3 +34,4 @@ var logRecord = {
 	"uuid": "3cf2552c-1dba-11e9-ab14-d663bd873d93",
 }
 ```
+
