@@ -1,12 +1,15 @@
 ## Levels
 
-Logging levels indicate the severity of an event in your program. Loggerize has several built 
-in `levelMapper`s which define how each `levelName` is mapped to a numeric severity level.
-Loggerize uses the 'npm' `levelMapper` by default. 
+Logging levels indicate the severity of an event in your application or server.
 
-### Level Mappers
+### Level Mappers (Intermediate)
 
-Below are tables which defines how both `npm` and `syslog` maps level names to severity levels.
+A `levelMapper` defines how the name of a logging level is assigned to a 
+corresponding numeric severity level. Loggerize uses the 'npm' level mapper by 
+default while also providing other common level mappings such as 'syslog', 
+'python', 'http' and more.
+
+The tables below show how `npm` and `syslog` maps level names to numeric severities.
 
 Level Mapper (npm)
 
@@ -26,9 +29,11 @@ as specified by specified by [RFC 5424](https://tools.ietf.org/html/rfc5424). Th
 severity levels go from 0 to 5, where 0 is the *most severe* and 5 is the *least severe*
 while syslog goes from 0 to 7, where 0 is the *most severe* and 7 is the *least severe*.
 
-Conversely Loggerize also supports `python` logging levels which has severity levels that proceed 
-from least import to most important, ranging from 10 to 50 (in steps of ten), where 10 is the 
+Similarly, Loggerize also supports `python` logging levels which has severity levels that proceed 
+from *least severe* to *most severe*, ranging from 10 to 50 (in steps of ten), where 10 is the 
 *least severe* and 50 is the *most severe*.
+
+Level Mapper (python)
 
 | LEVEL NAME| debug	| info	| warning	| error	| critical	|
 | --------- | --------------------------------------------- |
@@ -38,7 +43,7 @@ from least import to most important, ranging from 10 to 50 (in steps of ten), wh
 To change the default `levelMapper` of your program use the module-level function `Loggerize.setLevelMapper(<string>)`.
 If you want to use the `syslog` levelMapper for example, call `Loggerize.setLevelMapper("syslog")`.
 This should be done before creating any other loggers or adding any other [handles](handles) 
-because Loggerize will not alter levelMappers already defined on loggers and [handles](handles).
+because Loggerize will not alter levelMappers already defined on loggers and handles.
 
 ```javascript
 var Loggerize = require("../../lib/index.js");
@@ -69,8 +74,9 @@ and since we want to use a different levelMapper we need to create a new handle 
 
 ### Using Logging Levels
 
-Logging levels indicate the minimum severity that will cause the logger to output a log message.
-The below example tells the logger to only output a message when the severity level is `warn` or above.
+Logging levels are used to indicate the minimum severity of an event that will 
+cause the logger (or handle) to output a log message. The below example tells 
+the logger to only output a message when the severity level is `warn` or above.
 
 ```javascript
 var Loggerize = require("../lib/index.js");
@@ -83,16 +89,17 @@ logger.verbose("Log Message Test!"); //No Output because 'verbose' has a lower s
 logger.info("Log Message Test!");	//No Output because 'info' has a lower severity than 'warn'
 logger.warn("Log Message Test!");	// Outputs => 'warn Log Message Test!' because event severity equals minimum severity of logger
 logger.error("Log Message Test!");	// Outputs => 'error Log Message Test!' because event severity exceeds severity of logger
-
-Additionally you have the option to colorize log levels sent to the console by calling the library-level 
-function `Loggerize.colorizeLevels()`. See the [Formatter](#formatters) section for more details on how to colorize levels.
 ```
+
+Additionally you have the option to colorize logs sent to the console by 
+calling the library-level function `Loggerize.colorizeLevels()`. See the 
+[Formatter](#formatters) section for more details on how to colorize levels.
 
 ### User-Defined Logging Levels (Advance)
 
-For users that love to customize everything, Loggerize allows you to customize your log levels too. 
-Using the module-level function `createLevelMap`, you can define your own level mappings to suit 
-your taste.
+For users that love to customize everything, Loggerize allows you to customize 
+your log levels too. Using the module-level function `createLevelMap`, you can 
+define your own level mappings to suit your taste.
 
 ```javascript
 var Loggerize = require("../lib/index.js");
@@ -121,15 +128,18 @@ let logger = Loggerize.createLogger({
 logger.log("zombie", "The Apocalypse has begun!"); //Outputs => 'zombie The Apocalypse has begun!'
 ```
 
-The above example created a custom level mapping using `createLevelMap`. `createLevelMap` has two 
-required parameters, the name of the `levelMapper` and the config object that defines how 
-level names are mapped to a numeric severity level. The above example creates a `levelMapper` 
-called 'apocalypse' with severity levels ranging from 0 to 4.
+The above example created a custom level mapping using `createLevelMap`. 
+`createLevelMap` has two required parameters, the name of the `levelMapper` 
+and the config object that defines how level names are mapped to a numeric 
+severity level. The above example creates a `levelMapper` called 'apocalypse' 
+with severity levels ranging from 0 to 4.
 
-The 3rd parameter sets the order of severity for the level mapping. Using the "desc" argument 
-says that the level mapping descreases in severity as it moves to higher numeric values. This is 
-the default behaviour on Loggerize and most logging libraries. Conversely, one can use the "asc" 
-argument to make the level mapping increase in severity as it moves to higher numeric values.
+The 3rd parameter sets the order of severity for the level mapping. Using the 
+"desc" argument says that the level mapping descreases in severity as it moves 
+to higher numeric values. This is the default behaviour on Loggerize and most 
+logging libraries (though being counter-intuitive). Conversely, one can use 
+the "asc" argument to make the level mapping increase in severity as it 
+moves to higher numeric values.
 
 
 
