@@ -1,10 +1,19 @@
-var Loggerize = require("../lib/index.js");
+var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger({
-	"name": "myLogger", 
-	"hasHandles": false //set to false to avoid automatically adding the default handle
+	name: "myLogger",
+	handle: {
+		name: "myHandle",
+		target: "file",	//Set target to file
+		// directory: './logs/',	//Default directory as current directory
+		// fileName: 'target-file', //Default fileName from source
+		// fileExtension: '.log',   //Default fileExtension
+	}
 });
 
+logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
+
+/*
 logger.attachHandles({
 	name: "myHandle",
 	target: "file",				//Set target to file
@@ -18,4 +27,5 @@ logger.attachHandles({
     // fileName: 'loggerproxy', //Default fileName
     // fileExtension: '.log',   //Default fileExtension
 });
+*/
 // logger.info("Log Message Test!");	//Output to file => 'info Log Message Test!'

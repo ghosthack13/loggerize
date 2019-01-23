@@ -1,4 +1,6 @@
-var Loggerize = require("../lib/index.js");
+// @filename formatter-addFormatter.js
+
+var Loggerize = require("../../lib/index.js");
 
 Loggerize.addFormatter({
 	"name": "myFormatter",
@@ -7,13 +9,11 @@ Loggerize.addFormatter({
 
 let logger = Loggerize.createLogger({
 	"name": "myLogger", 
-	"hasHandles": false //set to false to avoid automatically adding the default handle
+	"handle": {
+		name: "myHandle",
+		target: "console",
+		formatter: "myFormatter",
+	}
 });
 
-logger.attachHandles({
-	name: "myHandle",
-	target: "console",
-	formatter: "myFormatter",
-});
-
-logger.info("Log Message Test!");	//Output to file => 'info Log Message Test!'
+logger.info("Log Message Test!");	//Output to file => 'info (Severity: 2) Log Message Test!'
