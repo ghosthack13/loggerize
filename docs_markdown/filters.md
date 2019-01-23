@@ -63,7 +63,7 @@ Advance users who wish to add their own custom filters can do so very easily
 using the module-level `addFilter` function. This function takes two arguments, 
 the name of the filter and a function definition that does the filtering.
 
-#### Using Custom Filter on Logger
+#### Using Custom Filters on Logger
 
 The below example creates a user-defined filter that sets the maximum number 
 of messages that are allowed to be log. This filter sets two options: 
@@ -96,7 +96,7 @@ logger.info("4th Log Message Test!");	// No Output - Messages are filtered
 
 Filters created using the module-level `addFilter` are available to all loggers.
 
-#### Using Custom Filter on Handle
+#### Using Custom Filters on Handle
 
 To add a filter in Loggerize can be as easy as creating an anonymous funtion.
 

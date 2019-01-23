@@ -68,7 +68,7 @@ logger.attachHandles({
 logger.info("Log Test!");	//Output => 'info Log Test!'
 ```
 
-#### Create Handle via module-level
+#### Create Handle via module-level function
 
 The final way to add a handle is to use the module-level function `addHandle`.
 

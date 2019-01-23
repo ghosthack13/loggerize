@@ -1,43 +1,77 @@
 ## FORMATTERS
 
-Formatters stipulate how a log output should look when it is written to the desired targets. 
+Formatters dictate how a log output should look when it is written to the desired targets. 
 A formatter is responsible for converting a logRecord to an output string which can be interpreted 
 by a human or an external system.
 
-### Creating/Deleting Formatters
+### Predefined Formatters
 
-User defined formatters are created using the module-level function `addFormatter` and its use is 
-managed by a handle, that determines which formatter will be applied to a given target. A handle 
-can only have one formatter defined at a time.
+For your convenience Loggerizes ships with several built in formatters. Thses 
+formatters cannot be altered or removed.
 
+**default** - Basic Formatter
 ```javascript
-var Loggerize = require("../lib/index.js");
-Loggerize.addFormatter({
-	"name": "myFormatter",
-	"format": "%{level} (Severity: %{levelNum}) %{message}",
-});
-let logger = Loggerize.createLogger({
-	"name": "myLogger", 
-	"hasHandles": false //set to false to avoid automatically adding the default handle
-});
-
-logger.attachHandles({
-	name: "myHandle",
-	target: "console",
-	formatter: "myFormatter", // Apply the formatter named "myFormatter" to the designated target
-});
-logger.info("Log Message Test!");	//Output => 'info (Severity: 2) Log Message Test!'
+"%{level} %{message}"
+// E.g. "info Log Message Test!"
 ```
 
-The formatter above uses the `format` field to define how the log output should look 
-when written to a target. The above example writes `info (Severity: 2) Log Message Test!` to the 
-console target.
+**simple** - Basic Formatter with timestamp
+```javascript
+"%{timestamp} %{level} %{message}"
+// E.g. "22 Jan 2020 15:11:31 -0600 info Log Message Test!"
+```
 
-Alternatively, the above code can be condensed by defining the formatter directly on the handle to 
-produce the same result. All examples henceforth will utilize this condensed form to add formatters.
+**exceptFmt** - Exception Formatter (**N.B.** %\{stack} starts on a new line)
+```javascript
+"%{timestamp} %{level} (%{errorName}) %{message} %{stack}"
+```
+
+**common** - Standard Apache common log output.
+```javascript
+"%{remoteIPv4} %{RFC1413identity} %{user} [%{timestamp}] "%{method} %{path} %{protocol}/%{version}" %{statusCode} %{res.contentLength}"
+```
+
+**combined** - Standard Apache combined log output.
+```javascript
+"%{remoteIPv4} %{RFC1413identity} %{user} [%{timestamp}] "%{method} %{path} %{protocol}/%{version}" %{statusCode} %{res.contentLength} %{referer} %{userAgent}"
+```
+
+### Using Formatters
+
+To use a formatter simply specify the formatter's name on a handle's formatter 
+field. Each handle can only have **ONE** formatter. The below example uses the 
+predefined formatter called 'simple'.
 
 ```javascript
-var Loggerize = require("../lib/index.js");
+// @filename formatter-simple.js
+var Loggerize = require("../../lib/index.js");
+
+let logger = Loggerize.createLogger({
+	"name": "myLogger", 
+	"handle": {
+		name: "myHandle",
+		target: "console",
+		formatter: "simple",
+	}
+});
+
+logger.info("Log Message Test!");	//Output => '22 Jan 2019 16:59:16 -0400 info Log Message Test!'
+```
+
+### Creating Formatters
+
+For users who desire more flexibility, Loggerize allows the option to create custom 
+formatters with unlimited possibilities from json serialization, console colorization, 
+output transformers and more.
+
+#### Creating Formatters On-The-Fly
+
+Formatters can be created and added on-the-fly by defining the formatter directly 
+on the handle. Every formatter configuration requires a name.
+
+```javascript
+// @filename formatter-onthefly.js
+var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -45,25 +79,46 @@ let logger = Loggerize.createLogger({
 		name: "myHandle",
 		target: "console",		
 		formatter: {
-			name: "myFormatter",
-			format: "%{level} (Severity: %{levelNum}) %{message}",
+			name: "myFormatter", //formatter name is REQUIRED
+			format: "%{level} %{loggerName} %{message}",
 		},
 	}
 });
 
-logger.info("Log Message Test!");	//Output => 'info (Severity: 2) Log Message Test!'
+logger.info("Log Message Test!");	//Output => 'info myLogger Log Message Test!'
 ```
 
-If a formatter is no longer needed the formatter can be removed by calling the module-level function 
-`removeFormatter()`. `removeFormatter()` accepts either a string or an array of strings as its only parameter.
-For example `removeFormatter("myFormatter")` will remove the 
-formatter name "myFormatter" defined above.
+Formatters can use the `format` field to define how the log output should look 
+when written to a target. The above example's format says to output the serverity 
+level, logger name and log message with each log output.
 
-### Predefined Formatters
+#### Creating Formatters on the Module
 
-For your convenience Loggerizes ships with several built in formatters.
+Formatters can be created using the module-level function `addFormatter` and set 
+via the formatter field on any handle. In fact, the 
+[on-the-fly](#creating-formatters-on-the-fly) method above is just a wrapper for 
+this method for creating formatters.
 
+```javascript
+// @filename formatter-addFormatter.js
+var Loggerize = require("../../lib/index.js");
 
+Loggerize.addFormatter({
+	"name": "myFormatter",
+	"format": "%{level} (Severity: %{levelNum}) %{message}",
+});
+
+let logger = Loggerize.createLogger({
+	"name": "myLogger", 
+	"handle": {
+		name: "myHandle",
+		target: "console",
+		formatter: "myFormatter",
+	}
+});
+
+logger.info("Log Message Test!");	//Output to file => 'info (Severity: 2) Log Message Test!'
+```
 
 ### Tokens
 
@@ -283,6 +338,49 @@ logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 If you prefer to style individual tokens, the `style` field is a also valid [token modifier](#token-modifiers).
 For example to colorize only the message portion of the log output in a red font, add `message: {style: "red"}` in 
 the formatter object.
+
+
+### JSON Serialization
+
+Loggerize can JSON serialization log output by setting the json property in 
+the formatter's configuration to `true` and declaring an array of tokens to 
+serialize in the fields property. The 'fields' property is required when using 
+JSON serialization. Activating JSON serialization implicityly tells the formatter 
+to ignore the format property (if set).
+
+```javascript
+var Loggerize = require("../../lib/index.js");
+
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	handle: {
+		name: "myHandle", 
+		formatter: {
+			name: "myFormatter",
+			json: true,
+			fields: ["level", "message"],
+		},
+	}
+});
+
+logger.info("Log Message Test!");	//Output => '{"level":"info","message":"Log Message Test!"}'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
