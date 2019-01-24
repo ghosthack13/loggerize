@@ -84,6 +84,11 @@ enough satisfy even the most demanding and experienced coder.
 	- [User-Defined Transformers (Advance)](#)
 		- [Using Custom Transformers on Output](#)
 		- [Using Custom Transformers on Tokens](#)
+- [Events](#)
+	- [Event Notification - Filtered](#)
+	- [Event Notification - Logged](#)
+	- [Event Notification - Error](#)
+	- [Global Listener](#)	
 
 ## Versioning
 
