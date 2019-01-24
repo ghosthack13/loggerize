@@ -3,9 +3,17 @@ var url = require("url");
 var path = require("path");
 var querystring = require('querystring');
 
+var Loggerize = require("../../lib/index.js");
+
+let httpLogger = Loggerize.createHTTPLogger({
+	name: "myHTTPLogger",
+	// level: "clientError",
+	logOnRequest: false,
+	logOnResponse: false,
+});
+
 var PORT = 3000;
 var HOST = "http://127.0.0.1";
-
 var server = http.createServer(function (req, res){
 	
 	var urlParts = url.parse(req.url);
@@ -24,6 +32,8 @@ var server = http.createServer(function (req, res){
 		});
 	}
 	else{
+		
+		httpLogger.httpListener(req, res);
 		
 		//Return 404
 		if (pathname == "/404"){
@@ -52,3 +62,30 @@ var server = http.createServer(function (req, res){
 console.log("Server running at " + HOST + ":" + PORT + "/");
 
 
+
+/*
+var http = require('http');
+
+var Loggerize = require("../../lib/index.js");
+
+let httpLogger = Loggerize.createHTTPLogger({
+	name: "myHTTPLogger",
+	level: "clientError"
+});
+
+var PORT = 3000;
+var server = http.createServer(function (req, res){
+	
+	// Loggerize.reqListener(req, res);
+	httpLogger.httpListener(req, res);
+	
+	res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.end("Received @" + new Date() + "\n");
+	
+}).listen(PORT);
+
+// Console will print the message
+console.log("Server running on localhost port: " + PORT);
+
+
+*/
