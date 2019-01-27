@@ -31,6 +31,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				"name": 'myLogger',
+				"emitEvents": false,
 				"levelMapper": 'npm',
 				"propogate": true,
 				"isMuted": false,
@@ -57,6 +58,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				"name": 'myLogger',
+				"emitEvents": false,
 				"levelMapper": 'npm',
 				"propogate": true,
 				"isMuted": false,
@@ -82,8 +84,9 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				"name": 'myLogger',
+				"emitEvents": false,
 				"levelMapper": 'python',
-				"propogate": true,
+				"propogate": false,
 				"isMuted": false,
 				"handles": [ 'default' ],
 				"hasHandles": true,
@@ -240,6 +243,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				name: 'myMiddleware',
+				emitEvents: false,
 				propogate: false,
 				isMuted: false,
 				// handles: [ 'netMiddleware' ],
@@ -271,6 +275,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				name: 'myMiddleware',
+				emitEvents: false,
 				propogate: false,
 				isMuted: false,
 				handles: [ 'myMiddlewareHandle' ],
@@ -304,6 +309,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				name: 'myMiddleware',
+				emitEvents: false,
 				propogate: false,
 				isMuted: false,
 				// handles: [ '_defaultHTTP1548030059653' ],
@@ -373,6 +379,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				name: 'myRequestListener',
+				emitEvents: false,
 				propogate: false,
 				isMuted: false,
 				handles: ['defaultHTTP'],
@@ -408,6 +415,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				name: 'myRequestListener',
+				emitEvents: false,
 				propogate: false,
 				isMuted: false,
 				handles: [ 'myRequestHandle' ],
@@ -442,6 +450,7 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				name: 'myRequestListener',
+				emitEvents: false,
 				propogate: false,
 				isMuted: false,
 				// handles: [ 'reqListener' ],
