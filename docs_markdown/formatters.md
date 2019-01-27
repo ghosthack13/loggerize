@@ -1,8 +1,9 @@
 ## FORMATTERS
 
-Formatters dictate how a log output should look when it is written to the desired targets. 
-A formatter is responsible for converting a logRecord to an output string which can be interpreted 
-by a human or an external system.
+Formatters dictate how a log output should look when it is written to the desired 
+target. A formatter is responsible for converting data from the logRecord to an 
+output string which can be interpreted by a human or an external system. This 
+output string is saved as a property in the logRecord called output.
 
 ### Predefined Formatters
 
@@ -118,6 +119,31 @@ let logger = Loggerize.createLogger({
 });
 
 logger.info("Log Message Test!");	//Output to file => 'info (Severity: 2) Log Message Test!'
+```
+
+### JSON Serialization
+
+Loggerize can JSON serialization log output by setting the json property in 
+the formatter's configuration to `true` and declaring an array of tokens to 
+serialize in the fields property. The 'fields' property is required when using 
+JSON serialization.
+
+```javascript
+var Loggerize = require("../../lib/index.js");
+
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	handle: {
+		name: "myHandle", 
+		formatter: {
+			name: "myFormatter",
+			json: true,
+			fields: ["level", "message"],
+		},
+	}
+});
+
+logger.info("Log Message Test!");	//Output => '{"level":"info","message":"Log Message Test!"}'
 ```
 
 ### Tokens
@@ -340,31 +366,6 @@ For example to colorize only the message portion of the log output in a red font
 the formatter object.
 
 
-### JSON Serialization
-
-Loggerize can JSON serialization log output by setting the json property in 
-the formatter's configuration to `true` and declaring an array of tokens to 
-serialize in the fields property. The 'fields' property is required when using 
-JSON serialization. Activating JSON serialization implicityly tells the formatter 
-to ignore the format property (if set).
-
-```javascript
-var Loggerize = require("../../lib/index.js");
-
-let logger = Loggerize.createLogger({
-	name: "myLogger", 
-	handle: {
-		name: "myHandle", 
-		formatter: {
-			name: "myFormatter",
-			json: true,
-			fields: ["level", "message"],
-		},
-	}
-});
-
-logger.info("Log Message Test!");	//Output => '{"level":"info","message":"Log Message Test!"}'
-```
 
 
 
