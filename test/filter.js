@@ -18,7 +18,9 @@ describe("Manage Filters", function(){
 	
 	var server;
 	after(function(){
-		server.close();
+		if (server){
+			server.close();
+		}
 	});
 	
 	var predefinedFilters = [
@@ -156,7 +158,14 @@ describe("Manage Filters", function(){
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		let _filters = [logFilter];
 		
-		let actual = subject.runFilters.call(subject, mockLogRecord, _filters);
+		let context = {
+			"level": "debug",
+			"levelNum": 4,
+			"levelMapper": "npm",
+			"_filters": _filters,
+		};
+		
+		let actual = subject.runFilters.call(subject, mockLogRecord, context);
 		let expected = true;
 		assert.strictEqual(actual, expected);
 	});
@@ -170,8 +179,14 @@ describe("Manage Filters", function(){
 		
 		let _filters = [logFilter, logFilter2];
 		let mockLogRecord = {"level": "info", "message": "runFilters log test!"};
+		let context = {
+			"level": "debug",
+			"levelNum": 4,
+			"levelMapper": "npm",
+			"_filters": _filters,
+		};
 		
-		let actual = subject.runFilters.call(subject, mockLogRecord, _filters);
+		let actual = subject.runFilters.call(subject, mockLogRecord, context);
 		let expected = false;
 		assert.strictEqual(actual, expected);
 	});
