@@ -2,17 +2,18 @@
  
 var assert = require('assert');
 
-
 describe("Manage Levels", function() {
 	
 	var predefinedLevelMappers = ['npm', 'http', 'syslog', 'python', 'defcon'];
 	
 	let subject;
+	let loggerize;
 	beforeEach(function(){
 		delete require.cache[require.resolve('../lib/index.js')];
 		delete require.cache[require.resolve('../lib/logger.js')];
 		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
+		loggerize = require('../lib/index.js');
 	});
 	
 	
