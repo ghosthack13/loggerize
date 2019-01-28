@@ -114,28 +114,11 @@ logger.verbose("Logger Test!"); // outputs => 'verbose Logger Test!'
 logger.debug("Logger Test!");	// outputs => 'debug Logger Test!'
 ```
 
-### HTTP/Middleware Logging
+### HTTP Logging
 
-Loggerize natively supports logging request on both Node's standard HTTP server and 
-express/connect middleware. The below example uses a vanilla HTTP server and will 
-log all request to the console target using the Apache [combined](https://httpd.apache.org/docs/1.3/logs.html#combined ) log format.
-
-```javascript
-// @filename logger-http-vanilla.js
-var Loggerize = require("../../lib/index.js");
-	/* Finish Code Example */
-```
-
-Alternatively, one can log using express/connect middleware just as easily.
-
-```javascript
-// @filename logger-http-middleware.js
-var Loggerize = require("../../lib/index.js");
-	/* Finish Code Example */
-```
-
-Navigate your browser to http://localhost:3000/ and watch as log messages appear on the terminal.
-
+Loggerize seamlessly support HTTP logging alongside the standard application/progam
+logging. By default, http requests/responses are logged to the console target using the 
+Apache [combined](https://httpd.apache.org/docs/1.3/logs.html#combined ) log format.
 
 #### Split Request/Response Logging
 
@@ -152,7 +135,113 @@ log on both request and response. This configuration will however generate two
 log records with nearly identical log information.
 
 It is up to the user to decide which configuration will best suit their 
-circumstances.
+circumstances. To configure split logging, set the properties 
+`logOnRequest` and `logOnResponse` to `true` or `false` in the logger's 
+configuration.
+
+#### Vanilla HTTP Logging
+
+The below example shows how to use Loggerize to track requests and responses in 
+a vanilla HTTP server.
+
+```javascript
+// @filename logger-http-vanilla.js
+var http = require('http');
+
+var Loggerize = require('../../lib/index.js');
+
+var myHTTPLogger = Loggerize.createHTTPLogger({
+	"name": "myHTTPLogger",
+	"level": "information",
+	"handle": {
+		"name": "myHTTPHandle",
+		"target": "console",
+		"formatter": "common",
+		"levelMapper": "http",
+	}
+});
+
+const PORT = 3000;
+var server = http.createServer(function (req, res){
+	
+	myHTTPLogger.httpListener(req, res); // request/response logger
+	
+	res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.end('Hello World\n');
+}).listen(PORT);
+
+// Console will print the message
+console.log("Server listening on port " + PORT + "!");
+```
+
+Alternatively, one can use the convenience module-level function `requestListener` 
+and implant it directly into Node's [requestListener](https://nodejs.org/api/http.html#http_http_createserver_options_requestlistener).
+When using this convenience method, the logger in the example below automatically 
+defaults to the same configuration as explicitly defined in the example above.
+
+```javascript
+var http = require('http');
+
+var loggerize = require('../../lib/index.js');
+
+const PORT = 3000;
+var server = http.createServer(function (req, res){
+	
+	loggerize.requestListener(req, res); // request/response logger
+	
+	res.writeHead(200, {'Content-Type': 'text/plain'});
+	res.end('Hello World\n');
+}).listen(PORT);
+
+// Console will print the message
+console.log("Server listening on port " + PORT + "!");
+```
+
+Navigate your browser or any other web client to http://localhost:3000/ and watch 
+as log messages appear on the terminal.
+
+#### Express/Connect Middleware Logging
+
+Loggerize supports the creation of middleware loggers. Express/Connect loggers 
+can be conveniently created using a loggerize's special module-level `mw()` 
+middleware function.
+
+```javascript
+// @filename logger-express-1.js
+const express = require('express');
+const app = express();
+const PORT = 3000;
+
+var loggerize = require("../../lib/index.js");
+app.use(loggerize.mw());
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+app.listen(PORT, () => console.log("Example app listening on port " + PORT + "!"))
+```
+
+Alternatively, one can use the more familiar interface of creating an HTTP logger 
+then extracting the middleware function from the created logger. The above example 
+is a convenience function for the below.
+
+```javascript
+// @filename logger-express-2.js
+const express = require('express');
+const app = express();
+const PORT = 3000;
+
+var loggerize = require("../../lib/index.js");
+
+var httpLogger = loggerize.createHTTPLogger({name: "myHTTPLogger"});
+app.use(httpLogger.getMiddleware());
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+app.listen(PORT, () => console.log("Example app listening on port " + PORT + "!"))
+```
+
+Navigate your browser or any other web client to http://localhost:3000/ and watch 
+as log messages appear on the terminal.
 
 ### String Interpolation
 
