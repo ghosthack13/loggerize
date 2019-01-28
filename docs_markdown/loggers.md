@@ -3,26 +3,25 @@
 
 A Logger provides the mechanism by which incidents in your application/server 
 are recorded. These incidents may have various levels of severity from the 
-mundane such as recording of the webpage that was requested on a server to 
+mundane such as recording the webpage that was requested on a server to 
 the dire such as running out of hard disk space.
 
 ### Creating Loggers
 
 Loggers are never instantiated directly but through the module-level function 
 `createLogger()`. The only mandatory option that `createLogger` requires is a 
-name (either as a string or defined in an object).
+name (either as a string or defined in a config object).
 
 ```javascript
 // @filename logger-create.js
-var Loggerize = require("loggersize");
+var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger("myLogger");
 ```
 
 This example created a logger named "myLogger" by passing a plain text string 
 as the parameter. Loggers also support period-separated hierarchical names 
-such as 'foo.bar.baz'. See [Logger Hierarchy](#log-hierarchy) for more 
-information on hierachial loggers.
+such as 'foo.bar.baz'.
 
 For more fine-grained control over the type of logger created, the user can 
 pass a config object instead of a string as the parameter to `createLogger`. 
@@ -30,28 +29,28 @@ Valid configurations are shown in the table below.
 
 | Name          | Default								|  Description																	|
 | ------------- | ------------------------------------- | -----------------------------------------------------------------------------	|
-| 'name'       	| \<user defined>						| Required. The name of the logger instance									|
-| 'level'       | Not set or adopts level of attached handles	| Log only when severity is greater than or equal to this level					|
-| 'levelMapper' | Not set or adopts levelMapper of attached handles	| Defines valid log levels and thier order of severity (see [Level Mapper](#level-mapper))		|
-| 'handle'		| `["default"]`  					   	| List of handles to process log message through								|
-| 'hasHandles'  | `true`								| When false and the user did not define a handle, tell the logger not to attach the default handle as above							|
-| 'filters'     | `[]`									| List of filters attached to this logger										|
-| 'isMuted'     | `false`								| Determines if this logger is allowed to produce logs							|
-| 'propogate'	| `true`								| Pass logs to this loggers ancestors and the root logger (See [Logger Hierarchy](#log-hierarchy))	|
-| 'logOnRequest' | `false`								| Creates log on http requests (will *ONLY* have request information)			|
-| 'logOnResponse'| `true`								| Creates log on http response (will have *BOTH* request and repsonse information)|
+| name       	| \<user defined>						| Required. The name of the logger instance									|
+| level       	| Not set or adopts level of attached handles	| Log only when severity is greater than or equal to this level					|
+| levelMapper 	| Not set or adopts levelMapper of attached handles	| Defines valid log levels and their order of severity (see [Level Mapper](#level-mapper))		|
+| handle		| `["default"]` or `["defaultHTTP"]` 	| Array of handles to process log message through								|
+| hasHandles  	| `true`								| When false and the user did not define a handle, tell the logger not to attach the default handle as above							|
+| filters     	| `[]`									| List of filters attached to this logger										|
+| isMuted     	| `false`								| If true, the logger will not produce logs							|
+| propogate		| `true`								| Pass logs to this loggers ancestors and the root logger (See [Logger Hierarchy](#log-hierarchy))	|
+| logOnRequest 	| `false`								| Creates log on http requests (will *ONLY* have request information)			|
+| logOnResponse	| `true`								| Creates log on http response (will have *BOTH* request and repsonse information)|
 
 
 > **A logger's data members should NEVER be set or accessed directly, but always via 
 the logger's public API methods.**
 
-The defaults decribed in the table above ordains that calling 
+The defaults decribed in the table above implies that calling 
 `createLogger("myLogger")` with a text string is exactly the same as calling 
 `createLogger` with the config object seen below.
 
 ``` javascript
 // @filename logger-create-config.js
-var Loggerize = require("loggersize");
+var Loggerize = require("../../lib/index.js");
 
 Loggerize.createLogger({
 	"name": "myLogger",			//Defined by user
@@ -73,7 +72,7 @@ and a log `message` as the second parameter.
 
 ```javascript
 // @filename logger-log.js
-var Loggerize = require("loggersize");
+var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger("myLogger");
 logger.log("info", "Logger Test!"); // Outputs => 'info Logger Test!'
@@ -85,21 +84,27 @@ parameters passed to it and guess what you meant to have logged.
 
 ```javascript
 // @filename logger-log-any.js
+"use strict";
+
 var Loggerize = require("../../lib/index.js");
 let logger = Loggerize.createLogger("myLogger");
+
+console.log("\nLogging using non-standard input:");
+console.log("------------------------------");
 
 logger.log(new Error("Javascript Error Object!"));			// outputs => 'error Javascript Error Object!'. N.B. you have to define a formatter to output stack trace
 logger.log({"level": "warn", "message": "Logger Test!"});	// outputs => 'warn Logger Test!'
 logger.log("info", {"message": "Logger Test!"});			// outputs => 'info Logger Test!'
 logger.log("verbose", "Logger Test!");						// outputs => 'verbose Logger Test!'
-logger.log("debug");
+logger.log("debug");										// outputs => 'debug '
 ```
 
 All of the above are valid arguments that can be passed to `log`.
 Additionally, instead of using the standard `log`, Loggerize provides several 
-convenience methods which are called using the name of the severity level which 
-then accepts a log message as its parameter. Convenience methods also accept 
-javascripts objects and error objects just like the standard log API above.
+convenience methods which are called using the name of the severity level in place 
+of the `log` function. This function then accepts a log message as its parameter. 
+Convenience methods also accept javascripts objects and error objects just like 
+the standard log API above.
 
 ```javascript
 // @filename logger-log-convenience.js
@@ -116,19 +121,19 @@ logger.debug("Logger Test!");	// outputs => 'debug Logger Test!'
 
 ### HTTP Logging
 
-Loggerize seamlessly support HTTP logging alongside the standard application/progam
+Loggerize seamlessly supports HTTP logging alongside the standard application/progam
 logging. By default, http requests/responses are logged to the console target using the 
-Apache [combined](https://httpd.apache.org/docs/1.3/logs.html#combined ) log format.
+Apache [common](https://httpd.apache.org/docs/1.3/logs.html#common ) log format.
 
 #### Split Request/Response Logging
 
 Loggerize can log HTTP request on both request and response or only log on one 
-and not the other. By default Loggerize will log only on HTTP response. The HTTP 
+and not the other. By default Loggerize will log only on the HTTP response. The HTTP 
 repsonse will create a log with the most complete information.
 
-On the other hand if the logger config is set to log on request only, logs can 
-be written even if the server has an error though response information such as 
-`statusCode` and `contentLength` will not be available.
+On the other hand if the logger's config is set to log on request only, logs can 
+be written even if the server has an error. This has the caveat however, that 
+response information such as `statusCode` and `contentLength` will not be available.
 
 To achieve the most detail information with greater fault tolterance, one can 
 log on both request and response. This configuration will however generate two 
@@ -145,7 +150,7 @@ The below example shows how to use Loggerize to track requests and responses in
 a vanilla HTTP server.
 
 ```javascript
-// @filename logger-http-vanilla.js
+// @filename logger-http-1.js
 var http = require('http');
 
 var Loggerize = require('../../lib/index.js');
@@ -180,6 +185,7 @@ When using this convenience method, the logger in the example below automaticall
 defaults to the same configuration as explicitly defined in the example above.
 
 ```javascript
+// @filename logger-http-2.js
 var http = require('http');
 
 var loggerize = require('../../lib/index.js');
@@ -197,7 +203,7 @@ var server = http.createServer(function (req, res){
 console.log("Server listening on port " + PORT + "!");
 ```
 
-Navigate your browser or any other web client to http://localhost:3000/ and watch 
+Navigate your browser or any other web client to [http://localhost:3000](http://localhost:3000/) and watch 
 as log messages appear on the terminal.
 
 #### Express/Connect Middleware Logging
@@ -240,7 +246,7 @@ app.get('/', (req, res) => res.send('Hello World!'))
 app.listen(PORT, () => console.log("Example app listening on port " + PORT + "!"))
 ```
 
-Navigate your browser or any other web client to http://localhost:3000/ and watch 
+Navigate your browser or any other web client to [http://localhost:3000](http://localhost:3000/) and watch 
 as log messages appear on the terminal.
 
 ### String Interpolation
