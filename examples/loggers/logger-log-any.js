@@ -10,4 +10,4 @@ logger.log(new Error("Javascript Error Object!"));			// outputs => 'error Javasc
 logger.log({"level": "warn", "message": "Logger Test!"});	// outputs => 'warn Logger Test!'
 logger.log("info", {"message": "Logger Test!"});			// outputs => 'info Logger Test!'
 logger.log("verbose", "Logger Test!");						// outputs => 'verbose Logger Test!'
-logger.log("debug");
+logger.log("debug");										// outputs => 'debug '
