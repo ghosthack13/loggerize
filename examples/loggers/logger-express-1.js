@@ -1,4 +1,10 @@
-const express = require('express');
+try{
+	var express = require('express');
+}
+catch(err){
+	console.log("The example in logger-express-1.js requires the express module.\nInstall express using: npm i express");
+}
+
 const app = express();
 const PORT = 3000;
 
