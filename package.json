@@ -1,31 +1,37 @@
 {
-  "name": "logger",
-  "private": true,
-  "version": "0.0.0",
-  "description": "One logger to rule them all.",
-  "main": "index.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "dependencies": {
-    "chai": "^4.2.0",
-    "express": "^4.16.4",
-    "jshint": "^2.9.7",
-    "jslint": "^0.12.0",
-    "morgan": "^1.9.1",
-    "proxyquire": "^2.1.0",
-    "sinon": "^7.2.2",
-    "winston": "^3.1.0"
-  },
-  "devDependencies": {
-    "eslint": "^5.12.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "mocha": "^5.2.0"
-  },
-  "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec"
-  },
-  "author": "daniel",
-  "license": "ISC"
+	"name": "loggerize",
+	"version": "0.1.0",
+	"description": "A Universal Logger for Application and HTTP/Middleware",
+	"keywords": ["log", "logger", "logging", "winston", "morgan"],
+
+	"homepage": "https://github.com/ghosthack13/loggerize#README",
+	"bugs": "https://github.com/ghosthack13/loggerize/issues",
+	"repository": {
+		"type" : "git",
+		"url" : "https://github.com/ghosthack13/loggerize.git"
+	},
+
+	"main": "./lib/index.js",
+	"scripts": {
+		"lint": "./node_modules/.bin/eslint './lib/*'",
+		"test": "./node_modules/.bin/mocha --reporter spec"
+	},
+	"directories": {
+		"lib": "lib"
+	},
+	
+	"devDependencies": {
+		"eslint": "^5.12.0",
+		"eslint-plugin-import": "^2.14.0",
+		"mocha": "^5.2.0"
+	},
+	
+	"engines": {
+		"node": ">= 6.0.0",
+		"npm": ">= 3.0.0"
+	},
+	
+	"author": "Ghost <13hackghost@gmail.com>",
+	"license": "GPL",
+	"private": true
 }
