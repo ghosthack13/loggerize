@@ -4,13 +4,7 @@ let logger = Loggerize.createLogger({
 	name: "myLogger",
 	handle: {
 		name: "myHandle",
-		formatter: {
-			name: "myFormatter",
-			// style: "bgcyan",
-			// level: { style: "blue" },
-			uuid: { style: "red" },
-			format: "%{timestamp} %{level} %{message}"
-		}
+		formatter: "simple",
 	},
 });
 

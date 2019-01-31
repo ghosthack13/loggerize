@@ -1,4 +1,4 @@
-var Loggerize = require("../lib/index.js");
+var Loggerize = require("../../lib/index.js");
 
 Loggerize.addTokens({
 	"label": "TestLabel:"
@@ -14,6 +14,5 @@ let logger = Loggerize.createLogger({
 		},
 	}
 });
-
 
 logger.info("Log Message Test!");	//Output => 'TestLabel: info Log Message Test!'

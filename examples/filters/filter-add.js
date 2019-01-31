@@ -17,4 +17,4 @@ logger.attachFilter("limit", filterOpts);
 logger.info("1st Log Message Test!");	//Output => 'info 1st Log Message Test!'
 logger.info("2nd Log Message Test!");	//Output => 'info 2nd Log Message Test!'
 logger.info("3rd Log Message Test!");	//Output => 'info 3rd Log Message Test!'
-logger.info("4th Log Message Test!");	//No Output - Messages are filtered
+logger.info("4th Log Message Test!");	//No Output - Current and subsequent messages are filtered
