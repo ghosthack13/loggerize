@@ -12,7 +12,7 @@ let logger = Loggerize.createLogger({
 });
 
 logger.on("error", function(err, logRecord){
-	console.log("Handling Error on logger\n", logRecord);
+	console.log(err);
 });
 
 logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
