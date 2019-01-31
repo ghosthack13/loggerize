@@ -3,38 +3,38 @@
 Formatters dictate how a log output should look when it is written to the desired 
 target. A formatter is responsible for converting data from the logRecord to an 
 output string which can be interpreted by a human or an external system. This 
-output string is saved as a property in the logRecord called output.
+output string is saved as a property in the logRecord called 'output'.
 
 ### Predefined Formatters
 
 For your convenience Loggerizes ships with several built in formatters. Thses 
 formatters cannot be altered or removed.
 
-**default** - Basic Formatter
+**default** - A Basic Formatter
 ```javascript
-"%{level} %{message}"
+'%{level} %{message}'
 // E.g. "info Log Message Test!"
 ```
 
-**simple** - Basic Formatter with timestamp
+**simple** - A Basic Formatter with timestamp
 ```javascript
-"%{timestamp} %{level} %{message}"
+'%{timestamp} %{level} %{message}'
 // E.g. "22 Jan 2020 15:11:31 -0600 info Log Message Test!"
 ```
 
-**exceptFmt** - Exception Formatter (**N.B.** %\{stack} starts on a new line)
+**exceptFmt** - An Exception Formatter (**N.B.** %\{stack} starts on a new line)
 ```javascript
-"%{timestamp} %{level} (%{errorName}) %{message} %{stack}"
+'%{timestamp} %{level} (%{errorName}) %{message} %{stack}'
 ```
 
-**common** - Standard Apache common log output.
+**common** - The Standard Apache common log output formatter.
 ```javascript
-"%{remoteIPv4} %{RFC1413identity} %{user} [%{timestamp}] "%{method} %{path} %{protocol}/%{version}" %{statusCode} %{res.contentLength}"
+'%{remoteIPv4} %{RFC1413identity} %{user} [%{timestamp}] "%{method} %{path} %{protocol}/%{version}" %{statusCode} %{res.contentLength}'
 ```
 
-**combined** - Standard Apache combined log output.
+**combined** - The Standard Apache combined log output formatter.
 ```javascript
-"%{remoteIPv4} %{RFC1413identity} %{user} [%{timestamp}] "%{method} %{path} %{protocol}/%{version}" %{statusCode} %{res.contentLength} %{referer} %{userAgent}"
+'%{remoteIPv4} %{RFC1413identity} %{user} [%{timestamp}] "%{method} %{path} %{protocol}/%{version}" %{statusCode} %{res.contentLength} %{referer} %{userAgent}'
 ```
 
 ### Using Formatters
@@ -61,14 +61,14 @@ logger.info("Log Message Test!");	//Output => '22 Jan 2019 16:59:16 -0400 info L
 
 ### Creating Formatters
 
-For users who desire more flexibility, Loggerize allows the option to create custom 
-formatters with unlimited possibilities from json serialization, console colorization, 
-output transformers and more.
+For users who desire more flexibility, Loggerize allows the option to create 
+custom formatters with unlimited possibilities from json serialization, 
+console colorization, output function transformation and more.
 
 #### Creating Formatters On-The-Fly
 
-Formatters can be created and added on-the-fly by defining the formatter directly 
-on the handle. Every formatter configuration requires a name.
+Formatters can be created and added on-the-fly by defining the formatter 
+directly on the handle. Every formatter configuration requires a name.
 
 ```javascript
 // @filename formatter-onthefly.js
@@ -90,15 +90,15 @@ logger.info("Log Message Test!");	//Output => 'info myLogger Log Message Test!'
 ```
 
 Formatters can use the `format` field to define how the log output should look 
-when written to a target. The above example's format says to output the serverity 
-level, logger name and log message with each log output.
+when written to a target. The above example's format says to output the 
+serverity level, logger name and log message with each log output.
 
 #### Creating Formatters on the Module
 
-Formatters can be created using the module-level function `addFormatter` and set 
-via the formatter field on any handle. In fact, the 
-[on-the-fly](#creating-formatters-on-the-fly) method above is just a wrapper for 
-this method for creating formatters.
+Formatters can be created using the module-level function `addFormatter` and 
+set via the formatter field on any handle. In fact, the 
+[on-the-fly](#creating-formatters-on-the-fly) method above is just a wrapper 
+for this method for creating formatters.
 
 ```javascript
 // @filename formatter-addFormatter.js
@@ -129,6 +129,7 @@ serialize in the fields property. The 'fields' property is required when using
 JSON serialization.
 
 ```javascript
+// @filename formatter-json.js
 var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger({
@@ -148,32 +149,36 @@ logger.info("Log Message Test!");	//Output => '{"level":"info","message":"Log Me
 
 ### Tokens
 
-Formatters conveniently add commonly used log information to the log output via the use of `tokens`. 
-Tokens can be thought of as placeholders that determine where a substitution should occur in the `format` 
-property. The above example used three tokens: `level`, `levelNum` and `message`. Loggerize utilizes 
-%-style mapping keys to indicate that the string should be interpreted as a token to be substituted. Hence 
-`%{message}` tells the formatter to substitute `%{message}` with the given log message. Tokens can be mixed with 
-normal string text within the format property as shown where `(Severity: %{levelNum})` only replaces `%{levelNum}` 
-with the severity level of 2 while leaving its preceding text unchanged.
+Formatters conveniently add commonly used log information to the log output via 
+the use of `tokens`. Tokens can be thought of as placeholders that determine 
+where a substitution should occur in the `format` property. The above example 
+used three tokens: `level`, `levelNum` and `message`. Loggerize utilizes %-style 
+mapping keys to indicate that the string should be interpreted as a token to be 
+substituted. Hence `%{message}` tells the formatter to substitute `%{message}` 
+with the given log message. Tokens can be mixed with normal string text within 
+the format property as shown where `(Severity: %{levelNum})` only replaces 
+`%{levelNum}` with the severity level of 2 while leaving its preceding text 
+unchanged.
 
 #### Token List
 
-Loggerize provides several tokens that can be used within the format property. Predefined tokens cannot be overridden.
+Loggerize provides several tokens that can be used within the format property.
 
-See table below for common application tokens. Application tokens are also valid in logging HTTP requests/responses.
+The table below shows common tokens used for logging applications. Application 
+tokens are also valid in logging HTTP requests/responses.
 
 | Token 	| Description										|
 |---------- | ---------------------------------------------- |
 | level		| Alphabetical name of the severity level |
 | levelNum	| Numeric value of the severity level |
 | message	| The logged message |
-| timestamp	| The date/time point the log was created as returned from Date().toLocaleString()  |
-| uuid		| A Universally Unique Identifier in [RFC4122](http://www.ietf.org/rfc/rfc4122.txt) format |
+| timestamp	| A timestamp as defined by [RFC3339](https://www.ietf.org/rfc/rfc3339.txt ) |
+| uuid		| A Universally Unique Identifier in [RFC4122](http://www.ietf.org/rfc/rfc4122.txt ) format |
 | loggerName | The name of the logger that created the log output |
 
 
-See table below for common HTTP/Middleware tokens. HTTP/Middleware tokens are only valid for logging
-HTTP requests/responses.
+The table below shows common HTTP/Middleware tokens. HTTP/Middleware tokens are 
+only valid for logging HTTP requests/responses.
 
 | Token 	| Example | Description									|
 |---------- | ------- |------------------------------------------------ |
@@ -192,17 +197,20 @@ HTTP requests/responses.
 | levelGroup	| 'client error'| The severity group to which the status code belongs	|
 | levelGroupNum	| 400 | The severity value that indicates the start of the group to which the status code belongs |
 | responseTime	| '231 ms' | The period between when a request is received and a response is sent |
-| req.contentLength	| 254 | The size of the payload sent with the request		|
+| req.contentLength	| 254 | The size of the content received with the request		|
 | res.contentLength	| 4627 |The size of the payload sent with the response		|
 
 
 #### User-Defined Tokens
 
-In addition to the built in tokens, Loggerize allows for the creation of user defined tokens as well.
-Tokens are added using the module-level function `addTokens` which accepts a Javascript object which 
-defines the name of the token and the value of the token.
+In addition to the built in tokens, Loggerize allows for the creation of user 
+defined tokens as well. Tokens are added using the module-level function 
+`addTokens` which accepts a Javascript object which defines the name of the 
+token and the value of the token. Predefined tokens listed above cannot be 
+overridden.
 
 ```javascript
+// @filename formatter-addToken.js
 var Loggerize = require("../lib/index.js");
 Loggerize.addTokens({
 	"label": "TestLabel:"
@@ -224,11 +232,13 @@ logger.info("Log Message Test!");	//Output => 'TestLabel: info Log Message Test!
 
 #### Token Modifiers
 
-Token Modifiers change how individual tokens are handled before they are substituted 
-into the final log output. All tokens can be modified using the `style` option and the 
-`transformer`. See Colors & Style as well as transformers for more details. To set a token 
-modifier simply put the name of the token as a property in the formatter definition with modifications 
-defined as a standard Javascript Object
+Token Modifiers change how individual tokens are handled before they are 
+substituted into the final log output. All tokens can be modified using the 
+`style` option and the `transformer` option. See 
+[Styling Output](styling-output) as well as [transformers](#transformers) 
+for more details. To set a token modifier simply put the name of the token as a 
+property in the formatter definition with modifications defined as a standard 
+Javascript Object.
 
 ```javascript
 var Loggerize = require("../lib/index.js");
@@ -253,12 +263,13 @@ logger.attachHandles({
 logger.info("Log Message Test!");	//Output => '2019-01-14T01:05:32.074Z info Log Message Test!'
 ```
 
-The above example causes the log message to be written to the console in a red font.
-Additionally some tokens have unique modifiers. `timestamp` is one such example.
-Using the token modifier `timestamp: {"pattern": "ISO"}` in a formatter will cause the 
-the timestamp to output in ISO format. `timestamp` can also be modified using fine-grain 
-pattern directives. For example, to output only the time in the `timestamp`, one can use the following pattern 
-directive: `timestamp: {"pattern": "%H:%M:%S"}`.
+The above example causes the log message to be written to the console in a red 
+font. Additionally some tokens have unique modifiers. `timestamp` is one such 
+example. Using the token modifier `timestamp: {"pattern": "ISO"}` in a 
+formatter will cause the the timestamp to output in ISO format. `timestamp` can 
+also be modified using fine-grain [Date/Time Directives](#date-time-directives). 
+For example, to output only the time portion of the `timestamp`, one can use 
+the following pattern directive: `timestamp: {"pattern": "%H:%M:%S"}`.
 
 ### Date/Time Directives
 
@@ -286,11 +297,15 @@ can be used in the `fileNamePattern` of the `rotatingFile` (interval) target.
 
 ### Color Specifications
 
-Loggerize supports basic ANSI terminal stylers which allows the font and the background to be modified 
-according to various specifications. Loggerize uses [chalk](https://github.com/chalk/chalk) style directives.
+Loggerize supports basic ANSI terminal stylers which allows the font and the 
+background to be modified according to various specifications. Loggerize uses 
+[chalk](https://github.com/chalk/chalk) style directives.
 
-Font styles: 
+Font Styles: 
 > `bold, dim, italic, underline, inverse, hidden, strikethrough`
+
+**Note** Font styles are not widely supported in terminals and it is very likely 
+that your terminal actually will not support most of the font styles listed above.
 
 Font Colors: 
 > `black, red, green, yellow, blue, magenta, cyan, white`
@@ -298,24 +313,33 @@ Font Colors:
 Font Colors (Bright):
 > `gray/grey ("brightblack"), redBright, greenBright, yellowBright, blueBright, magentaBright, cyanBright, whiteBright`
 
-Background colors: 
+Background Colors: 
 >`bgBlack, bgRed, bgGreen, bgYellow, bgBlue, bgMagenta, bgCyan, bgWhite`
 
-Background colors (Bright): 
+Background Colors (Bright): 
 >`bgBlackBright, bgRedBright, bgGreenBright, bgYellowBright, bgBlueBright, bgMagentaBright, bgCyanBright, bgWhiteBright`
 
 
 ### Setting Level Colors
 
-When viewing log levels on the console it advantageous be able to easily determine the severity of a log event.
-Loggerize provides such a facility via colorized log levels. To activate log level colors simply call the module-level 
-function `colorizeLevels()`. This will assign default colors to each severity level.
-`colorizeLevels()` also accepts user defined color mappings by passing a color map as the first parameter.
+When viewing log levels on the console it is advantageous be able to easily 
+determine the severity of a log event. Loggerize provides such a facility via 
+colorized log levels. To activate log level colors simply call the module-level 
+function `colorizeLevels()`. This will assign default colors to each severity 
+level. `colorizeLevels()` also accepts user defined color mappings by passing 
+a color map as the first parameter.
 
 ```javascript
-var Loggerize = require("../lib/index.js");
+// @filename formatter-colorizelevels.js
+var Loggerize = require("../../lib/index.js");
 
-let logger = Loggerize.createLogger({name: "myLogger"});
+let logger = Loggerize.createLogger({
+	name: "myLogger",
+	handle: {
+		name: "myHandle",
+		formatter: "simple",
+	},
+});
 
 var colorMap = {
 	"error": 	"redBright", 
@@ -333,17 +357,19 @@ logger.log("verbose", "Color Coded Log Message");
 logger.log("debug", "Color Coded Log Message");
 ```
 
-The `colorMap` defined above is identical to the default color map used if `colorizeLevels()` is called 
-without passing any parameters.
+The `colorMap` defined above is identical to the default color map used if 
+`colorizeLevels()` is called without passing any parameters.
 
-If you decide that you no longer want to use level colors, simply call the `decolorizeLevels()` module-level 
-function.
-
+If you decide that you no longer want to use level colors, simply call the 
+`decolorizeLevels()` module-level function.
 
 ### Styling Output
 
-A font color can be applied to the entire log output by declaring a `style` field on the formatter object.
+A font color can be applied to the entire log output by declaring a `style` 
+field on the formatter object.
+
 ```javascript
+// @filename formatter-style-output.js
 var Loggerize = require("../lib/index.js");
 
 let logger = Loggerize.createLogger({
@@ -361,28 +387,37 @@ let logger = Loggerize.createLogger({
 logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 ```
 
-If you prefer to style individual tokens, the `style` field is a also valid [token modifier](#token-modifiers).
-For example to colorize only the message portion of the log output in a red font, add `message: {style: "red"}` in 
-the formatter object.
+The above will print the log output to the console with a blue background, 
+underline and with a yellow font.
 
+If you prefer to style individual tokens, the `style` field is a also valid 
+[token modifier](#token-modifiers). For example to underline the severity 
+level and set the message in a yellow font with a blue background, modify 
+the tokens as follows.
 
+```javascript
+// @filename formatter-style-token.js
+var Loggerize = require("../../lib/index.js");
 
+let logger = Loggerize.createLogger({
+	name: "myLogger", 
+	handle: {
+		name: "myHandle", 
+		formatter: {
+			name: "myFormatter",
+			level: {
+				style: ["underline"],
+			},
+			message: {
+				style: "bgblue yellowbright",
+			},
+			format: "%{level} %{message}",
+		},
+	}
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
+```
 
 
 

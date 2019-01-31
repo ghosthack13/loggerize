@@ -2,16 +2,16 @@
 ## Filters
 
 Filters provide a finer grained facility for determining which logs to output. 
-Filters can be attached to loggers or defined on handles. Currently Loggerize 
-has one built in filter, the regex filter, that operates on the message portion 
-of the logRecord. 
+Filters can be attached to loggers or handles.  An unlimited number of filters 
+can be attached to loggers/handles.Currently Loggerize has one built in filter 
+(more coming soon), the regex filter, that operates on the log message.
 
 ### Logger Attached Filters
 
 To use a filter on a logger we use the `attachFilter()` logger function which 
 takes two parameters. The first parameter is the name of the filter while the 
-second parameter is the filter config object which defines how the filter should 
-behave. Let's look at an example using the built in `regex` filter.
+second parameter is the filter's config object which defines how the filter 
+should behave. Let's look at an example using the built in `regex` filter.
 
 ```javascript
 // @filename filter-logger.js
@@ -20,14 +20,14 @@ var Loggerize = require("../../lib/index.js");
 let logger = Loggerize.createLogger("myLogger");
 logger.attachFilter("regex", {"pattern": /.+filter me.+/i, "onMatch": "deny"});	//Set severity to the 'warn' level (numeric severity == 1). Uses the npm levelMapper by default
 
-logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 logger.info("Please filter Me. I don't want to be logged.");	//No Output
+logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 ```
 
 In this case we attached the regex filter and defined a pattern using Javascript's 
 regex format to conduct a case-insensitive test for the phrase 'filter me' anywhere 
 in the log message. We told the regex filter to "deny" (case-sensitive) any log 
-that matches the target message.
+that matches the designated pattern.
 
 ### Handle Attached Filters
 
@@ -37,7 +37,6 @@ filtered instead of having to attach the same filter to multiple loggers.
 
 ```javascript
 // @filename filter-handle.js
-
 var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger({
@@ -57,6 +56,10 @@ logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 logger.info("Please filter Me. I don't want to be logged.");	//No Output
 ```
 
+The above examples attaches the regex filter to the handle using by setting a 
+filter config object on the filter property of the handle. The filter config 
+comprises the name of the filter and an object defining its settings.
+
 ### User-Defined Filters (Advance)
 
 Advance users who wish to add their own custom filters can do so very easily 
@@ -66,13 +69,13 @@ the name of the filter and a function definition that does the filtering.
 #### Using Custom Filters on Logger
 
 The below example creates a user-defined filter that sets the maximum number 
-of messages that are allowed to be log. This filter sets two options: 
+of messages that are allowed to be output. This filter sets two options: 
 'threshold' is the maximum number of messages to keep while 'numLogs' 
 represents the current count of log messages and requires an initial number 
 in this specific implementation.
 
 ```javascript
-
+// @filename filter-add.js
 var Loggerize = require("../../lib/index.js");
 Loggerize.addFilter("limit", function(logRecord){
 	++this.numLogs;
@@ -91,7 +94,7 @@ logger.attachFilter("limit", filterOpts);
 logger.info("1st Log Message Test!");	// Output => 'info 1st Log Message Test!'
 logger.info("2nd Log Message Test!");	// Output => 'info 2nd Log Message Test!'
 logger.info("3rd Log Message Test!");	// Output => 'info 3rd Log Message Test!'
-logger.info("4th Log Message Test!");	// No Output - Messages are filtered
+logger.info("4th Log Message Test!");	//No Output - Current and subsequent messages are filtered
 ```
 
 Filters created using the module-level `addFilter` are available to all loggers.
@@ -126,7 +129,7 @@ let logger = Loggerize.createLogger({
 logger.info("1st Log Message Test!");	//Output => 'info 1st Log Message Test!'
 logger.info("2nd Log Message Test!");	//Output => 'info 2nd Log Message Test!'
 logger.info("3rd Log Message Test!");	//Output => 'info 3rd Log Message Test!'
-logger.info("4th Log Message Test!");	//No Output - Messages are filtered
+logger.info("4th Log Message Test!");	//No Output - Current and subsequent messages are filtered
 ```
 
 This example highlights Loggerize's **state aware** filter technology that 
