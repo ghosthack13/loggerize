@@ -24,16 +24,15 @@ enough satisfy even the most demanding and experienced coder.
 
 ## Installation
 
-`npm -i loggerize`
+`npm i loggerize`
 
 ## Testing
 
-`npm test`
+Unit test with mocha: `npm test`
 
-/path/to/bin/mocha
+Lint with eslint: `npm run lint`
 
 ## Overview
-
 
 
 ## Table of Contents
