@@ -857,7 +857,7 @@ describe("Set Default Handle Options", function() {
 			"host": "example.com",
 			"port": 80,
 			"headers": {"User-Agent": "Remote Logger"},
-			
+			"allowInsecure": false,
 			"url": "http://example.com/test?apikey=1234567890",
 		};
 		
@@ -871,6 +871,7 @@ describe("Set Default Handle Options", function() {
 			"target": 'http',
 			"url": "http://example.com:80/test?apikey=1234567890",
 			"port": 3000,
+			"allowInsecure": true,
 		};
 		
 		subject.setHandleDefaults(opts);
@@ -891,6 +892,7 @@ describe("Set Default Handle Options", function() {
 			"port": 3000,
 			"headers": {"User-Agent": "Remote Logger"},
 			
+			"allowInsecure": true,
 			"url": "http://example.com:80/test?apikey=1234567890",
 		};
 		
@@ -904,7 +906,8 @@ describe("Set Default Handle Options", function() {
 			"target": 'http',
 			"url": "http://example.com:80/test?apikey=1234567890",
 			"port": 3000,
-			"headers": {"User-Agent": "myAgent"}
+			"headers": {"User-Agent": "myAgent"},
+			"allowInsecure": true,
 		};
 		
 		subject.setHandleDefaults(opts);
@@ -925,6 +928,7 @@ describe("Set Default Handle Options", function() {
 			"port": 3000,
 			"headers": {"User-Agent": "myAgent"},
 			
+			"allowInsecure": true,
 			"url": "http://example.com:80/test?apikey=1234567890",
 		};
 		
@@ -958,6 +962,7 @@ describe("Set Default Handle Options", function() {
 			"port": 443,
 			"headers": {"User-Agent": "myAgent"},
 			
+			"allowInsecure": false,
 			"url": "https://example.com/test?apikey=1234567890",
 		};
 		
