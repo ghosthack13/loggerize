@@ -17,4 +17,3 @@ Loggerize.addExceptionHandle({
 
 // Run some server code
 throw Error();
-// Run some more server code

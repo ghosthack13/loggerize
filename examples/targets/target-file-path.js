@@ -4,11 +4,11 @@ let logger = Loggerize.createLogger({
 	name: "myLogger",
 	handle: {
 		name: "myHandle",
-		path: './logs/filelogtest.log',
+		path: './logdir/filelogtest.logext',
 		// target: "file",			//target is set to 'file' by default if path is set w/o rotation options
-		// directory: './logs/',	//directory is deduced based on the path that is set
+		// directory: './logdir/',	//directory is deduced based on the path that is set
 		// fileName: 'filelogtest',	//fileName is deduced based on the path that is set
-		// fileExtension: '.log'	//fileExtension is deduced based on the the fileName that is based on the path that is set
+		// fileExtension: '.logext'	//fileExtension is deduced based on the the fileName that is based on the path that is set
 	}
 });
 

@@ -4,10 +4,10 @@ let logger = Loggerize.createLogger({
 	name: "myLogger",
 	handle: {
 		name: "myHandle",
-		target: "file",	//Set target to file
-		// directory: './logs/',	//Default directory as current directory
-		// fileName: 'target-file', //Default fileName from source
-		// fileExtension: '.log',   //Default fileExtension
+		target: "file",			 //Set target to file
+		directory: './logs/',	 //Explicitly set to what would be the default
+		fileName: 'target-file', //Explicitly set to what would be the default
+		fileExtension: '.log',   //Explicitly set to what would be the default
 	}
 });
 
