@@ -1,17 +1,16 @@
 ## TARGETS
 
-Targets are the destinations where the logRecord will be written. Loggerize's 
+Targets are the destinations where the log output will be written. Loggerize's 
 predefined targets comprise: `console`, `file`, `rotatingFile` (interval/size), 
-and `http`. Targets are defined on handles and that handle *manages* what 
-properties the target will have.
+and `http`. Targets are set on handles using the target property and that handle 
+*manages* what properties the target will have.
 
 ### Console Target
 
-The console targets is the simplest. When set, the logger will send log output 
-to the console.
+To send log output to the terminal, set the target property to 'console'.
 
 ```javascript
-// @filename targe-console.js
+// @filename target-console.js
 var Loggerize = require("../../lib/index.js");
 
 let logger = Loggerize.createLogger({
@@ -30,7 +29,8 @@ logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 The file target writes output to a standard text file. If the save location is 
 not explicitly set, Loggerize will automatically define properties such as 
 directory and filename according to standard programming conventions. See the 
-table below for config options available on the handle when using the file target.
+table below for additonal config options available on the handle when using the 
+file target.
 
 #### File Target Configuratons
 
@@ -39,7 +39,12 @@ table below for config options available on the handle when using the file targe
 | directory 	| './logs/' 			| Directory in which to store log files	|
 | fileName		| Source file name		| Name of the file without extension	|
 | fileExtension	| '.log' or extension of file if fileName explicitly defined | The last period '.' and subsequent characters of the filename |
-| path 			| Not Set 				|Set the directory, fileName, and fileExtension all in one go |
+| path 			| Not Set (and not needed)	|Set the directory, fileName, and fileExtension all in one go |
+
+The example below configures a handle with a target set to 'file'. The example 
+also explicitly sets the directory, fileName and fileExtension though they are 
+not needed as it would have been set to the same values by default if not 
+explicitly stated.
 
 ```
 // @filename target-file.js
@@ -49,20 +54,21 @@ let logger = Loggerize.createLogger({
 	name: "myLogger",
 	handle: {
 		name: "myHandle",
-		target: "file",	//Set target to file
-		// directory: './logs/',	//Default directory as current directory
-		// fileName: 'target-file', //Default fileName from source
-		// fileExtension: '.log',   //Default fileExtension
+		target: "file",			 //Set target to file
+		directory: './logs/',	 //Explicitly set to what would be the default
+		fileName: 'target-file', //Explicitly set to what would be the default
+		fileExtension: '.log',   //Explicitly set to what would be the default
 	}
 });
 
 logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 ```
 
-Loggerize tries to guess your intention and the file target will try to guess them as follows
+When file configurations are not explicitly set, Loggerize tries to guess your 
+intentions as follows:
 1. 	If the `directory` is not explicitly set it will default to the a directory called 'logs' 
 	in the current working directory
-2. If the `fileName` is not set, it will default to the file name of the main proces
+2. If the `fileName` is not set, it should default to the file name of the source file.
 3. If the `fileExtension` is not explicitly set Loggerize will default it as follows:
 	- If `fileName` *is* set *with* an extension, `fileExtension` will default to 
 		the extension on the `fileName`
@@ -80,11 +86,11 @@ let logger = Loggerize.createLogger({
 	name: "myLogger",
 	handle: {
 		name: "myHandle",
-		path: './logs/filelogtest.log',
+		path: './logdir/filelogtest.logext',
 		// target: "file",			//target is set to 'file' by default if path is set w/o rotation options
-		// directory: './logs/',	//directory is deduced based on the path that is set
+		// directory: './logdir/',	//directory is deduced based on the path that is set
 		// fileName: 'filelogtest',	//fileName is deduced based on the path that is set
-		// fileExtension: '.log'	//fileExtension is deduced based on the the fileName that is based on the path that is set
+		// fileExtension: '.logext'	//fileExtension is deduced based on the the fileName that is based on the path that is set
 	}
 });
 
@@ -114,9 +120,9 @@ file (interval) target.
 | rotateDay	 	| 'Sunday'		 		| Day on which to rotate if interval is set to 'week' |
 | directory 	| './logs/' 			| The directory in which to store log files	|
 | fileName		| Name of source file	| The name of the file without extension	|
-| fileNamePattern | Not Set		 		| A fine-grained pattern to name the log file. Supports [Date/Time Directives](#date-time-directives)	|
 | fileExtension	| '.log' or extension of file if fileName explicitly defined | The last period '.' and subsequent characters of the filename |
 | path 			| Not Set 				| Can be used to set directory, fileName, and fileExtension in one line	|
+| fileNamePattern | Not Set		 		| A fine-grained pattern to name the log file. Supports [Date/Time Directives](#date-time-directives)	|
 
 ```javascript
 // @filename target-rotatefile-interval.js
@@ -138,12 +144,11 @@ let logger = Loggerize.createLogger({
 logger.info("Log Message Test!");	//Output => 'info Log Message Test!'
 ```
 
-The default interval period is every day at 12:00 a.m. local time.
-Valid rotation intervals comprise: "year", "month", "day", "hour", "minute", "second".
-The rotatingFile target will append the date before the file extension in the form,
-'fileName_Year_Month_Date_HOUR_MINUTE_SECOND.log'. Hence if the current date is 
-January 20th, 2030, and the `fileName` is called 'test', the file produced will 
-be 'test_2030_01_20.log'.
+The default interval period is every day at 12:00 a.m. local time. 
+The rotatingFile target will append the date before the file extension in the 
+form, \<filename>\_\<year>\_\<month>\_\<date>\_\<hour>\_\<minute>\_\<second>.log
+Hence if the current date is January 20th, 2030, and the `fileName` is called 
+'test' that is rotated by day, the file produced will be 'test_2030_01_20.log'.
 
 Additionally the rotatingFile target allows fine-grained `fileNamePattern`s. 
 The above example can be thought to be using the `fileNamePattern` defined by 
@@ -156,7 +161,7 @@ Alternatively, the `fileNamePattern` could have defined as
 "%\{fileName}-%Y-%b%\{fileExtension}" which would have produced 
 a file called 'target-rotatefile-interval-2030-Jan.log'. 
 
-#### Rotating File (size) Configuratons
+#### Rotating File (Size) Configuratons
 
 Loggerize supports rotating files by size. The table below displays the options 
 available when using the rotating file (size) target.
@@ -168,9 +173,9 @@ available when using the rotating file (size) target.
 | maxFiles	 	| `Number.POSITIVE_INFINITY`| Designates the maximum number of log files that will exists |
 | directory 	| './logs/' 			| The directory in which to store log files	|
 | fileName		| Name of source file	| The name of the file without extension	|
-| fileNamePattern | Not Set		 		| A fine-grained pattern to name the log file. Supports [Date/Time Directives](#date-time-directives)	|
 | fileExtension	| '.log' or extension of file if fileName explicitly defined | The last period '.' and subsequent characters of the filename |
 | path 			| Not Set 				| Can be used to set directory, fileName, and fileExtension in one line	|
+| fileNamePattern | Not Set		 		| A fine-grained pattern to name the log file. Supports [Date/Time Directives](#date-time-directives)	|
 
 ```javascript
 // @filename target-rotatefile-size.js
@@ -214,15 +219,16 @@ Alternatively the property `fileNamePattern` could have been added to the handle
 
 **Note:** 
 
-If maxSize or maxFiles are left undefined when rotating by size, these values will default 
-to `Number.POSITIVE_INFINITY`. Not setting maxSize/maxFiles thus effectively causes the rotatingFile target
-to behave exactly like the standard [File Target](#file-target).
+If maxSize is not explicitly set when rotating by size, it will default to 
+`Number.POSITIVE_INFINITY`. Not setting maxSize thus effectively causes the 
+rotatingFile target to behave exactly like the standard [File Target](#file-target).
 
 
 ### HTTP Target
 
-Loggerize supports sending logRecords to HTTP(S) servers across a local network or across the internet.
-See the table below for options available when using the HTTP target.
+Loggerize supports sending log data to HTTP(S) servers across a local network 
+or across the internet. See the table below for options available when using 
+the HTTP target.
 
 #### HTTP Configuratons
 
@@ -232,13 +238,16 @@ See the table below for options available when using the HTTP target.
 | port			| 80 (HTTP) or 443 (HTTPS)	| A network endpoint of communication	|
 | method		| 'POST'					| The desired HTTP method	|
 | headers		| `{"User-Agent": "Remote Logger"}` | HTTP Headers to include in requests |
-| allowInsecure	| Not Set 					| If true allows log to be sent using the unencrypted HTTP protocol |
+| allowInsecure	| `false` 					| If true allows log to be sent using the unencrypted HTTP protocol |
 
 ```javascript
+// @filename target-http.js
+// Assuming a server is running on localhost:3000
 var Loggerize = require("../../lib/index.js");
 
 Loggerize.on("logged", function(logRecord){
-	console.log(logRecord["response"]);
+	let response = logRecord["response"];
+	console.log("Server Response:", response);
 });
 
 let logger = Loggerize.createLogger({
@@ -248,8 +257,8 @@ let logger = Loggerize.createLogger({
 		target: "http",		//Set target to http
 		url: "http://localhost/logreceiver", //Set url that will receive the logRecord
 		port: 3000,		//port defaults to 443 for HTTPS requests and defaults to 80 for HTTP requests
-		// method: 'POST',	//HTTP method defaults to POST
-		allowInsecure: true,
+		method: 'POST',	//HTTP method defaults to POST
+		allowInsecure: true, //allow unencrypted http traffic
 		emitEvents: true,
 	}
 });
@@ -259,9 +268,9 @@ logger.info("Log Message Test!");
 
 The only mandary property that the http target expects is the url which must 
 include the protocol (http or https). If the HTTP method is not set, the method 
-will default to `GET` and the logRecord contents will be url encoded and passed 
-in the log request. Conversely if the HTTP method is set to `POST`, the logRecord 
-contents will be serialized and passed as a payload.
+will default to `GET` and the log data will be url encoded and passed in the 
+log request. Conversely if the HTTP method is set to `POST`, the log data will 
+be serialized and passed as a payload.
 
 The port will be deduced from the protocol used in the url if no port is explicitly 
 set. The port can be set both as a handle property as seen above or it can be defined 
@@ -273,12 +282,8 @@ Loggerize also allows user defined headers to be defined on the handle. If no
 headers set, the headers will default to `{User-Agent: loggerize/1.0}`.
 If the user defines a 'User-Agent', this default user agent will be overwritten.
 
-
-
-
-
-
-
-
-
+The above example also introduced the concept of the [event](#events) and the 
+[logRecord](#the-logrecord-advance). Loggerize uses events to report the status 
+of log attempts. When using the http target, it is advised to listen for the 
+'logged' event which returns a logRecord with the server's response.
 

@@ -14,29 +14,29 @@ The tables below show how `npm` and `syslog` maps level names to numeric severit
 Level Mapper (npm)
 
 | LEVEL NAME| error	| warn	| info	| verbose	| debug	| silly |
-| --------- | ------------------------------------------------- |
+| --------- | -----	|------ |------	| --------- | ----- | ----- |
 | SEVERITY	| 0		| 1		| 2		| 3			| 4		| 5		|
 
 
 Level Mapper (syslog)
 
 | LEVEL NAME| emerg	| alert	| crit	| error	| warning	| notice| info	| debug |
-| --------- | ----------------------------------------------------------------- |
+| --------- | -----	|------ |------	| ----- | --------- | ----- | ----- | ----- |
 | SEVERITY	| 0		| 1		| 2		| 3		| 4			| 5		| 6		| 7		|
 
 Both npm and syslog have severity levels proceeding from most important to least important
 as specified by specified by [RFC 5424](https://tools.ietf.org/html/rfc5424). The npm 
-severity levels go from 0 to 5, where 0 is the *most severe* and 5 is the *least severe*
-while syslog goes from 0 to 7, where 0 is the *most severe* and 7 is the *least severe*.
+severity levels go from 0 to 5, where 0 is the *most severe* and 5 is the *least severe*.
+Comparably, syslog goes from 0 to 7, where 0 is the *most severe* and 7 is the *least severe*.
 
-Similarly, Loggerize also supports `python` logging levels which has severity levels that proceed 
+Loggerize also supports `python` logging levels which has severity levels that proceed 
 from *least severe* to *most severe*, ranging from 10 to 50 (in steps of ten), where 10 is the 
 *least severe* and 50 is the *most severe*.
 
 Level Mapper (python)
 
 | LEVEL NAME| debug	| info	| warning	| error	| critical	|
-| --------- | --------------------------------------------- |
+| --------- | -----	|------ |----------	| ----- | --------- |
 | SEVERITY	| 10	| 20	| 30		| 40	| 50		|
 
 
@@ -46,6 +46,7 @@ This should be done before creating any other loggers or adding any other [handl
 because Loggerize will not alter levelMappers already defined on loggers and handles.
 
 ```javascript
+// @filenmae levels-setlevelmapper.js
 var Loggerize = require("../../lib/index.js");
 
 Loggerize.setLevelMapper("syslog");
@@ -62,15 +63,16 @@ logger.err("Log Message Test!");	// Outputs => 'err Log Message Test!'
 logger.crit("Log Message Test!"); 	// Outputs => 'crit Log Message Test!'
 logger.alert("Log Message Test!"); 	// Outputs => 'alert Log Message Test!'
 logger.emerg("Log Message Test!");	// Outputs => 'emerg Log Message Test!'
-
 ```
 
-The above example sets the `levelMapper` to 'syslog' and uses the convenience methods to output
-a message at each of the syslog severity levels.
-The above example also introduced the concept of the [handle](#handles). In short, every logger 
-must have a handle attached to produced output. The `createLogger` function automatically attached 
-the default handle for us in the previous examples. The default handle **always** uses the `npm` levelMapper 
-and since we want to use a different levelMapper we need to create a new handle that also uses the syslog `levelMapper`.
+The above example sets the `levelMapper` to 'syslog' and uses the convenience 
+methods to output a message at each of the syslog severity levels. The above 
+example also introduced the concept of the [handle](#handles). In short, every 
+logger must have a handle attached to produced output. The `createLogger` 
+function automatically attached the default handle for us in the previous 
+examples. The default handle **always** uses the `npm` levelMapper and since 
+we want to use a different levelMapper we need to create a new handle that 
+also uses the syslog `levelMapper`.
 
 ### Using Logging Levels
 
@@ -79,6 +81,7 @@ cause the logger (or handle) to output a log message. The below example tells
 the logger to only output a message when the severity level is `warn` or above.
 
 ```javascript
+// @filenmae levels-setlevel.js
 var Loggerize = require("../lib/index.js");
 let logger = Loggerize.createLogger("myLogger");
 logger.setLevelMapper("warn");	//Set severity to the 'warn' level (numeric severity == 1). Uses the npm levelMapper by default
@@ -93,7 +96,7 @@ logger.error("Log Message Test!");	// Outputs => 'error Log Message Test!' becau
 
 Additionally you have the option to colorize logs sent to the console by 
 calling the library-level function `Loggerize.colorizeLevels()`. See the 
-[Formatter](#formatters) section for more details on how to colorize levels.
+[Setting Level Colors](#setting-level-colors) section for more details on how to colorize levels.
 
 ### User-Defined Logging Levels (Advance)
 
@@ -102,6 +105,7 @@ your log levels too. Using the module-level function `createLevelMap`, you can
 define your own level mappings to suit your taste.
 
 ```javascript
+// @filenmae levels-createlevelmap.js
 var Loggerize = require("../lib/index.js");
 
 //level config object

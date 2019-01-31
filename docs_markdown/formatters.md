@@ -305,7 +305,7 @@ Background colors (Bright):
 >`bgBlackBright, bgRedBright, bgGreenBright, bgYellowBright, bgBlueBright, bgMagentaBright, bgCyanBright, bgWhiteBright`
 
 
-### Level Colors
+### Setting Level Colors
 
 When viewing log levels on the console it advantageous be able to easily determine the severity of a log event.
 Loggerize provides such a facility via colorized log levels. To activate log level colors simply call the module-level 

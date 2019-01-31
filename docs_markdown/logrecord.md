@@ -12,14 +12,16 @@ for conveniently operating on and marking dates. The logRecord is *read-only*
 and should never be altered, especially since the same logRecord is passed 
 to each parent logger in any logger hierarchies.
 
-The logRecord will generally only be made available in advance circumstances such 
-as being default argument to a filter. The log record conveniently makes fields 
-available that can be examined to decide whether or not to filter a potential log 
-output.
+The logRecord is of particular interest to filters. The log record conveniently 
+makes fields available that can be examined to decide whether or not to filter 
+a potential log output.
 
-Additionally the logRecord is made available as an argument to targets. 
+Additionally the logRecord is made available as the first argument to targets. 
 The target can then choose to write the logRecord's output field as is, or 
 can choose another field from the logRecord.
+
+Furthermore, a logRecord is the first argument of the callback function when 
+listening to events.
 
 Below is an example logRecord.
 
@@ -32,6 +34,9 @@ var logRecord = {
 	"levelNum": 4,
 	"message": "Sample Log Message",
 	"uuid": "3cf2552c-1dba-11e9-ab14-d663bd873d93",
-}
+	
+	//Output is determined by the formatter used
+	"output": "debug Sample Log Message"
+};
 ```
 
