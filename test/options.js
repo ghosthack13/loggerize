@@ -685,6 +685,7 @@ describe("Set Default Handle Options", function() {
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
+	var DEFAULT_USER_AGENT = "loggerize/0.0.1";
 	
 	it("#setHandleDefaults - Empty opts object given", function() {
 		
@@ -856,7 +857,7 @@ describe("Set Default Handle Options", function() {
 			"method": "POST",
 			"host": "example.com",
 			"port": 80,
-			"headers": {"User-Agent": "Remote Logger"},
+			"headers": {"User-Agent": DEFAULT_USER_AGENT},
 			"allowInsecure": false,
 			"url": "http://example.com/test?apikey=1234567890",
 		};
@@ -890,7 +891,7 @@ describe("Set Default Handle Options", function() {
 			"method": "POST",
 			"host": "example.com",
 			"port": 3000,
-			"headers": {"User-Agent": "Remote Logger"},
+			"headers": {"User-Agent": DEFAULT_USER_AGENT},
 			
 			"allowInsecure": true,
 			"url": "http://example.com:80/test?apikey=1234567890",
