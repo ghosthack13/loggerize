@@ -26,11 +26,15 @@ enough satisfy even the most demanding and experienced coder.
 
 `npm i loggerize`
 
-## Testing
+## Testing & Linting
 
-Unit test with mocha: `npm test`
+To run unit test and the linter, navigate to the loggerize sub-directory of the 
+node_modules directory (`cd /path/to/node_modules/loggerize`) and run the 
+command below:
 
-Lint with eslint: `npm run lint`
+Testing with [mocha](https://mochajs.org): `npm test`
+
+Linting with [eslint](https://eslint.org): `npm run lint`
 
 ## Overview
 
@@ -97,11 +101,13 @@ Lint with eslint: `npm run lint`
 
 ## Versioning
 
-Loggerize uses SemVer for versioning.
+Loggerize uses [SemVer](http://semver.org/) for versioning. For the versions available, 
+see the [tags on this repository](https://github.com/ghosthack13/loggerize/tags).
 
 ## Licence
 
-Loggerize is dual licensed using GPL for 
+This project is dual licensed under the AGPL Licence and Loggerize's EULA. 
+See the LICENCE.txt and EULA.txt for more details.
 
 
 
