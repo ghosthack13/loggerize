@@ -4,7 +4,7 @@ var assert = require('assert');
 
 describe("Manage Levels", function() {
 	
-	var predefinedLevelMappers = ['npm', 'http', 'syslog', 'python', 'defcon'];
+	var predefinedLevelMappers = ['npm', 'http', 'syslog', 'python', 'defcon', 'apocalypse'];
 	
 	let subject;
 	let loggerize;
