@@ -2,23 +2,23 @@ var Loggerize = require("../../lib/index.js");
 
 //level config object
 let levelMap = {
-	"MadMax": 0,	// Max Max world comes true
-	"zombie": 1,	// Zombie Apocalypse
-	"robot": 2,		// Robot Apocalypse
-	"alien": 3,		// Alien Apocalypse
-	"goblin": 4,	// Goblin Apocalypse
+	"defcon1":	1,
+	"defcon2": 	2,
+	"defcon3":	3,
+	"defcon4":	4,
+	"defcon5":	5,
 };
 
 //Define level Mapper called 'apocalypse' based on level config
-Loggerize.createLevelMap("apocalypse", levelMap, "desc");
-Loggerize.setLevelMapper("apocalypse");
+Loggerize.createLevelMap("US_Defcon", levelMap, "desc");
+Loggerize.setLevelMapper("US_Defcon");
 
 let logger = Loggerize.createLogger({
 	"name": "myLogger",
 	"handle": {
 		"name": "myHandle",
-		"levelMapper": "apocalypse",
+		"levelMapper": "US_Defcon",
 	},
 });
 
-logger.log("zombie", "The Apocalypse has begun!");
+logger.log("defcon1", "Going Nuclear!");
