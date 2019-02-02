@@ -237,7 +237,7 @@ the HTTP target.
 | url			| User Defined				| Required. The address of the network/internet resource |
 | port			| 80 (HTTP) or 443 (HTTPS)	| A network endpoint of communication	|
 | method		| 'POST'					| The desired HTTP method	|
-| headers		| `{"User-Agent": "Remote Logger"}` | HTTP Headers to include in requests |
+| headers		| `{"User-Agent": "loggerize/<version>"}` | HTTP Headers to include in requests |
 | allowInsecure	| `false` 					| If true allows log to be sent using the unencrypted HTTP protocol |
 
 ```javascript
@@ -279,7 +279,7 @@ on both the handle and inside the url, the port defined on the handle will overr
 the one in the url.
 
 Loggerize also allows user defined headers to be defined on the handle. If no 
-headers set, the headers will default to `{User-Agent: loggerize/1.0}`.
+headers set, the headers will default to `{User-Agent: loggerize/<version>}`.
 If the user defines a 'User-Agent', this default user agent will be overwritten.
 
 The above example also introduced the concept of the [event](#events) and the 
