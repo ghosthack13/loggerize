@@ -17,7 +17,6 @@ will automatically set various required fields to default values as defined belo
 | Name 		| Default		| Description
 | --------- | -------------	| ------------------------------------------------------------------------- |
 | name 		| User Defined	| Handle's unique identifier												|
-| active 	| `true` 		| Determines if the handle is allowed to write log outputs					|
 | target 	| 'console' 	| Dictates which target will receive the log output (see [Targets](#targets)) |
 | formatter	| 'default' 	| Names the formatter which which will determines how output should look on the target (see [Formatters](#formatters)) |									|
 | level 	| 'debug' 		| The minimum severity that will activate log output (see [Levels](#levels)) |
