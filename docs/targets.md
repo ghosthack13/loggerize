@@ -32,7 +32,7 @@ directory and filename according to standard programming conventions. See the
 table below for additonal config options available on the handle when using the 
 file target.
 
-#### File Target Configuratons
+#### File Target Configurations
 
 | Field			| Default				| Description	|
 | ------------- | --------------------- | ------------- |
@@ -108,7 +108,7 @@ fields are declared, and neither the maxFiles nor maxSize fields are present.
 Conversely `rotationType` will automatically be set to 'size' if either the 
 maxFiles or maxSize fields are set and not the interval field.
 
-#### Rotating File (Interval) Configuratons
+#### Rotating File (Interval) Configurations
 
 The table below list the config options made available when using the rotating 
 file (interval) target.
@@ -161,7 +161,7 @@ Alternatively, the `fileNamePattern` could have defined as
 "%\{fileName}-%Y-%b%\{fileExtension}" which would have produced 
 a file called 'target-rotatefile-interval-2030-Jan.log'. 
 
-#### Rotating File (Size) Configuratons
+#### Rotating File (Size) Configurations
 
 Loggerize supports rotating files by size. The table below displays the options 
 available when using the rotating file (size) target.
@@ -230,7 +230,7 @@ Loggerize supports sending log data to HTTP(S) servers across a local network
 or across the internet. See the table below for options available when using 
 the HTTP target.
 
-#### HTTP Configuratons
+#### HTTP Configurations
 
 | Field			| Default					| Description	|
 | ------------- | ------------------------- | ------------- |
