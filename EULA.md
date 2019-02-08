@@ -4,9 +4,9 @@ Last updated: February 5, 2019.
 
 This End-User License Agreement ("EULA") is a legal agreement between You the 
 User ("Licensee") and Loggerize Inc ("Licensor"). This EULA agreement governs 
-the acquisition and use of the Loggerize software ("Software") directly from 
-the Licensor or indirectly through an authorized reseller or distributor 
-(a "Reseller").
+the acquisition and use of the Loggerize (also known as LoggerizeJS) software 
+("Software") directly from the Licensor or indirectly through an authorized 
+reseller or distributor (a "Reseller").
 
 Please read this EULA agreement carefully before completing the installation
 process and using the Software. It provides a license to use the Software and 
