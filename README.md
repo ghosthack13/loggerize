@@ -4,9 +4,10 @@
 
 ## Motivation
 
-The aim of Loggerize was to create a universal JavaScript Logging Library simple 
-enough for users who only began programming yesterday, yet comprehensive enough 
-to satisfy even the most demanding and experienced coders.
+The aim of Loggerize (also known as LoggerizeJS) was to create a universal 
+JavaScript Logging Library simple enough for users who only began programming 
+yesterday, yet comprehensive enough to satisfy even the most demanding and 
+experienced coders.
 
 ## Features
 
@@ -37,36 +38,38 @@ comprehensive documentation in the repository's
 ## Quick Start
 
 For those not interesting in reading the documentation/tutorials, see below for 
-the simplest way to immediately get up and running.
+the simplest way to immediately get up and running with the most basic logger.
 
 ```javascript
 var Loggerize = require("../../lib/index.js");
 
-//Create Logger
+//Create Basic Logger
 let logger = Loggerize.createLogger("myLogger");
 
-// Outputs => debug Successfully Logged
+// Outputs => 'debug Successfully Logged'
 logger.debug("Successfully Logged");
 ```
 
 Likewise, see below for how to quickly start logging 
 [Connect](https://www.npmjs.com/package/connect)/[Express](https://www.npmjs.com/package/express) 
-Middleware.
+Middleware. Log message will output according to the Apache [common](https://httpd.apache.org/docs/1.3/logs.html#common) 
+log format.
 
 ```javascript
 var app = require('express')();
 var loggerize = require("../../lib/index.js");
 
-//Create HTTP Logger
-var httpLogger = loggerize.createHTTPLogger("myHTTPLogger");
+// Call middleware logger directly from the library
+app.use(loggerize.mw());
 
-// Get middleware to use in express
-app.use(httpLogger.getMiddleware());
-
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', function(req, res){
+	res.send('Hello World!')
+});
 
 //Start listening on port 3000
-app.listen(3000, () => console.log("App listening on port 3000!"))
+app.listen(3000, function(){
+	console.log("App listening on port 3000!")
+});
 ```
 
 ## Testing & Linting
