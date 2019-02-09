@@ -60,7 +60,7 @@ var loggerize = require("../../lib/index.js");
 //Create HTTP Logger
 var httpLogger = loggerize.createHTTPLogger("myHTTPLogger");
 
-// Extract get middleware to use in express
+// Get middleware to use in express
 app.use(httpLogger.getMiddleware());
 
 app.get('/', (req, res) => res.send('Hello World!'))
