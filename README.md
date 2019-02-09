@@ -10,7 +10,7 @@ to satisfy even the most demanding and experienced coders.
 
 ## Features
 
-- Log both Application and HTTP/Express Middleware events in one unified interface 
+- Log both Application and HTTP/[Express](https://www.npmjs.com/package/express) Middleware events in one unified interface 
 - No third party dependencies to cause untraceable bugs
 - Hundreds of unit/integration test for stability
 - Extensive documentation with dozens of bespoke exmples
@@ -25,14 +25,49 @@ to satisfy even the most demanding and experienced coders.
 
 ## Documentation
 
-Comprehensive documentation can be read on the 
-[Loggerize WIKI](https://github.com/ghosthack13/loggerize/wiki) as well as 
-in the source's [docs/](https://github.com/ghosthack13/loggerize/tree/master/docs) 
-directory.
+Full tutorials can be found on the 
+[Loggerize WIKI](https://github.com/ghosthack13/loggerize/wiki) coupled with 
+comprehensive documentation in the repository's 
+[docs](https://github.com/ghosthack13/loggerize/tree/master/docs) directory.
 
 ## Installation
 
 `npm i loggerize`
+
+## Quick Start
+
+For those not interesting in reading the documentation/tutorials, see below for 
+the simplest way to immediately get up and running.
+
+```javascript
+var Loggerize = require("../../lib/index.js");
+
+//Create Logger
+let logger = Loggerize.createLogger("myLogger");
+
+// Outputs => debug Successfully Logged
+logger.debug("Successfully Logged");
+```
+
+Likewise, see below for how to quickly start logging 
+[Connect](https://www.npmjs.com/package/connect)/[Express](https://www.npmjs.com/package/express) 
+Middleware.
+
+```javascript
+var app = require('express')();
+var loggerize = require("../../lib/index.js");
+
+//Create HTTP Logger
+var httpLogger = loggerize.createHTTPLogger("myHTTPLogger");
+
+// Extract get middleware to use in express
+app.use(httpLogger.getMiddleware());
+
+app.get('/', (req, res) => res.send('Hello World!'))
+
+//Start listening on port 3000
+app.listen(3000, () => console.log("App listening on port 3000!"))
+```
 
 ## Testing & Linting
 
@@ -58,8 +93,8 @@ Please report all issues and bugs to https://github.com/ghosthack13/loggerize/is
 
 As of now the best way to contribute is by donating (see below). Donations do 
 not need to be financial. It can be donating server space to test different 
-operating systems, a subscription to loggly to create new log destinations and 
-more.
+operating systems, a subscription to loggly to create new log destinations or 
+even a logo design if you are competent in photo editing.
 
 Loggerize will start allowing pull request when the design specification for 
 version 1 is finalized, as there are still internal speed optimizations to 
@@ -78,7 +113,7 @@ making a kind donation via our [Patreon]().
 
 ## Licence
 
-This project is dual licensed under the [AGPLv3](LICENCE.md) and the Loggerize 
+This project is dual licensed under the GNU [AGPLv3](LICENCE.md) and the Loggerize 
 [EULA](EULA.md).
 
 
