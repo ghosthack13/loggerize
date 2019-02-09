@@ -1,17 +1,13 @@
-var http = require('http');
-var express = require('express')
-var app = express()
+var app = require('express')();
+var loggerize = require("../../lib/index.js");
 
-var Loggerize = require("../../lib/index.js");
+//Create HTTP Logger
+var httpLogger = loggerize.createHTTPLogger("myHTTPLogger");
 
-app.use(Loggerize.mw());
+// Extract get middleware to use in express
+app.use(httpLogger.getMiddleware());
 
-app.get('/', function (req, res) {
-	res.send('hello, world!')
-});
+app.get('/', (req, res) => res.send('Hello World!'))
 
-const PORT = 3000;
-var httpServer = http.createServer(app);
-httpServer.listen(PORT, function(){
-	console.log('HTTP Server listening on port ' + PORT);
-});
+//Start listening on port 3000
+app.listen(3000, () => console.log("App listening on port 3000!"))
