@@ -2,15 +2,19 @@
 	"name": "loggerize",
 	"version": "0.1.0",
 	"description": "A Universal Logger for Application and HTTP/Middleware",
-	"keywords": ["log", "logger", "logging", "winston", "morgan"],
-
+	"keywords": [
+		"log",
+		"logger",
+		"logging",
+		"winston",
+		"morgan"
+	],
 	"homepage": "https://github.com/ghosthack13/loggerize#README",
 	"bugs": "https://github.com/ghosthack13/loggerize/issues",
 	"repository": {
-		"type" : "git",
-		"url" : "https://github.com/ghosthack13/loggerize.git"
+		"type": "git",
+		"url": "https://github.com/ghosthack13/loggerize.git"
 	},
-
 	"main": "./lib/index.js",
 	"scripts": {
 		"lint": "./node_modules/.bin/eslint './lib/*'",
@@ -19,18 +23,16 @@
 	"directories": {
 		"lib": "lib"
 	},
-	
 	"devDependencies": {
 		"eslint": "^5.12.0",
 		"eslint-plugin-import": "^2.14.0",
+		"jsdoc": "^3.5.5",
 		"mocha": "^5.2.0"
 	},
-	
 	"engines": {
 		"node": ">= 6.0.0",
 		"npm": ">= 3.0.0"
 	},
-	
 	"author": "Ghost <13hackghost@gmail.com>",
 	"license": "GPL",
 	"private": true
