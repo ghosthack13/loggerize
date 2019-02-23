@@ -71,6 +71,39 @@ describe('Library (index.js)', function(){
 			assert.deepEqual(actual, expected);
 		});
 		
+		it.only('should create a logger with attached handle when passed object including array of handle definitions', function(){
+			
+			let opts = {
+				"name": "myLogger",
+				"handle": [
+					{
+						"name": "myHandle1",
+						"target": "console",
+					},
+					{
+						"name": "myHandle2",
+						"target": null,
+					},
+				],
+			};
+			let logger = Loggerize.createLogger(opts);
+			
+			let actual = logger;
+			let expected = {
+				"name": 'myLogger',
+				"emitEvents": false,
+				"levelMapper": 'npm',
+				"propogate": true,
+				"isMuted": false,
+				"handles": [ 'myHandle1', 'myHandle2' ],
+				"hasHandles": true,
+				"filters": [],
+				"level": 'debug'
+			};
+			
+			assert.deepEqual(actual, expected);
+		});
+		
 		it('should create logger with properties defined in opts when passed object as parameter', function(){
 			
 			let opts = {
@@ -81,6 +114,12 @@ describe('Library (index.js)', function(){
 			};
 			let logger = Loggerize.createLogger(opts);
 			
+			assert(/_handle\d{13}/.test(
+				logger.handles[0]), 
+				"A handle named '_handle<time in millis>' should have been created"
+			);
+			delete logger.handles;
+			
 			let actual = logger;
 			let expected = {
 				"name": 'myLogger',
@@ -88,7 +127,7 @@ describe('Library (index.js)', function(){
 				"levelMapper": 'python',
 				"propogate": false,
 				"isMuted": false,
-				"handles": [ 'default' ],
+				// "handles": [ 'default' ],
 				"hasHandles": true,
 				"filters": [],
 				"level": 'error'
