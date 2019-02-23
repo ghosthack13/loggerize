@@ -18,7 +18,8 @@
 	"main": "./lib/index.js",
 	"scripts": {
 		"lint": "./node_modules/.bin/eslint './lib/*'",
-		"test": "./node_modules/.bin/mocha --reporter spec"
+		"test": "./node_modules/.bin/mocha --reporter spec",
+		"gen-docs": "./node_modules/.bin/jsdoc -r -c conf.json"
 	},
 	"directories": {
 		"lib": "lib"
