@@ -17,10 +17,10 @@ will automatically set various required fields to default values as defined belo
 | Name 		| Default		| Description
 | --------- | -------------	| ------------------------------------------------------------------------- |
 | name 		| User Defined	| Handle's unique identifier												|
-| target 	| 'console' 	| Dictates which target will receive the log output (see [Targets](#targets)) |
-| formatter	| 'default' 	| Names the formatter which which will determines how output should look on the target (see [Formatters](#formatters)) |									|
-| level 	| 'debug' 		| The minimum severity that will activate log output (see [Levels](#levels)) |
-| levelMapper | 'npm' 		| (see [Level Mappers](#level-mappers))	| 
+| target 	| 'console' 	| Dictates which target will receive the log output (see [Targets](targets.md#targets)) |
+| formatter	| 'default' 	| Names the formatter which which will determines how output should look on the target (see [Formatters](formatters.md#formatters)) |									|
+| level 	| 'debug' 		| The minimum severity that will activate log output (see [Levels](levels.md#levels)) |
+| levelMapper | 'npm' 		| (see [Level Mappers](levels.md#level-mappers-intermediate))	| 
 | emitEvents| `false` 		| Emit the status of attempts to write log output (see [Events](#))		|
 
 The above are fields that are available on every handle. Moreover, various targets 
