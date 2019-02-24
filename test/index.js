@@ -71,7 +71,7 @@ describe('Library (index.js)', function(){
 			assert.deepEqual(actual, expected);
 		});
 		
-		it('should create a logger with attached handle when passed object including array of handle definitions', function(){
+		it('should create a logger and attach handles when passed an array handle configurations', function(){
 			
 			let opts = {
 				"name": "myLogger",
@@ -96,6 +96,33 @@ describe('Library (index.js)', function(){
 				"propogate": true,
 				"isMuted": false,
 				"handles": [ 'myHandle1', 'myHandle2' ],
+				"hasHandles": true,
+				"filters": [],
+				"level": 'debug'
+			};
+			
+			assert.deepEqual(actual, expected);
+		});
+		
+		it('should create a logger and attach handles when passed an array handle names/configurations', function(){
+			
+			let opts = {
+				"name": "myLogger",
+				"handle": [
+					"default",
+					{"name": "myHandle2", "target": null},
+				],
+			};
+			let logger = Loggerize.createLogger(opts);
+			
+			let actual = logger;
+			let expected = {
+				"name": 'myLogger',
+				"emitEvents": false,
+				"levelMapper": 'npm',
+				"propogate": true,
+				"isMuted": false,
+				"handles": [ 'default', 'myHandle2' ],
 				"hasHandles": true,
 				"filters": [],
 				"level": 'debug'
@@ -581,6 +608,22 @@ describe('Library (index.js)', function(){
 			Loggerize = require('../lib/index.js');
 		});
 		
+		it("#addFormatters - should add a list of formatters when passed an array of formatter definitions", function() {
+			
+			var predefinedFormatters = Object.keys(subject.formatters).sort();
+			
+			Loggerize.addFormatters([
+				{"name": "myFormatter1", "format": "%{timestamp} %{level} '%{message}'"},
+				{"name": "myFormatter2", "format": "%{timestamp} %{level} '%{message}'"},
+				{"name": "myFormatter3", "format": "%{timestamp} %{level} '%{message}'"}
+			]);
+			
+			let actual = Object.keys(subject.formatters).sort();
+			let expected = predefinedFormatters.concat(["myFormatter1", "myFormatter2", "myFormatter3"]).sort();
+			
+			assert.deepEqual(actual, expected);
+		});
+		
 		it("#should add formatter called 'myFormatter'", function(){
 			Loggerize.addFormatter({
 				"name": "myFormatter",
@@ -625,6 +668,14 @@ describe('Library (index.js)', function(){
 			delete require.cache[require.resolve('../lib/loggerproxy.js')];
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 			Loggerize = require('../lib/index.js');
+		});
+		
+		it("#addHandles - should add list of handles when passed an array of handle definitions", function(){
+			assert.strictEqual(subject.handles["myHandle1"], undefined);
+			assert.strictEqual(subject.handles["myHandle2"], undefined);
+			Loggerize.addHandles([{"name": "myHandle1"}, {"name": "myHandle2"}]);
+			assert.notStrictEqual(subject.handles["myHandle1"], undefined);
+			assert.notStrictEqual(subject.handles["myHandle2"], undefined);
 		});
 		
 		it("#should add handle called 'myHandle'", function(){
