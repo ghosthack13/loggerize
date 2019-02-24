@@ -71,7 +71,7 @@ describe('Library (index.js)', function(){
 			assert.deepEqual(actual, expected);
 		});
 		
-		it.only('should create a logger with attached handle when passed object including array of handle definitions', function(){
+		it('should create a logger with attached handle when passed object including array of handle definitions', function(){
 			
 			let opts = {
 				"name": "myLogger",
