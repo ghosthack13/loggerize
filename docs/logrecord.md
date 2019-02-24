@@ -27,7 +27,7 @@ Below is an example logRecord.
 
 ```javascript
 var logRecord = {
-	"DateObj": Date(2020, 11, 14, 15, 0, 59),	//Hidden Field
+	"DateObj": new Date(2020, 11, 14, 15, 0, 59),	//Hidden Field
 	"timestamp": "14 Dec 2020 15:00:59 -0600",		
 	"loggerName": "myLogger",
 	"level": "debug",
