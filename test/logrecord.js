@@ -88,7 +88,7 @@ describe('LogRecord (logrecord.js)', function(){
 		};
 		
 		let actual = subject.cloneRecord(logRecord);
-		let expected = Object.assign(logRecord, {"level": undefined, "user": undefined, "uuid": undefined});
+		let expected = logRecord;
 		assert.deepEqual(actual, expected);
 	});
 	
