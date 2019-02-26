@@ -19,7 +19,7 @@
 	"scripts": {
 		"lint": "./node_modules/.bin/eslint './lib/*'",
 		"test": "./node_modules/.bin/mocha --reporter spec",
-		"gen-docs": "./node_modules/.bin/jsdoc -r -c conf.json"
+		"docgen": "./node_modules/.bin/jsdoc -r -c jsdoc.conf.json"
 	},
 	"directories": {
 		"lib": "lib"
