@@ -194,7 +194,7 @@ describe("Manage Formatters", function() {
 				"pattern": "%Y-%m",
 				// "pattern": "ISO"
 			},
-			"format": "%%{level} %{datetime} %{severity} '%{message}'"
+			"format": "%%{level} %{timestamp} %{severity} '%{message}'"
 		});
 		
 		subject.addHandle({
@@ -204,28 +204,24 @@ describe("Manage Formatters", function() {
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
 		let actual = formattedLogRecord["output"];
-		let expected = "%{level} -- -- 'Sample Log Message'";
+		let expected = "%{level} 2020-12 -- 'Sample Log Message'";
 		assert.equal(actual, expected);
 	});
 	
 	it("#format - Set logRecord to output as JSON string", function() {
 		
-		let mockLogRecord = {
-			"level": "debug",
-			"message": "Sample Log Message",
-			"DateObj": new Date(2020, 11, 14, 15, 0, 59)
-		};
+		let mockLogRecord = Object.create(Object.prototype, {
+			"level": { value: "debug", writable: true, enumerable: true, configurable: false },
+			"message": { value: "Sample Log Message", writable: true, enumerable: true, configurable: false },
+			"DateObj": { value: new Date(), writable: false, enumerable: false, configurable: false }
+		});
 		
 		subject.addFormatter({
 			"defaultSubstitution": "--",
 			"name": "myFormatter",
 			"json": true,
 			"fields": ["level", "message"],
-			"timestamp": {
-				"pattern": "%Y-%m",
-				// "pattern": "ISO"
-			},
-			"format": "%%{level} %{datetime} %{level} '%{message}'"
+			"timestamp": {"pattern": "%Y-%m"}
 		});
 		
 		subject.addHandle({
@@ -236,6 +232,62 @@ describe("Manage Formatters", function() {
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
 		let actual = formattedLogRecord["output"];
 		let expected = '{"level":"debug","message":"Sample Log Message"}';
+		assert.equal(actual, expected);
+	});
+	
+	it("#format - Should overide format when json property is set to true", function() {
+		
+		let mockLogRecord = Object.create(Object.prototype, {
+			"level": { value: "debug", writable: true, enumerable: true, configurable: false },
+			"message": { value: "Sample Log Message", writable: true, enumerable: true, configurable: false },
+			"DateObj": { value: new Date(), writable: false, enumerable: false, configurable: false }
+		});
+		
+		subject.addFormatter({
+			"defaultSubstitution": "--",
+			"name": "myFormatter",
+			"json": true,
+			"fields": ["level", "message"],
+			"timestamp": {"pattern": "%Y-%m"},
+			"format": "%%{level} %{timestamp} %{level} '%{message}'"
+		});
+		
+		subject.addHandle({
+			"name": "myHandle",
+			"formatter": "myFormatter"
+		});
+		
+		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
+		let actual = formattedLogRecord["output"];
+		let expected = '{"level":"debug","message":"Sample Log Message"}';
+		assert.equal(actual, expected);
+	});
+	
+	it("#format - Should output json string with all fields when fields property is NOT set", function() {
+		
+		let mockLogRecord = Object.create(Object.prototype, {
+			"level": { value: "debug", writable: true, enumerable: true, configurable: false },
+			"message": { value: "Sample Log Message", writable: true, enumerable: true, configurable: false },
+			"DateObj": { value: new Date(), writable: false, enumerable: false, configurable: false }
+		});
+		
+		subject.addFormatter({
+			"defaultSubstitution": "--",
+			"name": "myFormatter",
+			"json": true,
+			// "fields": ["level", "message"],
+			"timestamp": { "pattern": "%Y-%m"},
+			"format": "%%{level} %{timestamp} %{level} '%{message}'"
+		});
+		
+		subject.addHandle({
+			"name": "myHandle",
+			"formatter": "myFormatter"
+		});
+		
+		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
+		let actual = formattedLogRecord["output"];
+		let expected = '{"level":"debug","message":"Sample Log Message","timestamp":"2019-03"}';
 		assert.equal(actual, expected);
 	});
 	

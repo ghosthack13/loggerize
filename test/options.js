@@ -637,15 +637,34 @@ describe("Validate Formatter Options", function() {
 		assert.throws(actual, expected);
 	});
 	
-	it("#validateFormatterOpts - should throw error if json is requested without specifying fields", function(){
-		let opts = {"name": "myFormatter", "json": true};
+	it("#validateFormatterOpts - should throw error if json field is not of type boolean", function(){
+		let opts = {"name": "myFormatter", "json": 1};
 		
 		let actual = subject.validateFormatterOpts.bind(subject, opts);
-		let expected = new TypeError(
-			"When using JSON format, a list of desired fields must be stated in the formatter's fields property. " +
-			"\nE.g. {name: formatterName, 'json': true, fields: [timestamp, level, message]"
-		);
+		let expected = new TypeError("The json property strictly accepts boolean values");
 		assert.throws(actual, expected);
+	});
+	
+	it("#validateFormatterOpts - should throw error if fields property is not of type string[]", function(){
+		let opts = {"name": "myFormatter", "json": true, "fields": "message"};
+		
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		let expected = new TypeError("The fields property must be of type 'string[]'");
+		assert.throws(actual, expected);
+	});
+	
+	it("#validateFormatterOpts - should NOT throw error if json field is string of value 'true'", function(){
+		let opts = {"name": "myFormatter", "json": "true"};
+		
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		assert.doesNotThrow(actual);
+	});
+	
+	it("#validateFormatterOpts - should NOT throw error if json field is string of value 'false'", function(){
+		let opts = {"name": "myFormatter", "json": "false"};
+		
+		let actual = subject.validateFormatterOpts.bind(subject, opts);
+		assert.doesNotThrow(actual);
 	});
 	
 	it("#validateFormatterOpts - should throw error if transformer is neither function nor string", function(){
