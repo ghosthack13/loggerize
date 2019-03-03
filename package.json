@@ -36,5 +36,8 @@
 	},
 	"author": "Ghost <13hackghost@gmail.com>",
 	"license": "GPL",
-	"private": true
+	"private": true,
+	"dependencies": {
+		"mysql": "^2.16.0"
+	}
 }
