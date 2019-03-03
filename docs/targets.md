@@ -287,3 +287,286 @@ The above example also introduced the concept of the [event](#events) and the
 of log attempts. When using the http target, it is advised to listen for the 
 'logged' event which returns a logRecord with the server's response.
 
+## User-Defined Targets (Advance)
+
+Where loggerize shines is its ease of configurability. To create a custom target 
+requies nothing more than an anonymous function.
+
+### A Simple Target
+
+The simplest target is one that does nothing (a null target). The job of a null 
+target is to drop all logs that pass through it. This may be useful for some 
+test and profiling purposes, but is useless in production mode.
+
+```javascript
+var Loggerize = require("../../lib/index.js");
+
+var myTarget = function(){};
+
+let logger = Loggerize.createLogger({
+	name: "myLogger",
+	handle: {
+		"name": "myHandle",
+		"target": myTarget
+	}
+});
+
+logger.info("Log Message Test!");	//Output => ''
+```
+
+### A Practical Target
+
+The null target defined above is not useful in production. To create a target 
+that actually does something meaningful, let us add some more parameters.
+
+```javascript
+var Loggerize = require("../../lib/index.js");
+
+var myTarget = function(logRecord){
+	let output = logRecord["output"] + "\n";
+	process.stdout.write(output);
+};
+
+let logger = Loggerize.createLogger({
+	name: "myLogger",
+	handle: {
+		"name": "myHandle",
+		"target": myTarget
+	}
+});
+
+logger.info("Log Message Test!");	//Output => ''
+```
+
+The example above makes use of the fact that the 
+[LogRecord](logrecord.md#the-logrecord-advance) is passed as the first 
+argument of all targets in loggerize. The 'output' field of the logRecord 
+contains the *formatted* log information in string format. We created a 
+*useful* target that outputs the formatted data to the standard output.
+
+### A Robust Target
+
+To create a more robust target we should add some error checking and emit events 
+when things go right and when things go wrong.
+
+```javascript
+var Loggerize = require("../../lib/index.js");
+
+var myTarget = function(logRecord, handleOpts){
+	try{
+		let output = logRecord["output"] + "\n";
+		process.stdout.write(output);
+		
+		//emit success events 
+		handleOpts["_emitter"].emit("logged", logRecord);
+	}
+	catch(err){
+		//emit error events
+		handleOpts["_emitter"].emit("error", err, logRecord);
+	}
+};
+
+let logger = Loggerize.createLogger({
+	name: "myLogger",
+	emitEvents: true,
+	handle: {
+		"name": "myHandle",
+		"target": myTarget,
+		"emitEvents": true
+	}
+});
+
+logger.on("logged", function(logRecord){
+	console.log("logged logRecord: \n", logRecord);
+});
+
+logger.on("error", function(err, logRecord){
+	console.log("Error: ", err.message);
+});
+
+logger.info("Log Message Test!");	//Output => ''
+```
+
+In loggerize you only use what you need. To create a more robust target, we need 
+to take into account errors. Loggerize allows targets to emit events on both 
+success and errors, instead of having the program crash by default.
+
+All targets have their handle's configuration passed to them as the second 
+parameter of the target's function definition. This 'handleOpts' has all the 
+configurations you defined plus a few additional features such as the '_emitter' 
+property which implements an 'emit' function you can use to easily emit events. 
+
+### An Extended Target
+
+Now that we have seen a robust target, let us have look at a target that also 
+uses a third party library to extend its functionality. Previous targets all used 
+Node's built in libaries to create user-defined targets. Sometimes, however, it is 
+necessary to use third party libraries to create new targets. 
+
+The example below shows a user-defined target that utilizes the 
+[mysql](https://www.npmjs.com/package/mysql) library to access and save logs to 
+a MySQL server.
+
+```javascript
+var mysql      = require('mysql');
+var Loggerize = require("../../lib/index.js");
+
+//Create custom target
+var myTarget = function(logRecord, handleOpts){
+	
+	//Make timestamp's ISO Date MySQL compatible by removing the trailing 'Z'
+	logRecord["timestamp"] = logRecord["DateObj"].toISOString().replace("Z", "");
+	
+	//Remove fields from logRecord that do not correspond to a table header
+	delete logRecord["DateObj"];
+	delete logRecord["output"];
+	
+	//Create connection object
+	var connection = mysql.createConnection({
+		host     : 'localhost',
+		user     : 'nodeuser',
+		password : '',
+		database : 'test',
+	});
+
+	//Initiate connection
+	connection.connect();
+	
+	//Create Query with placeholder
+	var sql = "INSERT INTO `test`.`logs` SET ?";
+	
+	//Execute Query
+	connection.query(sql, logRecord, function(err, result){
+		
+		//Add result to 'result' field of logRecord to be emitted
+		logRecord["result"] = result;
+		
+		if (err){
+			throw err;
+			handleOpts["_emitter"].emit("error", err, logRecord);
+		}else{
+			handleOpts["_emitter"].emit("logged", logRecord);
+		}
+	});
+	
+	//Close Connection
+	connection.end();
+};
+
+
+let logger = Loggerize.createLogger({
+	name: "myLogger",
+	emitEvents: true,
+	handle: {
+		"name": "myHandle",
+		"target": myTarget,
+		"emitEvents": true
+	}
+});
+
+logger.on("logged", function(logRecord){
+	console.log("logRecord", logRecord);
+});
+
+logger.on("error", function(err, logRecord){
+	console.log("Error: ", err.message);
+});
+
+logger.info("Log Message Test!");
+```
+
+The above is the naive solution to creating logs in a MySQL server. More 
+experienced developers may have realized that the MySQL connection will be 
+created on each log call (which is highly inefficient). Continue reading 
+for the non-naive approach.
+
+### A Bespoke Target
+
+To create a production ready, scalable user-defined target we can take advantage 
+of one of Javascript's unique features, the fact that a function definition has 
+visibility to all variables declared in the same scope of the function 
+definition. This means we can move the creation of the connection object to the 
+outside of the target function yet still maintain the same functionality.
+
+```javascript
+var mysql      = require('mysql');
+var Loggerize = require("../../lib/index.js");
+
+//Create connection object
+var connection = mysql.createConnection({
+	host     : 'localhost',
+	user     : 'nodeuser',
+	password : '',
+	database : 'test',
+});
+
+//Initiate connection
+connection.connect();
+
+
+//Create custom target
+var myTarget = function(logRecord, handleOpts){
+	
+	//Make timestamp's ISO Date MySQL compatible by removing the trailing 'Z'
+	logRecord["timestamp"] = logRecord["DateObj"].toISOString().replace("Z", "");
+	
+	//Remove fields from logRecord that do not correspond to a table header
+	delete logRecord["DateObj"];
+	delete logRecord["output"];
+	
+	//Create Query with placeholder
+	var sql = "INSERT INTO `test`.`logs` SET ?";
+	
+	//Execute Query
+	connection.query(sql, logRecord, function(err, result){
+		
+		//Add result to 'result' field of logRecord to be emitted
+		logRecord["result"] = result;
+		
+		if (err){
+			throw err;
+			handleOpts["_emitter"].emit("error", err, logRecord);
+		}else{
+			handleOpts["_emitter"].emit("logged", logRecord);
+		}
+	});
+	
+};
+
+
+let logger = Loggerize.createLogger({
+	name: "myLogger",
+	emitEvents: true,
+	handle: {
+		"name": "myHandle",
+		"target": myTarget,
+		"emitEvents": true
+	}
+});
+
+logger.on("logged", function(logRecord){
+	console.log("logRecord", logRecord);
+});
+
+logger.on("error", function(err, logRecord){
+	console.log("Error: ", err.message);
+});
+
+logger.info("Log Message Test!");	//Output => ''
+
+//Close Connection
+connection.end();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
