@@ -318,4 +318,30 @@ describe("Manage Handles", function() {
 		
 	});
 	
+	it("#shutdown - Should close all handles/streams and emit finish event when called", function(done){
+		
+		subject.addHandle({
+			name: "myHandle",
+			path: "./test/test.log",
+			formatter: "simple",
+			emitEvents: true,
+		});
+		
+		subject.on("finish", function(){
+			assert(true);
+			done();
+		});
+
+		//Close all handles/streams and emit the 'finish' event
+		subject.shutdown();
+		
+		//Declare test a failure if finish event is not emitted within one second
+		setTimeout(function(){
+			assert(false, "Failed to produce 'finish' event");
+			done();
+		}, 1000);
+		
+	});
+	
+	
 });
