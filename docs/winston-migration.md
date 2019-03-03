@@ -12,7 +12,8 @@ libraries. This tutorial will give an overview of how to access the features
 in Loggerize as you would have used in winston.
 
 This document has an easy to follow outline. The winston examples are presented 
-first then the equivalent loggerize code is present and compared/contrasted. 
+first then the equivalent loggerize code is present which may be 
+compared/contrasted. 
 
 ### Quick Start
 
@@ -33,7 +34,7 @@ transports (known as targets in loggerize). The below examples show how to
 achieve the exact same result of creating a logger that outputs to both the 
 console and a file.
 
-In winston, loggers can be created as follows:
+In winston, a logger can be created as follows:
 
 ```javascript
 const logger = winston.createLogger({
@@ -44,7 +45,7 @@ const logger = winston.createLogger({
 });
 ```
 
-In loggerize, loggers can be created as follows:
+In loggerize, the same logger can be created as follows:
 
 ```javascript
 var logger = loggerize.createLogger({
