@@ -5,11 +5,13 @@ var path = require('path');
 
 describe("Manage Handles", function() {
 	
-	let subject;
-	beforeEach(function(){
+	let Loggerize;
+	let subject; // eslint-disable-line no-unused-vars
+	beforeEach(function() {
 		delete require.cache[require.resolve('../lib/index.js')];
 		delete require.cache[require.resolve('../lib/logger.js')];
 		delete require.cache[require.resolve('../lib/loggerproxy.js')];
+		Loggerize = require('../lib/index.js');
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
@@ -340,6 +342,30 @@ describe("Manage Handles", function() {
 			assert(false, "Failed to produce 'finish' event");
 			done();
 		}, 1000);
+		
+	});
+	
+	it("#shutdown - Should throw error when logging is attempted after shutdown() is called", function(){
+		
+		let logger = Loggerize.createLogger({
+			"name": "myLogger",
+			"handle": {
+				"name": "myHandle",
+				"target": "null",
+			}
+		});
+		
+		assert.doesNotThrow(logger.info.bind(logger, "Random message 1!"));
+		
+		//Close all handles/streams and emit the 'finish' event
+		Loggerize.shutdown();
+		
+		let actual = logger.info.bind(logger, "Random message 2!");
+		let expected = new Error(
+			"The 'close()' method was called and all resources were "
+			+ "deallocated. Therefore, NO more logs can be written!"
+		);
+		assert.throws(actual, expected);
 		
 	});
 	
