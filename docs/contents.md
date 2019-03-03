@@ -57,3 +57,4 @@
 	- [Event Notification - Logged](events.md#event-notification---logged)
 	- [Event Notification - Error](events.md#event-notification---error)
 	- [Global Listener](events.md#global-listener)
+- [Shutdown](shutdown.md#shutdown)
