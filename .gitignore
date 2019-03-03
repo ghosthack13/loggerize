@@ -5,6 +5,7 @@ lib/test.js
 test/*.log
 */logs/*
 markdown2Wiki.sh
+_scripts/*
 shell_scripts/*
 docs/api
 server.js
