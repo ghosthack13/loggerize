@@ -163,6 +163,28 @@ describe('Library (index.js)', function(){
 			assert.deepEqual(actual, expected);
 		});
 		
+		it('should configure handle to emit events when logger is set to emit events', function(){
+			
+			//Add handle without emitEvents
+			Loggerize.addHandle({
+				"name": "myHandle"
+			})
+			
+			//Assert emitEvents is not set on handle
+			assert.strictEqual(subject.handles["myHandle"]["emitEvents"], undefined);
+			
+			//Create logger that emits events
+			let logger = Loggerize.createLogger({
+				"name": "myLogger",
+				"emitEvents": true,
+				"handle": ["myHandle", "default"]
+			});
+			
+			//Assert that adding the logger above causes emitEvents to get set on handle
+			assert.strictEqual(subject.handles["myHandle"]["emitEvents"], true);
+		});
+		
+		
 	});
 	
 	describe('#getLogger()', function() {
