@@ -125,8 +125,7 @@ logger.info("Log Message Test!");	//Output to file => 'info (Severity: 2) Log Me
 
 Loggerize can JSON serialization log output by setting the json property in 
 the formatter's configuration to `true` and declaring an array of tokens to 
-serialize in the fields property. The 'fields' property is required when using 
-JSON serialization.
+serialize in the fields property.
 
 ```javascript
 // @filename formatter-json.js
