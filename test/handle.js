@@ -167,6 +167,7 @@ describe("Manage Handles", function() {
 			"level": subject.level,
 			"levelMapper": subject.levelMapper,
 			"target": "file",
+			"emitEvents": false,
 			"directory": process.cwd() + path.sep,
 			"fileExtension": ".log",
 			"fileName": "test",
