@@ -32,6 +32,7 @@ describe("Set Handle Options", function() {
 			active: true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
+			"emitEvents": false,
 			target: 'console',
 			formatter: 'default'
 		};
@@ -55,6 +56,7 @@ describe("Set Handle Options", function() {
 			level: subject.level,
 			target: 'file',
 			formatter: 'default',
+			emitEvents: false,
 			directory: process.cwd() + path.sep,
 			fileName: 'test',
 			fileExtension: '.logy'
@@ -83,6 +85,7 @@ describe("Set Handle Options", function() {
 			level: subject.level,
 			target: 'file',
 			formatter: 'default',
+			emitEvents: false,
 			directory: process.cwd() + path.sep,
 			fileName: 'test',
 			fileExtension: '.logy'
@@ -143,6 +146,7 @@ describe("Set Handle Options", function() {
 			level: subject.level,
 			target: 'file',
 			formatter: 'default',
+			emitEvents: false,
 			directory: process.cwd() + path.sep,
 			fileName: 'test',
 			fileExtension: '.logy'
@@ -153,6 +157,7 @@ describe("Set Handle Options", function() {
 			level: subject.level,
 			target: 'file',
 			formatter: 'default',
+			emitEvents: false,
 			directory: process.cwd() + path.sep,
 			fileName: 'test',
 			fileExtension: '.logy' 
@@ -717,6 +722,7 @@ describe("Set Default Handle Options", function() {
 			levelMapper: subject.levelMapper,
 			level: subject.level,
 			target: 'console',
+			emitEvents: false,
 			formatter: 'default',
 		};
 		
@@ -734,6 +740,7 @@ describe("Set Default Handle Options", function() {
 			"levelMapper": subject.levelMapper,
 			"level": subject.level,
 			"name": "myHandle",
+			emitEvents: false,
 			"target": 'file',
 			"formatter": 'default',
 			"directory": process.cwd() + '/logs/',
@@ -756,6 +763,7 @@ describe("Set Default Handle Options", function() {
 			"active": true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
+			emitEvents: false,
 			"name": "myHandle",
 			"target": 'file',
 			"formatter": 'default',
@@ -780,6 +788,7 @@ describe("Set Default Handle Options", function() {
 			"active": true,
 			levelMapper: subject.levelMapper,
 			level: subject.level,
+			emitEvents: false,
 			"name": "myHandle",
 			"target": 'rotatingFile',
 			"formatter": 'default',
@@ -811,7 +820,7 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'rotatingFile',
 			"formatter": 'default',
-			
+			"emitEvents": false,
 			"rotationType": "interval",
 			"interval": 'week',
 			"rotateDay": "sunday",
@@ -840,7 +849,7 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'rotatingFile',
 			"formatter": 'default',
-			
+			"emitEvents": false,
 			"maxFiles": Number.POSITIVE_INFINITY,
 			"maxSize": 123456789,
 			"rotationType": "size",
@@ -870,7 +879,7 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'http',
 			"formatter": 'default',
-			
+			"emitEvents": false,
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
 			"method": "POST",
@@ -904,7 +913,7 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'http',
 			"formatter": 'default',
-			
+			"emitEvents": false,
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
 			"method": "POST",
@@ -940,7 +949,7 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'http',
 			"formatter": 'default',
-			
+			"emitEvents": false,
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
 			"method": "POST",
@@ -974,6 +983,7 @@ describe("Set Default Handle Options", function() {
 			"name": "myHandle",
 			"target": 'http',
 			"formatter": 'default',
+			"emitEvents": false,
 			
 			"keepAlive": true,
 			"path": "/test?apikey=1234567890",
