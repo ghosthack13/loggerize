@@ -171,7 +171,7 @@ describe('Library (index.js)', function(){
 			})
 			
 			//Assert emitEvents is not set on handle
-			assert.strictEqual(subject.handles["myHandle"]["emitEvents"], undefined);
+			assert.strictEqual(subject.handles["myHandle"]["emitEvents"], false);
 			
 			//Create logger that emits events
 			let logger = Loggerize.createLogger({
@@ -204,38 +204,18 @@ describe('Library (index.js)', function(){
 			subject = require('../lib/logger.js'); //Singleton Logger Instance
 		});
 		
-		it('should create a logger w/o any level, levelMapper or handles attached when passed name of an undefined logger', function(){
+		it('should create a logger w/o any level, levelMapper or handles attached when passed only a logger name', function(){
 			
-			let logger = Loggerize.getLogger("myLogger"); // eslint-disable-line no-unused-vars
-			let actual = subject.loggers;
+			assert.strictEqual(subject.loggers["myLogger"], undefined);
+			
+			let actual = Loggerize.getLogger("myLogger");
 			let expected = {
-				root: {
-					name: 'root',
-					propogate: true,
-					isMuted: false,
-					handles: [],
-					hasHandles: false,
-					filters: [],
-					levelMapper: 'npm'
-				},
-				_anonymous: {
-					name: '_anonymous',
-					propogate: false,
-					isMuted: false,
-					handles: [ 'default' ],
-					hasHandles: true,
-					filters: [],
-					levelMapper: 'npm',
-					level: 'debug'
-				},
-				myLogger: {
-					name: 'myLogger',
-					propogate: true,
-					isMuted: false,
-					handles: [],
-					hasHandles: false,
-					filters: []
-				} 
+				name: 'myLogger',
+				propogate: true,
+				isMuted: false,
+				handles: [],
+				hasHandles: false,
+				filters: []
 			};
 			
 			assert.deepEqual(actual, expected);
@@ -245,16 +225,20 @@ describe('Library (index.js)', function(){
 			
 			let logger = Loggerize.getLogger("_anonymous");
 			
+			assert(/_anonymous\d{13}/.test(logger.handles[0]), "Expected handle name in form _anonymous<timestamp millis>")
+			delete logger["handles"];
+			
 			let actual = logger;
 			let expected = {
 				name: '_anonymous',
 				propogate: false,
 				isMuted: false,
-				handles: [ 'default' ],
+				// handles: [ 'default' ],
 				hasHandles: true,
 				filters: [],
 				levelMapper: 'npm',
-				level: 'debug'
+				level: 'debug',
+				emitEvents: false,
 			};
 			
 			assert.deepEqual(actual, expected);
@@ -287,11 +271,13 @@ describe('Library (index.js)', function(){
 			let actual = logger;
 			let expected = {
 				name: 'root',
+				"emitEvents": false,
 				propogate: true,
 				isMuted: false,
 				handles: [],
 				hasHandles: false,
 				filters: [],
+				"level": "debug",
 				levelMapper: 'npm'
 			};
 			
@@ -709,6 +695,7 @@ describe('Library (index.js)', function(){
 				active: true,
 				levelMapper: 'npm',
 				level: 'debug',
+				"emitEvents": false,
 				target: 'console',
 				formatter: 'default'
 			};
@@ -897,31 +884,31 @@ describe('Library (index.js)', function(){
 			Loggerize = require('../lib/index.js');
 		});
 		
-		it("#on() should handle emitted event when a record is logged", function(){
+		it("#on() should handle emitted event when a record is logged", function(done){
 			
-			let logger = Loggerize.getLogger("_anonymous");
 			Loggerize.on("logged", function(logRecord){
 				let actual = logRecord["output"];
 				let expected = "info Log Message Test!";
 				assert.equal(actual, expected);
+				done();
 			});
 			
-			Loggerize.addHandle({
-				"emitEvents": true,
-				"name": "myHandle",
-				"formatter": "default",
-				"target": null
+			let logger = Loggerize.createLogger({
+				"name": "myLogger",
+				"handle": {
+					"emitEvents": true,
+					"name": "myHandle",
+					"formatter": "default",
+					"target": null,
+				}
 			});
-			
-			logger.attachHandles("myHandle");
-			logger.detachHandles("default"); //If default is not unset it will also print
 			
 			logger.log("info", "Log Message Test!");
 		});
 		
 	});
 	
-	describe('Test Convenience Interface', function() {
+	describe('Test Default Logger', function() {
 		
 		/** Because Loggerize proxies request to a singleton that maintaines state,
 			it is require to purge cache on each test to ensure settings brought forward
@@ -938,103 +925,160 @@ describe('Library (index.js)', function(){
 			Loggerize = require('../lib/index.js');
 		});
 		
-		it("#error() Should log message at error level when passed a string", function(){
+		it("#setFileTarget() Should output to file when path supplied as argument", function(done){
 			
 			Loggerize.on("logged", function(logRecord){
 				let actual = logRecord["output"];
-				let expected = "error Log Message Test!";
+				let expected = "info Log Message Test";
 				assert.equal(actual, expected);
+				done();
 			});
 			
-			Loggerize.addHandle({
-				"emitEvents": true,
-				"name": "myHandle",
-				"formatter": "default",
-				"target": null
-			});
+			var logger = Loggerize;
 			
-			subject.loggers["_anonymous"].attachHandles("myHandle");
-			subject.loggers["_anonymous"].detachHandles("default");
+			logger.setFileTarget("./test/test.log");
 			
-			Loggerize.error("Log Message Test!");
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			
+			logger.info("Log Message Test");
+			
 		});
-		it("#warn() Should log message at warn level when passed a string", function(){
-			
-			Loggerize.on("logged", function(logRecord){
-				let actual = logRecord["output"];
-				let expected = "warn Log Message Test!";
-				assert.equal(actual, expected);
-			});
-			
-			Loggerize.addHandle({
-				"emitEvents": true,
-				"name": "myHandle",
-				"formatter": "default",
-				"target": null
-			});
-			
-			subject.loggers["_anonymous"].attachHandles("myHandle");
-			subject.loggers["_anonymous"].detachHandles("default");
-			
-			Loggerize.warn("Log Message Test!");
-		});
-		it("#info() Should log message at info level when passed a string", function(){
+		
+		it("#setConsoleTarget() Should output to the console", function(done){
 			
 			Loggerize.on("logged", function(logRecord){
 				let actual = logRecord["output"];
 				let expected = "info Log Message Test!";
 				assert.equal(actual, expected);
+				done();
 			});
 			
-			Loggerize.addHandle({
-				"emitEvents": true,
-				"name": "myHandle",
-				"formatter": "default",
-				"target": null
+			var logger = Loggerize;
+			logger.setConsoleTarget();
+			
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			
+			logger.info("Log Message Test!");
+			
+		});
+		
+		it("#setFormat() Should changed the outpue format when passed desired format as paramter", function(done){
+			
+			Loggerize.on("logged", function(logRecord){
+				let actual = logRecord["output"];
+				let expected = "_anonymous info Log Message Test!";
+				assert.equal(actual, expected);
+				done();
 			});
 			
-			subject.loggers["_anonymous"].attachHandles("myHandle");
-			subject.loggers["_anonymous"].detachHandles("default");
+			var logger = Loggerize;
+			logger.setFormat("%{loggerName} %{level} %{message}");
+			
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			subject.handles[anonymousHandleName]["target"] = null;
+			
+			logger.info("Log Message Test!");
+			
+		});
+		
+		it("#getLevel() Should get the default level of the library and by extension the anonymous logger", function(){
+			
+			var logger = Loggerize;
+			let actual = logger.getLevel();
+			let expected = "debug";
+			assert.strictEqual(actual, expected);
+			
+		});
+		
+		it("#setLevel() Should set the default level of the library and by extension the anonymous logger", function(){
+			
+			var logger = Loggerize;
+			logger.setLevel("info");
+			let actual = logger.getLevel();
+			let expected = "info";
+			assert.strictEqual(actual, expected);
+			
+		});
+		
+		it("#error() Should log message at error level when passed a string", function(done){
+			
+			Loggerize.on("logged", function(logRecord){
+				let actual = logRecord["output"];
+				let expected = "error Log Message Test!";
+				assert.equal(actual, expected);
+				done();
+			});
+			
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			subject.handles[anonymousHandleName]["target"] = null;
+			
+			Loggerize.error("Log Message Test!");
+		});
+		
+		it("#warn() Should log message at warn level when passed a string", function(done){
+			
+			Loggerize.on("logged", function(logRecord){
+				let actual = logRecord["output"];
+				let expected = "warn Log Message Test!";
+				assert.equal(actual, expected);
+				done();
+			});
+			
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			subject.handles[anonymousHandleName]["target"] = null;
+			
+			Loggerize.warn("Log Message Test!");
+		});
+		
+		it("#info() Should log message at info level when passed a string", function(done){
+			
+			Loggerize.on("logged", function(logRecord){
+				let actual = logRecord["output"];
+				let expected = "info Log Message Test!";
+				assert.equal(actual, expected);
+				done();
+			});
+			
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			subject.handles[anonymousHandleName]["target"] = null;
 			
 			Loggerize.info("Log Message Test!");
 		});
-		it("#verbose() Should log message at verbose level when passed a string", function(){
+		
+		it("#verbose() Should log message at verbose level when passed a string", function(done){
 			
 			Loggerize.on("logged", function(logRecord){
 				let actual = logRecord["output"];
 				let expected = "verbose Log Message Test!";
 				assert.equal(actual, expected);
+				done();
 			});
 			
-			Loggerize.addHandle({
-				"emitEvents": true,
-				"name": "myHandle",
-				"formatter": "default",
-				"target": null
-			});
-			
-			subject.loggers["_anonymous"].attachHandles("myHandle");
-			subject.loggers["_anonymous"].detachHandles("default");
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			subject.handles[anonymousHandleName]["target"] = null;
 			
 			Loggerize.verbose("Log Message Test!");
 		});
-		it("#debug() Should log message at debug level when passed a string", function(){
+		
+		it("#debug() Should log message at debug level when passed a string", function(done){
 			
 			Loggerize.on("logged", function(logRecord){
 				let actual = logRecord["output"];
 				let expected = "debug Log Message Test!";
 				assert.equal(actual, expected);
+				done();
 			});
 			
-			Loggerize.addHandle({
-				"emitEvents": true,
-				"name": "myHandle",
-				"formatter": "default",
-				"target": null
-			});
-			
-			subject.loggers["_anonymous"].attachHandles("myHandle");
-			subject.loggers["_anonymous"].detachHandles("default");
+			let anonymousHandleName = subject.loggers["_anonymous"].handles[0];
+			subject.handles[anonymousHandleName]["emitEvents"] = true;
+			subject.handles[anonymousHandleName]["target"] = null;
 			
 			Loggerize.debug("Log Message Test!");
 		});
