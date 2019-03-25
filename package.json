@@ -35,9 +35,6 @@
 		"npm": ">= 3.0.0"
 	},
 	"author": "Ghost <13hackghost@gmail.com>",
-	"license": "GPL",
-	"private": true,
-	"dependencies": {
-		"mysql": "^2.16.0"
-	}
+	"license": "(AGPL-3.0-or-later OR SEE LICENSE IN EULA.md)",
+	"private": false
 }
