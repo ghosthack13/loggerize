@@ -1,14 +1,32 @@
-var assert = require('assert');
-var path = require("path")
+"use strict";
 
-describe("", function(){
+var assert = require('assert');
+var path = require("path");
+var http = require('http');
+
+describe("Manage Filters", function(){
 	
-	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/logger.js')]
+	let subject;
+	let loggerize;
+	beforeEach(function(){
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
+		loggerize = require('../lib/index.js');
 	});
 	
-	var predefinedFilters = ["burst", "dynamicLevel", "level", "regex"];
+	var server;
+	after(function(){
+		if (server){
+			server.close();
+		}
+	});
+	
+	var predefinedFilters = [
+		//"burst", "dynamicLevel", "level", 
+		"regex"
+	];
 	
 	it("#loadFilters should import the filters contained in the filters folder", function(){
 		
@@ -60,7 +78,7 @@ describe("", function(){
 	
 	it("#LogFilterFactory should return a LogFilter with a 'filter' method defined as the function passed in 1st argument", function(){
 		
-		let myFilter = function(){return true;}
+		let myFilter = function(){return true;};
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		
 		let actual = logFilter.filter.toString();
@@ -82,6 +100,30 @@ describe("", function(){
 		subject.addFilter.call(subject, {"name": "myFilter", "filter": function(){return true;}});
 		let actual = Object.keys(subject.filters).sort();
 		let expected = predefinedFilters.concat("myFilter").sort();
+		assert.deepEqual(actual, expected);
+	});
+	
+	it("#affixFilters should construct logFilter objects and append to _filter property of context (e.g. handle) passed as parameter", function(){
+		
+		let mockHandle = {
+			'active': true,
+			'level': "debug",
+			'target': "console",
+			'formatter': "default",
+			'levelMapper': "npm",
+			"filter": {"regex": {"pattern": /debug/}}
+		};
+		
+		subject.affixFilters.call(subject, mockHandle);
+		
+		let actual = mockHandle["_filters"];
+		let expected = [{
+			pattern: /debug/,
+			filterName: 'regex',
+			level: 'debug',
+			target: 'console' 
+		}];
+		
 		assert.deepEqual(actual, expected);
 	});
 	
@@ -112,55 +154,366 @@ describe("", function(){
 	it("#runFilters should return true when passed a logRecord and array of constructed filters", function(){
 		
 		let mockLogRecord = {"level": "info", "message": "runFilters log test!"};
-		let myFilter = function(){return true;}
+		let myFilter = function(){return true;};
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		let _filters = [logFilter];
 		
-		let actual = subject.runFilters.call(subject, mockLogRecord, _filters);
+		let context = {
+			"level": "debug",
+			"levelNum": 4,
+			"levelMapper": "npm",
+			"_filters": _filters,
+		};
+		
+		let actual = subject.runFilters.call(subject, mockLogRecord, context);
 		let expected = true;
 		assert.strictEqual(actual, expected);
 	});
 	
 	it("#runFilters should return false when any filter in filter array returns false", function(){
 		
-		let myFilter = function(){return true;}
-		let myFilter2 = function(){return false;}
+		let myFilter = function(){return true;};
+		let myFilter2 = function(){return false;};
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		let logFilter2 = subject.LogFilterFactory.call(subject, myFilter2);
 		
 		let _filters = [logFilter, logFilter2];
 		let mockLogRecord = {"level": "info", "message": "runFilters log test!"};
+		let context = {
+			"level": "debug",
+			"levelNum": 4,
+			"levelMapper": "npm",
+			"_filters": _filters,
+		};
 		
-		let actual = subject.runFilters.call(subject, mockLogRecord, _filters);
+		let actual = subject.runFilters.call(subject, mockLogRecord, context);
 		let expected = false;
 		assert.strictEqual(actual, expected);
 	});
 	
 	
-	it("#affixFilters should construct logFilter objects and append to _filter property of context (e.g. handle) passed as parameter", function(){
+	
+	it("Should filter output when the logger has higher severity than event", function(done){
 		
-		let mockHandle = {
-			'active': true,
-			'level': "debug",
-			'target': "console",
-			'formatter': "default",
-			'levelMapper': "npm",
-			"filter": {"regex": {"pattern": /debug/}}
-		};
+		loggerize.on("filtered", function(logRecord){
+			assert(true);
+			done();
+		});
 		
-		subject.affixFilters.call(subject, mockHandle);
+		loggerize.on("logged", function(logRecord){
+			assert(false);
+			done();
+		});
 		
-		let actual = mockHandle["_filters"];
-		let expected = [{
-			pattern: /debug/,
-			filterName: 'regex',
-			level: 'debug',
-			target: 'console' 
-		}];
+		let logger = loggerize.createLogger({
+			name: "myLogger",
+			level: "warn",
+			emitEvents: true,
+			propogate: false,
+		});
+		logger.log("info", "Logger Test!");
 		
-		assert.deepEqual(actual, expected);
+	});
+	
+	it("Should filter output when the handle has higher severity than event", function(done){
+		
+		loggerize.on("filtered", function(logRecord){
+			assert(true);
+			done();
+		});
+		
+		loggerize.on("logged", function(logRecord){
+			assert(false);
+			done();
+		});
+		
+		let logger = loggerize.createLogger({
+			name: "myLogger",
+			propogate: false,
+			handle: {
+				name: "myHandle",
+				level: "warn",
+				emitEvents: true,
+			}
+		});
+		logger.log("info", "Logger Test!");
+		
 	});
 	
 	
-})
+	it("Should filter both request and response when both options set to false on logger", function(done){
+		
+		let numFiltered = 0;
+		let numLogged = 0;
+		
+		loggerize.on("filtered", function(logRecord){
+			++numFiltered;
+		});
+		
+		loggerize.on("logged", function(logRecord){
+			++numLogged;
+		});
+		
+		loggerize.on("finished", function(){
+			if (numFiltered === 2){
+				assert(true);
+			}
+			else{
+				assert(false);
+			}
+			server.close();
+			done();
+		});
+		
+		
+		let httpLogger = loggerize.createHTTPLogger({
+			name: "myHTTPLogger",
+			logOnResponse: false,
+			logOnRequest: false,
+			emitEvents: true,
+			handle: {
+				name: "myHandle",
+				target: null,
+				emitEvents: true,
+			}
+		});
+		
+		server = http.createServer(function (req, res){
+			httpLogger.httpListener(req, res);
+			res.writeHead(200, { 'Content-Type': 'text/plain' });
+			res.end('okay');
+		}).listen(3000);
+		
+		const req = http.request("http://localhost:3000", function(res){
+			let data = "";
+			res.setEncoding('utf8');		
+			res.on('data', function(chunk){
+				data += chunk;
+			});
+			res.on('end', function(){
+				subject.emit("finished");
+			});
+			res.on('error', function(){
+				assert(false);
+				server.close();
+				done();
+			});
+		});
+		
+		req.on('error', (e) => {
+			console.error(`problem with request: ${e.message}`);
+		});
+		
+		req.end();
+		
+	});
+	
+	it("Should log both request and response when both options set to true on logger", function(done){
+		
+		let numFiltered = 0;
+		let numLogged = 0;
+		
+		loggerize.on("filtered", function(logRecord){
+			++numFiltered;
+		});
+		
+		loggerize.on("logged", function(logRecord){
+			++numLogged;
+		});
+		
+		loggerize.on("finished", function(){
+			if (numFiltered === 0 && numLogged === 2){
+				assert(true);
+			}
+			else{
+				assert(false);
+			}
+			server.close();
+			done();
+		});
+		
+		
+		let httpLogger = loggerize.createHTTPLogger({
+			name: "myHTTPLogger",
+			logOnResponse: true,
+			logOnRequest: true,
+			emitEvents: true,
+			handle: {
+				name: "myHandle",
+				target: null,
+				emitEvents: true,
+			}
+		});
+		
+		server = http.createServer(function (req, res){
+			httpLogger.httpListener(req, res);
+			res.writeHead(200, { 'Content-Type': 'text/plain' });
+			res.end('okay');
+		}).listen(3000);
+		
+		const req = http.request("http://localhost:3000", function(res){
+			let data = "";
+			res.setEncoding('utf8');		
+			res.on('data', function(chunk){
+				data += chunk;
+			});
+			res.on('end', function(){
+				subject.emit("finished");
+			});
+			res.on('error', function(){
+				assert(false);
+				server.close();
+				done();
+			});
+		});
+		
+		req.on('error', (e) => {
+			console.error(`problem with request: ${e.message}`);
+		});
+		
+		req.end();
+		
+	});
+	
+	it("Should filter request and log response when logOnRequest set to false and logOnResponse set to true", function(done){
+		
+		let numFiltered = 0;
+		let numLogged = 0;
+		
+		loggerize.on("filtered", function(logRecord){
+			assert((typeof(logRecord["statusCode"]) != "number"), "Response is not supposed to be filtered");
+			++numFiltered;
+		});
+		
+		loggerize.on("logged", function(logRecord){
+			assert((typeof(logRecord["statusCode"]) == "number"), "Only Response is supposed to be logged");
+			++numLogged;
+		});
+		
+		loggerize.on("finished", function(){
+			if (numFiltered === 1 && numLogged === 1){
+				assert(true);
+			}
+			else{
+				assert(false);
+			}
+			server.close();
+			done();
+		});
+		
+		
+		let httpLogger = loggerize.createHTTPLogger({
+			name: "myHTTPLogger",
+			logOnResponse: true,
+			logOnRequest: false,
+			emitEvents: true,
+			handle: {
+				name: "myHandle",
+				target: null,
+				emitEvents: true,
+			}
+		});
+		
+		server = http.createServer(function (req, res){
+			httpLogger.httpListener(req, res);
+			res.writeHead(200, { 'Content-Type': 'text/plain' });
+			res.end('okay');
+		}).listen(3000);
+		
+		const req = http.request("http://localhost:3000", function(res){
+			let data = "";
+			res.setEncoding('utf8');		
+			res.on('data', function(chunk){
+				data += chunk;
+			});
+			res.on('end', function(){
+				subject.emit("finished");
+			});
+			res.on('error', function(){
+				assert(false);
+				server.close();
+				done();
+			});
+		});
+		
+		req.on('error', (e) => {
+			console.error(`problem with request: ${e.message}`);
+		});
+		
+		req.end();
+		
+	});
+	
+	it("Should filter response and log request when logOnRequest set to true and logOnResponse set to false", function(done){
+		
+		let numFiltered = 0;
+		let numLogged = 0;
+		
+		loggerize.on("filtered", function(logRecord){
+			assert((typeof(logRecord["statusCode"]) == "number"), "Response is supposed to be filtered");
+			++numFiltered;
+		});
+		
+		loggerize.on("logged", function(logRecord){
+			assert((typeof(logRecord["statusCode"]) != "number"), "Only Request is supposed to be logged");
+			++numLogged;
+		});
+		
+		loggerize.on("finished", function(){
+			if (numFiltered === 1 && numLogged === 1){
+				assert(true);
+			}
+			else{
+				assert(false);
+			}
+			server.close();
+			done();
+		});
+		
+		
+		let httpLogger = loggerize.createHTTPLogger({
+			name: "myHTTPLogger",
+			logOnResponse: false,
+			logOnRequest: true,
+			emitEvents: true,
+			handle: {
+				name: "myHandle",
+				target: null,
+				emitEvents: true,
+			}
+		});
+		
+		server = http.createServer(function (req, res){
+			httpLogger.httpListener(req, res);
+			res.writeHead(200, { 'Content-Type': 'text/plain' });
+			res.end('okay');
+		}).listen(3000);
+		
+		const req = http.request("http://localhost:3000", function(res){
+			let data = "";
+			res.setEncoding('utf8');		
+			res.on('data', function(chunk){
+				data += chunk;
+			});
+			res.on('end', function(){
+				subject.emit("finished");
+			});
+			res.on('error', function(){
+				assert(false);
+				server.close();
+				done();
+			});
+		});
+		
+		req.on('error', (e) => {
+			console.error(`problem with request: ${e.message}`);
+		});
+		
+		req.end();
+		
+	});
+	
+	
+	
+});
 

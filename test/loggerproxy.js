@@ -1,3 +1,5 @@
+"use strict";
+ 
 var assert = require('assert');
 
 //Style 
@@ -12,10 +14,12 @@ describe('LoggerProxy', function() {
 		it is require to purge cache on each test to ensure settings brought forward
 		from previous test
 	*/
+	let Loggerize;
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 		Loggerize = require('../lib/index.js');
 	});
@@ -35,7 +39,7 @@ describe('LoggerProxy', function() {
 			hasHandles: true,
 			filters: [],
 			levelMapper: subject.handles["default"]["levelMapper"],
-		}
+		};
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -43,14 +47,14 @@ describe('LoggerProxy', function() {
 	it('#attachHandles(handleNames) should attach handles named in parameter', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.attachHandles(["default", "anonymous"]);
+		logger.attachHandles(["default", "_anonymous"]);
 		
 		let actual = logger;
 		let expected = {
 			name: 'myLogger',
 			propogate: true,
 			isMuted: false,
-			handles: [ 'default',  'anonymous' ],
+			handles: [ 'default',  '_anonymous' ],
 			hasHandles: true,
 			filters: [],
 			levelMapper: 'npm'
@@ -68,7 +72,7 @@ describe('LoggerProxy', function() {
 			"emitEvents": true,
 			"formatter": "default",
 			"target": null
-		}
+		};
 		logger.attachHandles(opts);
 		
 		let actual = logger;
@@ -94,7 +98,7 @@ describe('LoggerProxy', function() {
 			"emitEvents": true,
 			"formatter": "default",
 			"target": null
-		}
+		};
 		logger.attachHandles(opts);
 		
 		let actual = subject.handles["myAutoHandle"];
@@ -114,15 +118,15 @@ describe('LoggerProxy', function() {
 	it('#detachHandles(handleName) should detach handle named in parameter', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.attachHandles(["default", "anonymous", "__exception__"]);
-		logger.detachHandles("anonymous");
+		logger.attachHandles(["default", "_anonymous"]);
+		logger.detachHandles("_anonymous");
 		
 		let actual = logger;
 		let expected = {
 			name: 'myLogger',
 			propogate: true,
 			isMuted: false,
-			handles: ["default", "__exception__"],
+			handles: ["default"],
 			hasHandles: true,
 			filters: [],
 			"levelMapper": "npm",
@@ -134,15 +138,15 @@ describe('LoggerProxy', function() {
 	it('#detachHandles(handleNames) should detach handles named in parameter', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.attachHandles(["default", "anonymous", "__exception__"]);
-		logger.detachHandles(["default", "__exception__"]);
+		logger.attachHandles(["default", "_anonymous"]);
+		logger.detachHandles(["default"]);
 		
 		let actual = logger;
 		let expected = {
 			name: 'myLogger',
 			propogate: true,
 			isMuted: false,
-			handles: ["anonymous"],
+			handles: ["_anonymous"],
 			hasHandles: true,
 			filters: [],
 			"levelMapper": "npm",
@@ -165,7 +169,7 @@ describe('LoggerProxy', function() {
 			handles: [],
 			hasHandles: false,
 			filters: ["regex"]
-		}
+		};
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -185,7 +189,7 @@ describe('LoggerProxy', function() {
 			handles: [],
 			hasHandles: false,
 			filters: []
-		}
+		};
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -194,9 +198,8 @@ describe('LoggerProxy', function() {
 		
 		let logger = Loggerize.getLogger("myLogger");
 		logger.attachFilter("regex", {"onMatch": "deny"});
-		logger.attachFilter("burst", {"rate": 10.0, "maxBurst": 100});
 		
-		logger.detachFilter(["regex", "burst"]);
+		logger.detachFilter(["regex"]);
 		
 		let actual = logger;
 		let expected = {
@@ -206,7 +209,7 @@ describe('LoggerProxy', function() {
 			handles: [],
 			hasHandles: false,
 			filters: []
-		}
+		};
 		
 		assert.deepEqual(actual, expected);
 	});
@@ -226,7 +229,7 @@ describe('LoggerProxy', function() {
 		logger.mute();
 		logger.log("info", "Testing mute function");
 		
-		fs.stat(myPath, function(err, stats){
+		fs.stat(myPath, function(err, stats){ //eslint-disable-line no-unused-vars
 			if (err){
 				assert(true);
 			}
@@ -252,7 +255,7 @@ describe('LoggerProxy', function() {
 		logger.unmute();
 		logger.log("info", "Testing unmute function");
 		
-		fs.stat(myPath, function(err, stats){
+		fs.stat(myPath, function(err, stats){ //eslint-disable-line no-unused-vars
 			if (err){
 				assert(false);
 			}
@@ -260,7 +263,7 @@ describe('LoggerProxy', function() {
 				assert(true);
 				fs.unlink(myPath, function(){
 					if (err) throw err;
-				})
+				});
 			}
 		});
 		
@@ -286,10 +289,10 @@ describe('LoggerProxy', function() {
 	});
 	
 	
-	it('#setLevelMap() should define/change the levelMapper of the logger', function(){
+	it('#setLevelMapper() should define/change the levelMapper of the logger', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("python");
+		logger.setLevelMapper("python");
 		
 		let actual = logger;
 		let expected = {
@@ -309,7 +312,7 @@ describe('LoggerProxy', function() {
 	it('#setLevel() should define/change the level of the logger', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("defcon");
+		logger.setLevelMapper("defcon");
 		logger.setLevel("defcon5");
 		
 		let actual = logger;
@@ -340,7 +343,7 @@ describe('LoggerProxy', function() {
 	it('#getLevel() should get the level the logger was assigned', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("defcon");
+		logger.setLevelMapper("defcon");
 		logger.setLevel("defcon5");
 		
 		let actual = logger.getLevel();
@@ -352,7 +355,7 @@ describe('LoggerProxy', function() {
 	it('#getEffectiveLevel() effective level should equal the level the logger was assigned', function(){
 		
 		let logger = Loggerize.getLogger("myLogger");
-		logger.setLevelMap("defcon");
+		logger.setLevelMapper("defcon");
 		logger.setLevel("defcon5");
 		
 		let actual = logger.getEffectiveLevel();
@@ -364,11 +367,11 @@ describe('LoggerProxy', function() {
 	it('#getEffectiveLevel() effective level for a logger w/an undefined level should equal the level of its least severe ancestor', function(){
 		
 		let parentLogger = Loggerize.getLogger("myParentLogger");
-		parentLogger.setLevelMap("npm");
+		parentLogger.setLevelMapper("npm");
 		parentLogger.setLevel("warn");
 		
 		let childLogger = Loggerize.getLogger("myParentLogger.myChildLogger");
-		childLogger.setLevelMap("npm");
+		childLogger.setLevelMapper("npm");
 		
 		let actual = childLogger.getEffectiveLevel();
 		let expected = "warn";
@@ -379,10 +382,10 @@ describe('LoggerProxy', function() {
 	
 	it("#log() should log level and message when passed level and message", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "info Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "info Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -400,10 +403,10 @@ describe('LoggerProxy', function() {
 	
 	it("#log() should log level and message when passed object with level and message properties", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "info Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "info Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -420,10 +423,10 @@ describe('LoggerProxy', function() {
 	
 	it("#log() should guess level and log message when passed only an Error object", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "error Error object test!";
+			let actual = logRecord["output"];
+			let expected = "error Error object test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -440,10 +443,10 @@ describe('LoggerProxy', function() {
 	
 	it("#log() override level in Error object but log message extracted", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "info Error object test!";
+			let actual = logRecord["output"];
+			let expected = "info Error object test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -460,10 +463,10 @@ describe('LoggerProxy', function() {
 	
 	it("#log() override level in custom object but log message extracted", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "info ";
+			let actual = logRecord["output"];
+			let expected = "info ";
 			assert.equal(actual, expected);
 		});
 		
@@ -487,8 +490,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [
+			let actual = outputs;
+			let expected = [
 				'warn Log Message Test! | myGrandParent.myParent.myChild',
 				'warn Log Message Test! | myGrandParent.myParent',
 				'warn Log Message Test! | myGrandParent',
@@ -540,8 +543,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [
+			let actual = outputs;
+			let expected = [
 				'warn Log Message Test! | myGrandParent.myParent.myChild',
 				//'warn Log Message Test! | myGrandParent.myParent',
 				'warn Log Message Test! | myGrandParent',
@@ -593,8 +596,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [
+			let actual = outputs;
+			let expected = [
 				'warn Log Message Test! | myGrandParent.myParent.myChild',
 				'warn Log Message Test! | myGrandParent.myParent',
 				'warn Log Message Test! | myGrandParent',
@@ -647,8 +650,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [ 
+			let actual = outputs;
+			let expected = [ 
 				'debug Log Message Test! | myGrandParent.myParent.myChild',
 				'debug Log Message Test! | root'
 			];
@@ -700,8 +703,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [ 
+			let actual = outputs;
+			let expected = [ 
 				'debug Log Message Test! | myGrandParent.myParent.myChild',
 				'debug Log Message Test! | root'
 			];
@@ -739,7 +742,7 @@ describe('LoggerProxy', function() {
 		myGrandParent.detachHandles("default");
 		
 		let myParent = Loggerize.createLogger("myGrandParent.myParent");
-		myParent.setLevelMap("defcon");
+		myParent.setLevelMapper("defcon");
 		myParent.setLevel("defcon5");
 		myParent.attachHandles("myHandle2");
 		myParent.detachHandles("default");
@@ -763,8 +766,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [
+			let actual = outputs;
+			let expected = [
 				'warn Log Message Test! | myGrandParent.myParent.myChild',
 				// 'warn Log Message Test! | myGrandParent.myParent',
 				'warn Log Message Test! | myGrandParent',
@@ -813,8 +816,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [
+			let actual = outputs;
+			let expected = [
 				'warn Log Message Test! | myGrandParent.myParent.myChild',
 				// 'warn Log Message Test! | myGrandParent.myParent',
 				// 'warn Log Message Test! | myGrandParent',
@@ -864,8 +867,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = [ 
+			let actual = outputs;
+			let expected = [ 
 				'warn Log Message Test! | myGrandParent.myParent.myChild',
 				'warn Log Message Test! | myGrandParent.myParent',
 				'warn Log Message Test! | myGrandParent',
@@ -926,8 +929,8 @@ describe('LoggerProxy', function() {
 		});
 		
 		Loggerize.on("finished", function(){
-			actual = outputs;
-			expected = ["warn Log Message Test! | myGrandParent.myParent.myChild"];
+			let actual = outputs;
+			let expected = ["warn Log Message Test! | myGrandParent.myParent.myChild"];
 			assert.deepEqual(actual, expected);
 		});
 		
@@ -968,10 +971,10 @@ describe('LoggerProxy', function() {
 	//Log using quick log interface
 	it("#silly() should log message at silly level when passed a message string under the npm level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "silly Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "silly Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -984,7 +987,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.silly("Log Message Test!");
 		
@@ -992,10 +995,10 @@ describe('LoggerProxy', function() {
 	
 	it("#debug() should log and string interpolate message at debug level under the npm level mapper when passed two message strings", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "debug Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "debug Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1008,7 +1011,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.debug("Log %s Test!", "Message");
 		
@@ -1016,10 +1019,10 @@ describe('LoggerProxy', function() {
 	
 	it("#verbose() should log and string interpolate message at verbose level under the npm level mapper when passed a string and a number", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "verbose 103rd Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "verbose 103rd Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1032,7 +1035,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.verbose("%drd Log Message Test!", 103);
 		
@@ -1040,10 +1043,10 @@ describe('LoggerProxy', function() {
 	
 	it("#info() should log and string interpolate message at info level under the npm level mapper when passed three strings", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "info Log Message Test. Success!";
+			let actual = logRecord["output"];
+			let expected = "info Log Message Test. Success!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1056,7 +1059,7 @@ describe('LoggerProxy', function() {
 			"target": null
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.info("Log Message %s. %s!", "Test", "Success");
 		
@@ -1064,10 +1067,10 @@ describe('LoggerProxy', function() {
 	
 	it("#warn() should log and string interpolate/merge message at warn level under the npm level mapper when passed four strings", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "warn Log Message Test. Success! Finished";
+			let actual = logRecord["output"];
+			let expected = "warn Log Message Test. Success! Finished";
 			assert.equal(actual, expected);
 		});
 		
@@ -1080,18 +1083,18 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.warn("Log Message %s. %s!", "Test", "Success", "Finished");
 		
 	});
 	
-	it("#error() should log and string interpolate/merge message at error level under the npm level mapper when passed four strings", function(){
+	it("#error() should log message at error level under the npm level mapper when passed single object", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "error Basic error object log test";
+			let actual = logRecord["output"];
+			let expected = "error Basic error object log test";
 			assert.equal(actual, expected);
 		});
 		
@@ -1104,7 +1107,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("npm");
+		logger.setLevelMapper("npm");
 		logger.attachHandles("myHandle");
 		logger.error(new TypeError("Basic error object log test"));
 		
@@ -1113,10 +1116,10 @@ describe('LoggerProxy', function() {
 	
 	it("#notice() should log message at notice level when passed a message string under the syslog level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "notice Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "notice Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1129,7 +1132,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.notice("Log Message Test!");
 		
@@ -1137,10 +1140,10 @@ describe('LoggerProxy', function() {
 	
 	it("#warning() should log message at warning level when passed a message string under the syslog level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "warning Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "warning Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1153,7 +1156,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.warning("Log Message Test!");
 		
@@ -1161,10 +1164,10 @@ describe('LoggerProxy', function() {
 	
 	it("#err() should log message at err level when passed a message string under the syslog level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "err Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "err Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1177,7 +1180,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.err("Log Message Test!");
 		
@@ -1185,10 +1188,10 @@ describe('LoggerProxy', function() {
 	
 	it("#crit() should log message at crit level when passed a message string under the syslog level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "crit Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "crit Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1201,7 +1204,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.crit("Log Message Test!");
 		
@@ -1209,10 +1212,10 @@ describe('LoggerProxy', function() {
 	
 	it("#alert() should log message at alert level when passed a message string under the syslog level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "alert Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "alert Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1225,7 +1228,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.alert("Log Message Test!");
 		
@@ -1233,10 +1236,10 @@ describe('LoggerProxy', function() {
 	
 	it("#emerg() should log message at emerg level when passed a message string under the syslog level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "emerg Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "emerg Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1249,7 +1252,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("syslog");
+		logger.setLevelMapper("syslog");
 		logger.attachHandles("myHandle");
 		logger.emerg("Log Message Test!");
 		
@@ -1258,10 +1261,10 @@ describe('LoggerProxy', function() {
 	
 	it("#critical() should log message at critical level when passed a message string under the python level mapper", function(){
 		
-		logger = Loggerize.getLogger("myLogger");
+		let logger = Loggerize.getLogger("myLogger");
 		Loggerize.on("logged", function(logRecord){
-			actual = logRecord["output"];
-			expected = "critical Log Message Test!";
+			let actual = logRecord["output"];
+			let expected = "critical Log Message Test!";
 			assert.equal(actual, expected);
 		});
 		
@@ -1274,7 +1277,7 @@ describe('LoggerProxy', function() {
 			"target": null,
 		});
 		
-		logger.setLevelMap("python");
+		logger.setLevelMapper("python");
 		logger.attachHandles("myHandle");
 		logger.critical("Log Message Test!");
 		

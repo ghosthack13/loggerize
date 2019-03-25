@@ -1,11 +1,14 @@
+"use strict";
+
 var assert = require('assert');
-var path = require("path")
+var path = require("path");
 
 describe("", function(){
 	
 	var predefinedTransformers = ["uppercase", "lowercase"];
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/logger.js')]
+		delete require.cache[require.resolve('../lib/logger.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
@@ -72,7 +75,7 @@ describe("", function(){
 			"output": "info runTransformers log test!",
 		};
 		
-		let myTransformer = function(output){ return output.replace("test", "test works!"); }
+		let myTransformer = function(output){ return output.replace("test", "test works!"); };
 		subject.addTransformer.call(subject, "myTransformer", myTransformer);
 		subject.runTransformers.call(subject, mockLogRecord, ["myTransformer"]);
 		
@@ -89,7 +92,7 @@ describe("", function(){
 			"output": "info runTransformers log test!",
 		};
 		
-		let myTransformer = function(output){ return output.replace("test", "test works!"); }
+		let myTransformer = function(output){ return output.replace("test", "test works!"); };
 		subject.addTransformer.call(subject, "myTransformer", myTransformer);
 		subject.runTransformers.call(subject, mockLogRecord, ["myTransformer", "uppercase"]);
 		

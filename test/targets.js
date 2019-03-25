@@ -1,3 +1,5 @@
+"use strict";
+
 var assert = require('assert');
 
 var os = require('os');
@@ -5,7 +7,7 @@ var fs = require('fs');
 var path = require('path');
 
 var http = require('http');
-var https = require('https');
+// var https = require('https');
 
 var url = require("url");
 var querystring= require('querystring');
@@ -53,12 +55,12 @@ describe("Targets (Intergation Test)", function(){
 	
 	var logDir =  path.join(__dirname, "logs" + path.sep);
 	
+	let subject;
 	beforeEach(function() {
-		delete require.cache[require.resolve('../lib/index.js')]
-		delete require.cache[require.resolve('../lib/logger.js')]
-		delete require.cache[require.resolve('../lib/loggerproxy.js')]
+		delete require.cache[require.resolve('../lib/index.js')];
+		delete require.cache[require.resolve('../lib/logger.js')];
+		delete require.cache[require.resolve('../lib/loggerproxy.js')];
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
-		Loggerize = require('../lib/index.js');
 	});
 	
 	after(function(){
@@ -94,9 +96,10 @@ describe("Targets (Intergation Test)", function(){
 			
 			let mockLogRecord = {
 				"level": "info", 
-				"message": "File Target Test Line 1"
+				"message": "File Target Test Line 1",
+				"DateObj": new Date(),
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 			//Read file contents to assert it was written successfully
 			fs.readFile(targetPath, {"encoding": "utf8"}, function (err, data){
@@ -108,7 +111,7 @@ describe("Targets (Intergation Test)", function(){
 				//Check
 				let actual = data;
 				let expected = "info File Target Test Line 1" + os.EOL;
-				assert.equal(data, expected);
+				assert.equal(actual, expected);
 				
 				//remove test file after test
 				// fs.unlink(targetPath, function(err){});
@@ -135,9 +138,9 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"] + "_2020_02_28_14_00_00.log");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -174,7 +177,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
@@ -190,15 +193,15 @@ describe("Targets (Intergation Test)", function(){
 			"directory": logDir,
 			"interval": "second",
 			"fileNamePattern": "%{fileName}-%Y-%b.log",
-			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{datetime}"}
+			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{timestamp}"}
 		});
 		
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"] + "-2020-Feb.log");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -212,7 +215,7 @@ describe("Targets (Intergation Test)", function(){
 					
 					//Assert File contents match expected
 					let actual = data;
-					let expected = "info Rotating File (Interval) Target Test 2/28/2020, 10:00:00 AM" + os.EOL;
+					let expected = "info Rotating File (Interval) Target Test 28 Feb 2020 10:00:00 -0400" + os.EOL;
 					assert.equal(actual, expected);
 					
 					//Remove just created file
@@ -235,7 +238,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
@@ -252,15 +255,15 @@ describe("Targets (Intergation Test)", function(){
 			"directory": logDir,
 			"maxSize": "1mb",
 			// "fileNamePattern": "%{fileName}_%{logNum}_.log",
-			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{datetime}"}
+			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{timestamp}"}
 		});
 		
 		//Construct target path
 		let targetPath = path.join(logDir, "targets.log.1");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -274,7 +277,7 @@ describe("Targets (Intergation Test)", function(){
 					
 					//Assert File contents match expected
 					let actual = data;
-					let expected = "info Rotating File (Interval) Target Test 2/28/2020, 10:00:00 AM" + os.EOL;
+					let expected = "info Rotating File (Interval) Target Test 28 Feb 2020 10:00:00 -0400" + os.EOL;
 					assert.equal(actual, expected);
 					
 					//Remove just created file
@@ -297,7 +300,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 		
@@ -314,15 +317,15 @@ describe("Targets (Intergation Test)", function(){
 			"directory": logDir,
 			"maxSize": "1mb",
 			"fileNamePattern": "%{fileName}_%{logNum}_.log",
-			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{datetime}"}
+			"formatter": {"name": "myFormatter", "format": "%{level} %{message} %{timestamp}"}
 		});
 		
 		//Construct target path
 		let targetPath = path.join(logDir, "targets_1_.log");
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -336,7 +339,7 @@ describe("Targets (Intergation Test)", function(){
 					
 					//Assert File contents match expected
 					let actual = data;
-					let expected = "info Rotating File (Interval) Target Test 2/28/2020, 10:00:00 AM" + os.EOL;
+					let expected = "info Rotating File (Interval) Target Test 28 Feb 2020 10:00:00 -0400" + os.EOL;
 					assert.equal(actual, expected);
 					
 					//Remove just created file
@@ -359,7 +362,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Rotating File (Interval) Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 		
@@ -373,20 +376,21 @@ describe("Targets (Intergation Test)", function(){
 		subject.addHandle({
 			"emitEvents": true,
 			"name": "myHandle",
-			"target": "rest",
+			"target": "http",
 			"port": 3000,
 			"method": "GET",
+			"allowInsecure": true,
 			"url": "http://192.168.154.130/",
 			"formatter": {
 				"name": "myFormatter", 
-				"format": "%{level} %{message} %{datetime}"
+				"format": "%{level} %{message} %{timestamp}"
 			}
 		});
 		
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = "Received GET Request with query: level=info&message=REST Target Test!&datetime=2/28/2020, 10:00:00 AM&output=info REST Target Test! 2/28/2020, 10:00:00 AM";
+			let expected = "Received GET Request with query: message=HTTP Target Test!&timestamp=28 Feb 2020 10:00:00 -0400&output=info HTTP Target Test! 28 Feb 2020 10:00:00 -0400&level=info";
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
@@ -396,9 +400,9 @@ describe("Targets (Intergation Test)", function(){
 		let mockLogRecord = {
 			"DateObj": new Date(2020, 1, 28, 10, 0, 0),
 			"level": "info", 
-			"message": "REST Target Test!",
+			"message": "HTTP Target Test!",
 		};
-		subject.log(mockLogRecord, subject.handles["myHandle"]);
+		subject.render(mockLogRecord, subject.handles["myHandle"]);
 		
 	});
 	
@@ -409,20 +413,21 @@ describe("Targets (Intergation Test)", function(){
 		subject.addHandle({
 			"emitEvents": true,
 			"name": "myHandle",
-			"target": "rest",
+			"target": "http",
 			"port": 3000,
+			"allowInsecure": true,
 			"method": "POST",
 			"url": "http://192.168.154.130/",
 			"formatter": {
 				"name": "myFormatter", 
-				"format": "%{level} %{message} %{datetime}"
+				"format": "%{level} %{message} %{timestamp}"
 			}
 		});
 		
 		subject.on("logged", function(logRecord){
 			//Assert File contents match expected
 			let actual = logRecord["response"];
-			let expected = 'Received POST Request with payload: {"level":"info","message":"REST Target Test!","datetime":"2/28/2020, 10:00:00 AM","output":"info REST Target Test! 2/28/2020, 10:00:00 AM"}';
+			let expected = 'Received POST Request with payload: {"message":"HTTP Target Test!","timestamp":"28 Feb 2020 10:00:00 -0400","output":"info HTTP Target Test! 28 Feb 2020 10:00:00 -0400","level":"info"}';
 			assert.equal(actual, expected);
 			
 			//Declare asynchronous code finished for Mocha
@@ -432,9 +437,9 @@ describe("Targets (Intergation Test)", function(){
 		let mockLogRecord = {
 			"DateObj": new Date(2020, 1, 28, 10, 0, 0),
 			"level": "info", 
-			"message": "REST Target Test!",
+			"message": "HTTP Target Test!",
 		};
-		subject.log(mockLogRecord, subject.handles["myHandle"]);
+		subject.render(mockLogRecord, subject.handles["myHandle"]);
 		
 	});
 	
@@ -464,10 +469,10 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"]);
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -493,7 +498,7 @@ describe("Targets (Intergation Test)", function(){
 			});
 		});
 		
-		fs.stat(targetPath, function(err, stats){
+		fs.stat(targetPath, function(err, stats){ 
 			
 			if (typeof(stats) != "undefined"){
 				fs.unlinkSync(targetPath);
@@ -504,7 +509,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Custom Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
@@ -536,10 +541,10 @@ describe("Targets (Intergation Test)", function(){
 		//Construct target path
 		let targetPath = path.join(logDir, subject.handles["myHandle"]["fileName"]);
 		
-		subject.on("logged", function(logRecord){
+		subject.on("logged", function(logRecord){ // eslint-disable-line no-unused-vars
 			
 			//Set options and Delete target file if already exists
-			fs.stat(targetPath, function(err, stats){
+			fs.stat(targetPath, function(err, stats){ // eslint-disable-line no-unused-vars
 				
 				if (err){
 					throw err;
@@ -576,7 +581,7 @@ describe("Targets (Intergation Test)", function(){
 				"level": "info", 
 				"message": "Custom Target Test",
 			};
-			subject.log(mockLogRecord, subject.handles["myHandle"]);
+			subject.render(mockLogRecord, subject.handles["myHandle"]);
 			
 		});
 	});
