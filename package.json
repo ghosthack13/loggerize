@@ -1,6 +1,6 @@
 {
 	"name": "loggerize",
-	"version": "0.1.0",
+	"version": "0.1.5",
 	"description": "A Universal Logger for Application and HTTP/Middleware",
 	"keywords": [
 		"log",
@@ -35,6 +35,6 @@
 		"npm": ">= 3.0.0"
 	},
 	"author": "Ghost <13hackghost@gmail.com>",
-	"license": "(AGPL-3.0-or-later OR SEE LICENSE IN EULA.md)",
+	"license": "AGPL-3.0 or See EULA.md",
 	"private": false
 }
