@@ -337,13 +337,6 @@ describe("Manage Handles", function() {
 
 		//Close all handles/streams and emit the 'finish' event
 		subject.shutdown();
-		
-		//Declare test a failure if finish event is not emitted within one second
-		setTimeout(function(){
-			assert(false, "Failed to produce 'finish' event");
-			done();
-		}, 1000);
-		
 	});
 	
 	it("#shutdown - Should throw error when logging is attempted after shutdown() is called", function(){
