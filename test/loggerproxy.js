@@ -240,33 +240,44 @@ describe('LoggerProxy', function() {
 		
 	});
 	
-	it('#unmute() should allow all logs from this logger', function(){
+	it('#unmute() should allow all logs from this logger', function(done){
 		
 		const millis = (new Date()).valueOf();
 		let myPath = __dirname + path.sep + "mutetest_" + millis + ".log";
+		
 		Loggerize.addHandle({
 			"name": "myHandle", 
 			"path": myPath,
+			"emitEvents": true,
+		});
+		
+		Loggerize.on("logged", function(){
+			fs.stat(myPath, function(err, stats){ //eslint-disable-line no-unused-vars
+				if (err){
+					assert(false);
+					done();
+				}
+				else{
+					assert(true);
+					fs.unlink(myPath, function(){
+						if (err){
+							throw err;
+						}
+					});
+					done();
+				}
+			});
 		});
 		
 		let logger = Loggerize.getLogger("myLogger");
 		logger.attachHandles("myHandle");
+		
 		logger.mute();
+		assert(subject.loggers["myLogger"].isMuted);
+		
 		logger.unmute();
+		
 		logger.log("info", "Testing unmute function");
-		
-		fs.stat(myPath, function(err, stats){ //eslint-disable-line no-unused-vars
-			if (err){
-				assert(false);
-			}
-			else{
-				assert(true);
-				fs.unlink(myPath, function(){
-					if (err) throw err;
-				});
-			}
-		});
-		
 	});
 	
 	it('#isMuted() should show that the logger is muted', function(){

@@ -710,6 +710,7 @@ describe("Set Default Handle Options", function() {
 	});
 	
 	var DEFAULT_USER_AGENT = "loggerize/0.0.1";
+	var logDir =  path.join(process.cwd(), "logs" + path.sep);
 	
 	it("#setHandleDefaults - Empty opts object given", function() {
 		
@@ -796,7 +797,7 @@ describe("Set Default Handle Options", function() {
 			"rotationType": "interval",
 			"interval": 'day',
 			
-			"directory": process.cwd() + '/logs/',
+			"directory": logDir,
 			"fileName": 'options',
 			"fileExtension": '.log',
 		};
@@ -825,7 +826,7 @@ describe("Set Default Handle Options", function() {
 			"interval": 'week',
 			"rotateDay": "sunday",
 			
-			"directory": process.cwd() + '/logs/',
+			"directory": logDir,
 			"fileName": 'options',
 			"fileExtension": '.log',
 		};
@@ -854,7 +855,7 @@ describe("Set Default Handle Options", function() {
 			"maxSize": 123456789,
 			"rotationType": "size",
 			
-			"directory": process.cwd() + '/logs/',
+			"directory": logDir,
 			"fileName": 'options',
 			"fileExtension": '.log',
 		};

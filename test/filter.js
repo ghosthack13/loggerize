@@ -78,11 +78,13 @@ describe("Manage Filters", function(){
 	
 	it("#LogFilterFactory should return a LogFilter with a 'filter' method defined as the function passed in 1st argument", function(){
 		
-		let myFilter = function(){return true;};
+		//In the function the space before the parenthesis IS IMPORTANT when 
+		//converting to string
+		let myFilter = function (){return true;};
 		let logFilter = subject.LogFilterFactory.call(subject, myFilter);
 		
 		let actual = logFilter.filter.toString();
-		let expected = "function(){return true;}";
+		let expected = "function (){return true;}";
 		assert.equal(actual, expected);
 	});
 	
