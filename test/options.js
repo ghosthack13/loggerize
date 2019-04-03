@@ -744,7 +744,7 @@ describe("Set Default Handle Options", function() {
 			emitEvents: false,
 			"target": 'file',
 			"formatter": 'default',
-			"directory": process.cwd() + '/logs/',
+			"directory": logDir,
 			"fileName": 'options',
 			"fileExtension": '.log',
 		};
