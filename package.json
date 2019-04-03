@@ -1,6 +1,6 @@
 {
 	"name": "loggerize",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "A Universal Logger for Application and HTTP/Middleware",
 	"keywords": [
 		"log",
