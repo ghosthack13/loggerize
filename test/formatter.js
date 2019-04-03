@@ -265,10 +265,12 @@ describe("Manage Formatters", function() {
 	
 	it("#format - Should output json string with all fields when fields property is NOT set", function() {
 		
+		let dateObj = new Date();
+		
 		let mockLogRecord = Object.create(Object.prototype, {
 			"level": { value: "debug", writable: true, enumerable: true, configurable: false },
 			"message": { value: "Sample Log Message", writable: true, enumerable: true, configurable: false },
-			"DateObj": { value: new Date(), writable: false, enumerable: false, configurable: false }
+			"DateObj": { value: dateObj, writable: false, enumerable: false, configurable: false }
 		});
 		
 		subject.addFormatter({
@@ -287,7 +289,11 @@ describe("Manage Formatters", function() {
 		
 		let formattedLogRecord = subject.format(mockLogRecord, "myFormatter", subject.levelMapper);
 		let actual = formattedLogRecord["output"];
-		let expected = '{"level":"debug","message":"Sample Log Message","timestamp":"2019-03"}';
+		let expected = '{"level":"debug","message":"Sample Log Message","timestamp":"' 
+					+ dateObj.getFullYear() + '-' 
+					+ (dateObj.getMonth() + 1).toString().padStart(2, '0') 
+					+ '"}';
+					
 		assert.equal(actual, expected);
 	});
 	
