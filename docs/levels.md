@@ -47,7 +47,7 @@ because Loggerize will not alter levelMappers already defined on loggers and han
 
 ```javascript
 // @filenmae levels-setlevelmapper.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 Loggerize.setLevelMapper("syslog");
 let logger = Loggerize.createLogger({

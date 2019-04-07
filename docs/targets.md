@@ -11,7 +11,7 @@ To send log output to the terminal, set the target property to 'console'.
 
 ```javascript
 // @filename target-console.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger",
@@ -48,7 +48,7 @@ explicitly stated.
 
 ```
 // @filename target-file.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger",
@@ -80,7 +80,7 @@ Loggerize can also deduce the desired target and options if only passed a `path`
 
 ```javascript
 // @filename target-file-path.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger",
@@ -126,7 +126,7 @@ file (interval) target.
 
 ```javascript
 // @filename target-rotatefile-interval.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger",
@@ -179,7 +179,7 @@ available when using the rotating file (size) target.
 
 ```javascript
 // @filename target-rotatefile-size.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger",
@@ -243,7 +243,7 @@ the HTTP target.
 ```javascript
 // @filename target-http.js
 // Assuming a server is running on localhost:3000
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 Loggerize.on("logged", function(logRecord){
 	let response = logRecord["response"];
@@ -299,7 +299,7 @@ target is to drop all logs that pass through it. This may be useful for some
 test and profiling purposes, but is useless in production mode.
 
 ```javascript
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 var myTarget = function(){};
 
@@ -320,7 +320,7 @@ The null target defined above is not useful in production. To create a target
 that actually does something meaningful, let us add some more parameters.
 
 ```javascript
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 var myTarget = function(logRecord){
 	let output = logRecord["output"] + "\n";
@@ -350,7 +350,7 @@ To create a more robust target we should add some error checking and emit events
 when things go right and when things go wrong.
 
 ```javascript
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 var myTarget = function(logRecord, handleOpts){
 	try{
@@ -409,7 +409,7 @@ a MySQL server.
 
 ```javascript
 var mysql      = require('mysql');
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 //Create custom target
 var myTarget = function(logRecord, handleOpts){
@@ -490,7 +490,7 @@ outside of the target function yet still maintain the same functionality.
 
 ```javascript
 var mysql      = require('mysql');
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 //Create connection object
 var connection = mysql.createConnection({

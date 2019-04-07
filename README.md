@@ -41,7 +41,7 @@ For those not interesting in reading the documentation/tutorials, see below for
 the simplest way to immediately get up and running with the most basic logger.
 
 ```javascript
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 //Create Basic Logger
 let logger = Loggerize.createLogger("myLogger");
@@ -57,7 +57,7 @@ log format.
 
 ```javascript
 var app = require('express')();
-var loggerize = require("../../lib/index.js");
+var loggerize = require("loggerize");
 
 // Call middleware logger directly from the library
 app.use(loggerize.mw());

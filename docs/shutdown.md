@@ -9,7 +9,7 @@ See the example below.
 
 ```javascript
 // @filename event-finish.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 

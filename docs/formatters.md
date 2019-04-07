@@ -45,7 +45,7 @@ predefined formatter called 'simple'.
 
 ```javascript
 // @filename formatter-simple.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	"name": "myLogger", 
@@ -72,7 +72,7 @@ directly on the handle. Every formatter configuration requires a name.
 
 ```javascript
 // @filename formatter-onthefly.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -102,7 +102,7 @@ for this method for creating formatters.
 
 ```javascript
 // @filename formatter-addFormatter.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 Loggerize.addFormatter({
 	"name": "myFormatter",
@@ -129,7 +129,7 @@ serialize in the fields property.
 
 ```javascript
 // @filename formatter-json.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -330,7 +330,7 @@ a color map as the first parameter.
 
 ```javascript
 // @filename formatter-colorizelevels.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger",
@@ -396,7 +396,7 @@ the tokens as follows.
 
 ```javascript
 // @filename formatter-style-token.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 

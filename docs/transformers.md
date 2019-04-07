@@ -17,7 +17,7 @@ config.
 
 ```
 // @filename transformer-output.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	"name": "myLogger", 
@@ -48,7 +48,7 @@ on the individual token level.
 
 ```javascript
 // @filename transformer-token.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	"name": "myLogger", 
@@ -85,7 +85,7 @@ after the first ten characters.
 
 ```javascript
 // @filename transformer-add.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 Loggerize.addTransformer("truncateAfterTen", function(input){ 
 	return input.substring(0, 10); 
@@ -116,7 +116,7 @@ Custom transformation on tokens can be as easy as creating an anonymous funtion.
 
 ```javascript
 // @filename transformer-anonymous.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	"name": "myLogger", 

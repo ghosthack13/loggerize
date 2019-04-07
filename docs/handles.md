@@ -61,7 +61,7 @@ handle. This is needed because `createLogger` automatically attaches the default
 handle if no other handles are attached.
 
 ```javascript
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -86,7 +86,7 @@ created at the module-level and available to all loggers.
 
 
 ```javascript
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 Loggerize.addHandle({
 	"name": "myHandle",
@@ -154,7 +154,7 @@ these details.
 
 ```javascript
 // @filename handle-uncaught.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
