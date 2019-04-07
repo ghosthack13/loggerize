@@ -420,7 +420,7 @@ To create the same format in loggerize is as follows:
 
 ```
 // @filename transformer-output.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let scream = Loggerize.createLogger({
 	"name": "myLogger1", 

@@ -15,7 +15,7 @@ should behave. Let's look at an example using the built in `regex` filter.
 
 ```javascript
 // @filename filter-logger.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger("myLogger");
 logger.attachFilter("regex", {"pattern": /.+filter me.+/i, "onMatch": "deny"});	//Set severity to the 'warn' level (numeric severity == 1). Uses the npm levelMapper by default
@@ -37,7 +37,7 @@ filtered instead of having to attach the same filter to multiple loggers.
 
 ```javascript
 // @filename filter-handle.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger",
@@ -76,7 +76,7 @@ in this specific implementation.
 
 ```javascript
 // @filename filter-add.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 Loggerize.addFilter("limit", function(logRecord){
 	++this.numLogs;
 	if (this.numLogs > this.threshold){
@@ -105,7 +105,7 @@ To add a filter in Loggerize can be as easy as creating an anonymous funtion.
 
 ```javascript
 // @filename filter-anonymous.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 let logger = Loggerize.createLogger({
 	name: "myLogger",
 	handle: {

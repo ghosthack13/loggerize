@@ -15,7 +15,7 @@ from `error` (numeric level: 0) to `silly` (numeric level: 6).
 
 ```javascript
 
-var logger = require("../../lib/index.js");
+var logger = require("loggerize");
 
 logger.error("Logger Test!");	// outputs => 'error Logger Test!'
 logger.warn("Logger Test!");	// outputs => 'warn Logger Test!'
@@ -32,7 +32,7 @@ interpolated based on node's
 [util.format](https://nodejs.org/api/util.html#util_util_format_format_args ). 
 
 ```javascript
-var logger = require("../../lib/index.js");
+var logger = require("loggerize");
 
 logger.debug("Log %s Test!", "Message");		// outputs => 'debug Log Message Test!'
 logger.verbose("%drd Log Message Test!", 103);	// outputs => 'verbose 103rd Log Message Test!'

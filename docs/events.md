@@ -16,7 +16,7 @@ log attempt. The event is listened to via the logger's `on` function.
 
 ```javascript
 // @filename event-filtered.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -49,7 +49,7 @@ actually emitted by the handle and bubbled up to the logger.
 
 ```javascript
 // @filename event-logged.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -82,7 +82,7 @@ actually emitted by the handle and bubbled up to the logger.
 
 ```javascript
 // @filename event-error.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger({
 	name: "myLogger", 
@@ -116,7 +116,7 @@ and all handles.
 
 ```javascript
 // @filename event-global.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 Loggerize.on("logged", function(logRecord){
 	console.log("logged logRecord: \n", logRecord);

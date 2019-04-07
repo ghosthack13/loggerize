@@ -211,7 +211,7 @@ Similarly, to do the same thing in loggerize you will use:
 
 ```javascript
 var http = require('http');
-var loggerize = require('../../lib/index.js');
+var loggerize = require('loggerize');
 
 var server = http.createServer(function (req, res){	
 	

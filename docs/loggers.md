@@ -14,7 +14,7 @@ name (either as a string or defined in a config object).
 
 ```javascript
 // @filename logger-create.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger("myLogger");
 ```
@@ -50,7 +50,7 @@ The defaults decribed in the table above implies that calling
 
 ``` javascript
 // @filename logger-create-config.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 Loggerize.createLogger({
 	"name": "myLogger",			//Defined by user
@@ -72,7 +72,7 @@ and a log `message` as the second parameter.
 
 ```javascript
 // @filename logger-log.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger("myLogger");
 logger.log("info", "Logger Test!"); // Outputs => 'info Logger Test!'
@@ -86,7 +86,7 @@ parameters passed to it and guess what you meant to have logged.
 // @filename logger-log-any.js
 "use strict";
 
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 let logger = Loggerize.createLogger("myLogger");
 
 console.log("\nLogging using non-standard input:");
@@ -109,7 +109,7 @@ the standard log API above.
 ```javascript
 // @filename logger-log-convenience.js
 
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 let logger = Loggerize.createLogger("myLogger");
 
 logger.error("Logger Test!");	// outputs => 'error Logger Test!'
@@ -153,7 +153,7 @@ a vanilla HTTP server.
 // @filename logger-http-1.js
 var http = require('http');
 
-var Loggerize = require('../../lib/index.js');
+var Loggerize = require('loggerize');
 
 var myHTTPLogger = Loggerize.createHTTPLogger({
 	"name": "myHTTPLogger",
@@ -188,7 +188,7 @@ defaults to the same configuration as explicitly defined in the example above.
 // @filename logger-http-2.js
 var http = require('http');
 
-var loggerize = require('../../lib/index.js');
+var loggerize = require('loggerize');
 
 const PORT = 3000;
 var server = http.createServer(function (req, res){
@@ -218,7 +218,7 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-var loggerize = require("../../lib/index.js");
+var loggerize = require("loggerize");
 app.use(loggerize.mw());
 
 app.get('/', (req, res) => res.send('Hello World!'))
@@ -236,7 +236,7 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-var loggerize = require("../../lib/index.js");
+var loggerize = require("loggerize");
 
 var httpLogger = loggerize.createHTTPLogger({name: "myHTTPLogger"});
 app.use(httpLogger.getMiddleware());
@@ -258,7 +258,7 @@ same effect can be achieved using the standard `log`.
 
 ```javascript
 // @filename logger-log-interpolated.js
-var Loggerize = require("../../lib/index.js");
+var Loggerize = require("loggerize");
 
 let logger = Loggerize.createLogger("myLogger");
 
