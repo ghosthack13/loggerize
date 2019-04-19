@@ -2,6 +2,10 @@
 
 *ONE LOGGER TO RULE THEM ALL ...*
 
+[![Inline docs](http://inch-ci.org/github/ghosthack13/loggerize.svg?branch=master)](http://inch-ci.org/github/ghosthack13/loggerize)
+
+[![Build Status](https://travis-ci.org/ghosthack13/loggerize.png?branch=master)](https://travis-ci.org/ghosthack13/loggerize)
+
 ## Motivation
 
 The aim of Loggerize (also known as LoggerizeJS) was to create a universal 
