@@ -4,6 +4,9 @@
 
 [![Inline docs](http://inch-ci.org/github/ghosthack13/loggerize.svg?branch=master)](http://inch-ci.org/github/ghosthack13/loggerize)
 [![Build Status](https://travis-ci.com/ghosthack13/loggerize.png?branch=master)](https://travis-ci.com/ghosthack13/loggerize)
+[![NPM Version](https://badge.fury.io/js/loggerize.svg?style=flat)](https://npmjs.org/package/loggerize)
+[![Dependency Status](https://david-dm.org/ghosthack13/loggerize.svg)](https://david-dm.org/ghosthack13/loggerize)
+[![Known Vulnerabilities](https://snyk.io/test/github/ghosthack13/loggerize/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ghosthack13/loggerize?targetFile=package.json)
 
 ## Motivation
 
