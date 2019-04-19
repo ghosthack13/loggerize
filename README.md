@@ -2,6 +2,10 @@
 
 *ONE LOGGER TO RULE THEM ALL ...*
 
+[![Inline docs](http://inch-ci.org/github/ghosthack13/loggerize.svg?branch=master)](http://inch-ci.org/github/ghosthack13/loggerize)
+
+[![Build Status](https://travis-ci.org/ghosthack13/loggerize.png?branch=master)](https://travis-ci.org/ghosthack13/loggerize)
+
 ## Motivation
 
 The aim of Loggerize (also known as LoggerizeJS) was to create a universal 
@@ -30,6 +34,11 @@ Full tutorials can be found on the
 [Loggerize WIKI](https://github.com/ghosthack13/loggerize/wiki) coupled with 
 comprehensive documentation in the repository's 
 [docs](https://github.com/ghosthack13/loggerize/tree/master/docs) directory.
+
+Additionally API documentation can be generated using 
+[JSDOC](https://usejsdoc.org/). Running `npm run docgen` inside the loggerize 
+directory will create a web compatible api directory inside the documentation 
+folder ('docs/api').
 
 ## Installation
 
@@ -82,19 +91,19 @@ Testing with [mocha](https://mochajs.org): `npm test`
 
 Linting with [eslint](https://eslint.org): `npm run lint`
 
-## Versioning
-
-Loggerize uses [SemVer](http://semver.org/) for versioning. For the versions 
-available, 
-see the [tags on this repository](https://github.com/ghosthack13/loggerize/tags ).
-
 ## Issues
 
 Please report all issues and bugs to https://github.com/ghosthack13/loggerize/issues
 
+## Versioning
+
+Loggerize uses [SemVer](http://semver.org/) for versioning. For the versions 
+available, see the 
+[tags on this repository](https://github.com/ghosthack13/loggerize/tags ).
+
 ## Contributing
 
-As of now the best way to contribute is by donating (see below). Donations do 
+As of now the best way to contribute is by donating ([see below](#donations)). Donations do 
 not need to be financial. It can be donating server space to test different 
 operating systems, a subscription to loggly to create new log destinations or 
 even a logo design if you are competent in photo editing.
@@ -104,15 +113,15 @@ version 1 is finalized, as there are still internal speed optimizations to
 implement and I will not want anyone to take their time only to have their code 
 refactored or removed later.
 
-## Authors
-
-Loggerize was created and maintained by [ghosthack13](https://github.com/ghosthack13/).
-
 ## Donations
 
 If you belive Loggerize has helped you as a developer and/or your organization 
 and would like to see continued upgrades and more features added, please consider 
 making a kind donation via our [Patreon]().
+
+## Authors
+
+Loggerize was created and is maintained by [ghosthack13](https://github.com/ghosthack13/).
 
 ## Licence
 

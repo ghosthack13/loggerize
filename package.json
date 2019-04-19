@@ -9,16 +9,17 @@
 		"winston",
 		"morgan"
 	],
-	"homepage": "https://github.com/ghosthack13/loggerize#README",
-	"bugs": "https://github.com/ghosthack13/loggerize/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ghosthack13/loggerize.git"
 	},
+	"bugs": "https://github.com/ghosthack13/loggerize/issues",
+	"homepage": "https://loggerize.com",
 	"main": "./lib/index.js",
 	"scripts": {
 		"lint": "./node_modules/.bin/eslint './lib/*'",
 		"test": "./node_modules/.bin/mocha --reporter spec",
+		"posttest": "npm run lint",
 		"docgen": "./node_modules/.bin/jsdoc -r -c jsdoc.conf.json"
 	},
 	"directories": {

@@ -709,7 +709,12 @@ describe("Set Default Handle Options", function() {
 		subject = require('../lib/logger.js'); //Singleton Logger Instance
 	});
 	
-	var DEFAULT_USER_AGENT = "loggerize/0.0.1";
+	var DEFAULT_USER_AGENT = "loggerize" + path.sep + require(path.join(__dirname, "..", "package.json")).version;
+	assert(
+		/loggerize[\\/]+?\d+\.\d+\.\d+/.test(DEFAULT_USER_AGENT), 
+		"Invalid version number, thus cannot set User-Agent"
+	);
+	
 	var logDir =  path.join(process.cwd(), "logs" + path.sep);
 	
 	it("#setHandleDefaults - Empty opts object given", function() {
