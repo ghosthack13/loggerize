@@ -17,9 +17,10 @@
 	"homepage": "https://loggerize.com",
 	"main": "./lib/index.js",
 	"scripts": {
-		"lint": "./node_modules/.bin/eslint './lib/*'",
 		"test": "./node_modules/.bin/mocha --reporter spec",
 		"posttest": "npm run lint",
+		"lint": "./node_modules/.bin/eslint './lib/*'",
+		"coverage": "node ./node_modules/.bin/istanbul cover ./lib/loggerproxy.js",
 		"docgen": "./node_modules/.bin/jsdoc -r -c jsdoc.conf.json"
 	},
 	"directories": {
@@ -29,7 +30,8 @@
 		"eslint": "^5.12.0",
 		"eslint-plugin-import": "^2.14.0",
 		"jsdoc": "^3.5.5",
-		"mocha": "^5.2.0"
+		"mocha": "^5.2.0",
+		"istanbul": "^0.4.5"
 	},
 	"engines": {
 		"node": ">= 6.0.0",
