@@ -27,8 +27,15 @@ describe("Token/Placeholder Parser", function(){
 		let str = "%Y\n%%Y = %Y\n%%y = %y\n%%m = %m\n%%d = %d\n%%w = %w\n%%H = %H\n%%I = %I\n%%M = %M\n%%S = %S\n%%B = %B\n%%A = %A\n%%b = %b\n%%a = %a\n%%z = %z";
 		
 		let d = new Date(2018, 11, 13, 10, 58, 34);
+		
+		var offset= (d).getTimezoneOffset();
+		var hour = String(offset / 60).padStart(2, '0');
+		var min = String(offset % 60).padStart(2, '0');
+		var prefix = (offset >= 0) ? '-' : '+';
+		let timezoneStr = prefix + hour + min;
+		
 		let actual = parsers.strptime(str, undefined, d);
-		let expected = "2018\n%Y = 2018\n%y = 18\n%m = 12\n%d = 13\n%w = 04\n%H = 10\n%I = 10\n%M = 58\n%S = 34\n%B = December\n%A = Thursday\n%b = Dec\n%a = Thu\n%z = -0400";
+		let expected = "2018\n%Y = 2018\n%y = 18\n%m = 12\n%d = 13\n%w = 04\n%H = 10\n%I = 10\n%M = 58\n%S = 34\n%B = December\n%A = Thursday\n%b = Dec\n%a = Thu\n%z = " + timezoneStr;
 		assert.equal(actual, expected);
 		
 	});

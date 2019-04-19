@@ -1,8 +1,0 @@
-{
-	"files": {
-		"included": [
-			"lib/index.js",
-			"lib/loggerproxy.js"
-		],
-	}
-}
