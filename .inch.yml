@@ -1,0 +1,8 @@
+files:
+  # define files included in the analysis (defaults to ["{app,lib}/**/*.rb"])
+  included:
+    - lib/index.js
+    - lib/loggerproxy.js
+  # define files excluded from the analysis (defaults to [])
+  excluded:
+    - lib/*.js
