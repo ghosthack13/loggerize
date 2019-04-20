@@ -8,6 +8,8 @@
 [![Dependency Status](https://david-dm.org/ghosthack13/loggerize.svg)](https://david-dm.org/ghosthack13/loggerize)
 [![Known Vulnerabilities](https://snyk.io/test/github/ghosthack13/loggerize/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ghosthack13/loggerize?targetFile=package.json)
 
+[![NPM Download Stats](https://nodei.co/npm/loggerize.png?downloads=true)](https://www.npmjs.com/package/loggerize)
+
 ## Motivation
 
 The aim of Loggerize (also known as LoggerizeJS) was to create a universal 
@@ -29,6 +31,7 @@ experienced coders.
 - Custom log levels and level colors
 - Text string and JSON log output formats
 - Heirarchial logger names and ancestor traversal
+- Structured machine readable logs
 
 ## Documentation
 
